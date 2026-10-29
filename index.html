@@ -93,6 +93,15 @@ table.calc tr.sum td{font-weight:600;border-top:2px solid var(--ink)}
 table.calc.small{font-size:.86rem}
 .lessonnav{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:space-between;margin-top:2.5rem;padding-top:1.25rem;border-top:1px solid var(--rule)}
 @media (max-width:520px){.lessonnav button{flex:1 1 100%}.tabs button{padding:.35rem .4rem}}
+.casebox{background:var(--sheet);border:1px solid var(--rule);border-left:4px solid var(--focus);padding:.9rem 1.1rem;margin:0 0 1rem;font-size:.95rem}
+.casebox ul,#qExtra ul{margin:.4rem 0 0;padding-left:1.2rem}.casebox li{margin:.2rem 0}.casebox p{margin:0}
+.caselabel{font:700 .8rem/1 var(--cond);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
+table.ks{border-collapse:collapse;width:100%;font-size:.8rem;font-variant-numeric:tabular-nums;margin:.5rem 0 1.25rem}
+table.ks th,table.ks td{border:1px solid var(--rule);padding:.3rem .35rem;text-align:left}
+table.ks td.n{text-align:right;white-space:nowrap}table.ks th{font-weight:600;text-align:center}
+.casedet{margin:0 0 .75rem;font-size:.92rem}.casedet summary{cursor:pointer;color:var(--muted)}
+.final{margin-top:1.25rem;border-top:2px solid var(--ink);padding-top:.75rem}.final h3{font:600 1.15rem var(--serif);margin:.25rem 0 .5rem}.final h4{margin:1rem 0 .25rem;font-size:.95rem}
+.readmore{display:block;margin-top:.75rem;text-align:left}
 [hidden]{display:none!important}
 footer{color:var(--muted);font-size:.82rem;margin-top:3rem;border-top:1px solid var(--rule);padding-top:1rem}
 @media (max-width:520px){.card{padding:1.4rem 1rem 1.1rem}.q{font-size:1.15rem}.stamp{font-size:.9rem;top:.8rem;right:.8rem}}
@@ -120,7 +129,7 @@ footer{color:var(--muted);font-size:.82rem;margin-top:3rem;border-top:1px solid 
 
 <section id="start" hidden>
 <h1>Øv på oppgjør av eiendomshandler</h1>
-<p class="lede"><span id="bankSize"></span> teorispørsmål fra læreboka og eksamenssettene, pluss regneoppgaver som lages på nytt hver gang etter samme metode som fasitene. Alle satser er oppdatert til 2026.</p>
+<p class="lede"><span id="bankSize"></span> teorispørsmål fra læreboka og eksamenssettene – start med Lær-fanen hvis faget er nytt –, pluss regneoppgaver som lages på nytt hver gang etter samme metode som fasitene. Alle satser er oppdatert til 2026.</p>
 <aside class="ledger" aria-labelledby="satser">
 <h2 id="satser">Satser 2026</h2>
 <dl>
@@ -135,14 +144,21 @@ footer{color:var(--muted);font-size:.82rem;margin-top:3rem;border-top:1px solid 
 </aside>
 <fieldset><legend>Hva vil du øve på?</legend>
 <div class="chips" id="modeChips">
-<button class="chip" type="button" data-mode="teori" aria-pressed="true">Teori</button>
+<button class="chip" type="button" data-mode="eksamen" aria-pressed="true">Eksamensoppgaver</button>
+<button class="chip" type="button" data-mode="teori" aria-pressed="false">Teori</button>
 <button class="chip" type="button" data-mode="regning" aria-pressed="false">Regneoppgaver</button>
 <button class="chip" type="button" data-mode="blandet" aria-pressed="false">Blandet eksamensøving</button>
 <button class="chip" type="button" data-mode="feil" aria-pressed="false" id="feilChip">Mine feil</button>
 </div><p class="hint" id="feilHint"></p></fieldset>
+<fieldset id="levelSet"><legend>Nivå</legend><div class="chips" id="levelChips">
+<button class="chip" type="button" data-level="basis" aria-pressed="true">Grunnleggende (<span id="basisSize"></span>)</button>
+<button class="chip" type="button" data-level="alle" aria-pressed="false">Alle, med fordypning</button></div>
+<p class="hint">Grunnleggende spør bare om det som står i leksjonene. Fordypning tar med detaljer fra læreboka.</p></fieldset>
 <fieldset id="topicSet"><legend>Tema</legend><div class="chips" id="topicChips"></div>
 <div class="mini"><button class="linkbtn" id="allTopics" type="button">Velg alle</button><button class="linkbtn" id="noTopics" type="button">Fjern alle</button></div>
 <p class="hint" id="topicCount"></p></fieldset>
+<fieldset id="examSet"><legend>Oppgavetyper – slik eksamen er bygget opp</legend><div class="chips" id="examChips"></div>
+<p class="hint">En case er en tilfeldig eiendom som på eksamen. Du regner deg gjennom den del for del og får hele oppstillingen og kundespesifikasjonen som fasit til slutt.</p></fieldset>
 <fieldset id="genSet" hidden><legend>Oppgavetyper</legend><div class="chips" id="genChips"></div></fieldset>
 <fieldset><legend>Antall spørsmål</legend><div class="chips" id="countChips">
 <button class="chip" type="button" data-n="10" aria-pressed="false">10</button>
@@ -156,7 +172,8 @@ footer{color:var(--muted);font-size:.82rem;margin-top:3rem;border-top:1px solid 
 <section id="quiz" hidden>
 <div class="meta"><span id="counter"></span><span id="scoreNow"></span></div>
 <div class="bar"><i id="barFill"></i></div>
-<article class="card" aria-live="polite"><div class="stamp" id="stamp"></div><span class="tag" id="qTag"></span><h2 class="q" id="qText"></h2>
+<div class="casebox" id="qCase" hidden></div>
+<article class="card" aria-live="polite"><div class="stamp" id="stamp"></div><span class="tag" id="qTag"></span><h2 class="q" id="qText"></h2><div id="qExtra" hidden></div>
 <div class="opts" id="opts"></div><div class="feedback tblwrap" id="feedback" hidden></div>
 <div class="next" id="nextWrap" hidden><button class="primary" id="nextBtn" type="button">Neste spørsmål</button></div></article>
 </section>
@@ -370,7 +387,7 @@ const Q = [
 ["gj4","gj","Hva gjør megler cirka 14 dager før overtakelse?",["Sjekker grunnboken på nytt","Sletter sikringsobligasjonen","Tinglyser skjøtet","Betaler selger et forskudd"],"Megler får ikke beskjed om nye utlegg og må sjekke selv."],
 ["gj5","gj","Kjøper har ikke betalt på overtakelsesdagen. Hva råder megler selger til?",["Ikke å gi fra seg nøklene","Å overta mot forsinkelsesrente","Å overta mot depositum","Å overta og heve senere"],"Gir selger fra seg nøklene uten betaling, gir hun kjøper kreditt."],
 ["gj6","gj","Hvorfor sendes skjøtet og kjøpers bankpant til tinglysing samtidig?",["Kjøper må eie boligen før banken får pant","Kartverket gir rabatt for begge samtidig","Selger må signere begge dokumentene","Banken krever det for å sette renten"],"Kjøper må ha hjemmel før banken kan få pant."],
-["gj7","gj","Hvor lang tid tar det før selgers bank har slettet pantet?",["Rundt to måneder", "Én til to dager", "Omtrent to uker", "Omtrent et halvt år"],"Megler må følge med og purre om nødvendig."],
+["gj7","gj","Selgers lån er betalt. Hvem må følge med på at pantet faktisk blir slettet?",["Megler","Bare selgers bank","Kjøpers bank","Kartverket"],"Selgers bank skal sørge for slettingen, men megler må følge med i grunnboken og purre. Hvor lang tid det tar, varierer – i dag ofte 1–2 uker, men det kan ta flere måneder. Boka fra 2019 sier rundt to måneder."],
 ["gj8","gj","Boligen selges mens eieren er under konkurs. Hvilken lovbestemt panterett må megler ta hensyn til?",["Konkursboets pant for boomkostninger", "Borettslagets lovbestemte pant", "Kommunens pant for vannavgift", "Arbeidstakernes krav på lønn"],"Konkursboet har pant for nødvendige boomkostninger (panteloven § 6-4): 5 % av salgssummen, men høyst 700 R per eiendom. R er rettsgebyret – 1 345 kr i 2026, så 700 R er 941 500 kr. Panteretten går foran alle andre heftelser, også bankens pant."],
 ["gj9","gj","Hva betyr «pro & contra» i et oppgjør?",["Avregninger mellom kjøper og selger","Fordeling av meglers honorar","Rekkefølgen på pantene","Partenes forbehold"],"For eksempel kommunale avgifter, felleskostnader og olje."],
 ["gj10","gj","Selgers lån er betalt. Hva skjer med resten av pengene?",["Megler trekker sitt og betaler resten til selger","Alt går til selger, megler sender faktura","De holdes i tre måneder","De sendes til selgers bank"],"Megler må ha selgers samtykke til å trekke honoraret."],
@@ -604,6 +621,7 @@ const LEK = [
 <li>Kan vilkårene ikke oppfylles, må banken endre dem, ellers må pengene sendes tilbake.</li>
 <li>Meglers ansvar er i utgangspunktet begrenset til <b>beløpet som er mottatt</b>.</li>
 <li>Vilkår megler ikke kontrollerer (f.eks. «ingen bruksretter skal tinglyses») kan ikke aksepteres.</li>
+<li>Er kjøpers pantedokument ikke klart til tinglysing ved overtakelse, regnes det som <b>kjøpers mislighold</b> – kjøper har ikke betalt før pengene kan brukes slik banken krever.</li>
 </ul>
 `},
 {id:"l7", tittel:"Vederlag, provisjon og utlegg", kort:"Hva selger betaler megler, og hvordan mva skilles ut.", ov:{tema:["rv"], gen:["prov"]}, html:`
@@ -814,7 +832,7 @@ const LEK = [
 <p>Selger ID-kontrolleres når oppdraget inngås, kjøper før oppgjøret. Uten ID-kontroll – ikke oppgjør. Mistanke undersøkes og rapporteres til <b>Økokrim</b>, uten å si det til kunden.</p>
 <h3>Andre</h3>
 <p><b>Konkurs:</b> Selges boligen mens eieren er konkurs, har konkursboet pant for nødvendige boomkostninger (panteloven § 6-4): 5 % av salgssummen, men høyst 700 R (941 500 kr i 2026) per eiendom. Dette pantet går foran alle andre heftelser, også bankens.</p>
-<p><b>Overbeheftet eiendom</b> (mer gjeld enn verdi): megler må få pantefrafall fra kreditorene før salg. <b>Tvangssalg</b>: tingretten, medhjelper, fordelingskjennelse. <b>Mortifikasjon</b>: bortkommet pantedokument, behandles av Brønnøy tingrett.</p>
+<p><b>Overbeheftet eiendom</b> (mer gjeld enn verdi): megler må få pantefrafall fra kreditorene før salg. Pantet slettes, men <b>gjelden består</b> – det må megler si tydelig til kreditor. <b>Tvangssalg</b>: tingretten, medhjelper, fordelingskjennelse. <b>Mortifikasjon</b>: bortkommet pantedokument, behandles av Brønnøy tingrett.</p>
 `},
 {id:"l15", tittel:"Slik løser du eksamen", kort:"Mønsteret i oppgavene, sjekklister og fellene.", ov:{tema:["ff","ar"]}, html:`
 <h3>Eksamen følger nesten alltid samme mønster</h3>
@@ -848,6 +866,216 @@ const LEK = [
 <div class="callout"><b>Tips:</b> Gå til «Satser og fasitfeil» før eksamen – fasitene i oppgaveboka har 15 kjente feil, så ikke stol blindt på dem.</div>
 `}
 ];
+
+// ================= EKSAMENSOPPGAVER =================
+const esc = s => String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const kr = n => Math.round(n).toLocaleString("nb-NO");
+const NAVN_S = ["Hilde Hav","Per Fjell","Sara Strand","Ola Berg","Kari Lund","Jonas Dal","Mina Vik","Tor Holm"];
+const NAVN_K = ["Emil Eng","Nora Ås","Lars Lie","Ida Moe","Even Bakke","Thea Nes","Sindre Foss","Live Rud"];
+const GATER = ["Lyngveien","Sjøgata","Furuåsen","Kirkebakken","Elvebredden","Havnegata","Solbergveien","Torvgata"];
+
+function makeCase(){
+  const type = pick(["enebolig","seksjon","borettslag"]);
+  const price = ri(18,95)*100000 + pick([0,0,25000,50000,75000]);
+  const fg = type==="enebolig"?0 : type==="borettslag" ? ri(15,90)*10000 : pick([0, ri(4,30)*10000+ri(1,999)]);
+  const prov = Math.max(Math.round((price+fg)*0.025), 35000);
+  const takst = pick([2500,3700,4500,7700,12400]), annonse = pick([9500,11700,13000,21000,22000]);
+  const ffinfo = type==="enebolig"?0:pick([1500,2300,3500,3750]);
+  const lan = Math.random()<0.75;
+  const m = ri(1,6), d = pick([1,ri(2,28),ri(2,28),ri(2,28),ri(2,28)]);
+  const fk = type==="enebolig"?0:ri(15,60)*100, back = pick([0,0,1,2]);
+  const eier = type==="enebolig"?0:pick([3440,3800,4400,5380]);
+  const kom = type==="enebolig" ? {A:ri(30,130)*100, paid:Math.random()<0.6} : null;
+  const los = Math.random()<0.35 ? ri(5,60)*1000 : 0;
+  const L = Math.random()<0.15 ? 0 : Math.min(ri(10,70)*10000+ri(0,9999), price-200000);
+  const rs = ri(4,30)*50;
+  const selN = pick(NAVN_S), kjN = pick(NAVN_K), G = pick(GATER);
+  const lastPaid = ((m-1-back+11)%12)+1;
+  // --- beregninger ---
+  const grunn = price + (type==="seksjon"?fg:0);
+  const dok = type==="borettslag"?0:dokavg(grunn);
+  const tingl = dok + S.tl + (lan?S.tl:0);
+  const omk = tingl + S.gb;
+  const ffS = Math.round(fk*back + fk/30*(d-1) + eier), ffK = Math.round(fk/30*(30-d+1));
+  let komAv=0, komTxt="", komDays=0;
+  if(kom){ const start=m<=6?1:7, end=m<=6?6:12;
+    if(kom.paid){ komDays=daysFrom(d,m,end); komAv = kom.A/180*komDays; }
+    else { komDays=daysBefore(d,m,start); komAv = -kom.A/180*komDays; } }
+  const av = Math.round(komAv + los); // + betyr kjøper betaler selger
+  const utlegg = S.gb + takst + annonse + ffinfo + S.tl + prov;
+  const innbet = price + omk + ffK + av;
+  const utb = price + av + rs - utlegg - L - ffS;
+  // --- casetekst ---
+  const typeTxt = type==="enebolig"?"en selveid enebolig på eiet tomt":type==="seksjon"?"en selveierleilighet i et sameie":"en andelsleilighet i et borettslag";
+  let t = `<p><b>${esc(G)}</b> er ${typeTxt}. ${esc(selN)} selger til ${esc(kjN)} for <b>${kr(price)}</b> + omkostninger`+(type==="borettslag"?` (andel fellesgjeld ${kr(fg)})`:fg?`. Seksjonen har ${kr(fg)} i fellesgjeld`:"")+`. Overtakelse er <b>${d}.${m}</b>.</p><ul>`;
+  t += `<li>Provisjon: 2,5 % inkl. mva. av salgssummen inkludert eventuell fellesgjeld, minimum 35 000 inkl. mva.</li>`;
+  t += `<li>Selgers fakturaer: grunnboksutskrift 260, takst ${kr(takst)}, annonse ${kr(annonse)}${ffinfo?`, opplysninger fra forretningsfører ${kr(ffinfo)}`:""}, pant med urådighet 545.</li>`;
+  t += `<li>Kjøper ${lan?"finansierer med lån – banken sender ett pantedokument":"betaler med oppsparte midler"}.</li>`;
+  if(fk) t += `<li>Felleskostnader ${kr(fk)} per måned, forfall den 1., betalt til og med ${MND[lastPaid]}. Eierskiftegebyr ${kr(eier)}. Forretningsfører krever forfalte felleskostnader og eierskiftegebyr betalt i oppgjøret.</li>`;
+  if(kom) t += `<li>Kommunale avgifter ${kr(kom.A)} for ${m<=6?"første":"andre"} halvår – ${kom.paid?"allerede betalt av selger":"ikke betalt, kjøper får fakturaen etter overtakelse"}.</li>`;
+  if(los) t += `<li>Kjøper betaler i tillegg ${kr(los)} for løsøre, gjort opp i oppgjøret.</li>`;
+  t += `<li>${L?`Selgers lån på ${kr(L)} inkl. renter innfris.`:"Eiendommen er gjeldfri."} Renter på klientkonto som tilfaller selger: ${kr(rs)}.</li></ul>`;
+  const c = {type,price,fg,prov,takst,annonse,ffinfo,lan,m,d,fk,back,eier,kom,los,L,rs,selN,kjN,G,lastPaid,grunn,dok,tingl,omk,ffS,ffK,komAv,komDays,av,utlegg,innbet,utb,html:t};
+  return c;
+}
+function signTxt(v){ return v>=0?"+":"−"; }
+
+function caseSteps(c){
+  const steps=[], tot=7+(c.fk?1:0)+(c.kom?1:0);
+  let n=0; const lab=()=>`Del ${++n}`;
+  const step=(q,correct,cands,rows,e,unit)=>{ const o=opts(correct,shuffle(cands),unit); steps.push({gen:true,gk:"case",caseHtml:c.html,step:lab(),q,o:o.map(x=>x.t),a:0,rows,total:correct,e}); };
+  // 1 provisjon
+  const base=c.price+c.fg;
+  step("Hva blir meglers provisjon inkl. mva?", c.prov,
+    [Math.max(Math.round(c.price*0.025),35000), Math.round(base*0.02), Math.round(base*0.025*1.25), 35000],
+    [["Grunnlag: salgssum"+(c.fg?" + fellesgjeld":""),base],[`2,5 % = ${dkr(base*0.025)}${base*0.025<35000?" → minimum gjelder":""}`,c.prov],["Herav mva (1/5)",Math.round(c.prov/5)],["Vederlagsinntekt (4/5)",c.prov-Math.round(c.prov/5)]],
+    "Fellesgjelden er med i provisjonsgrunnlaget, også i borettslag.");
+  // 2 dokumentavgift
+  if(c.type==="borettslag"){
+    step("Hvor mye dokumentavgift skal kjøper betale?", 0.0001, [dokavg(c.price), dokavg(c.price+c.fg), 250], [["Andel i borettslag er ikke fast eiendom",0]], "Ingen dokumentavgift ved kjøp av andel i borettslag.", v=>v<1?"0 kr":fmt(v));
+  } else {
+    const g1=Math.floor(c.grunn/1000)*1000;
+    step("Hvor mye dokumentavgift skal kjøper betale?", c.dok,
+      [Math.round(c.grunn*0.025), dokavg(c.price), dokavg(c.price+(c.fg||0)+c.los), Math.round(c.price*0.025)],
+      [["Avgiftsgrunnlag"+(c.type==="seksjon"&&c.fg?" (kjøpesum + fellesgjeld)":""),c.grunn],[`${kr(g1)} × 2,5 % = ${dkr(g1*0.025)}, ned til nærmeste 10`,c.dok]],
+      "Grunnlaget rundes ned til hele tusen, avgiften ned til hele ti."+(c.los?" Løsøre kjøpt i tillegg påvirker ikke avgiften.":""));
+  }
+  // 3 forretningsfører
+  if(c.fk){
+    step("Hvor mye av utestående til forretningsfører skal belastes selger?", c.ffS,
+      [Math.round(c.fk/30*(c.d-1)+c.eier), Math.round(c.ffS-c.eier), Math.round(c.fk*(c.back+1)+c.eier), Math.round(c.fk*c.back+c.fk/30*c.d+c.eier)],
+      [[`Hele måneder før ${MND[c.m]} (${c.back})`,c.fk*c.back],[`${c.d-1} dager i ${MND[c.m]}`,Math.round(c.fk/30*(c.d-1))],["Eierskiftegebyr",c.eier],["Selgers andel",c.ffS],[`Kjøpers andel: ${30-c.d+1} dager`,c.ffK]],
+      "Forfalte måneder før overtakelsesmåneden og eierskiftegebyret er selgers. Overtakelsesdagen er kjøpers.");
+  }
+  // 4 kommunale avgifter
+  if(c.kom){
+    const v=Math.round(Math.abs(c.komAv)), dir=c.kom.paid?"Kjøper betaler selger":"Selger betaler kjøper", rev=c.kom.paid?"Selger betaler kjøper":"Kjøper betaler selger";
+    const o=[{t:`${dir} ${fmt(v)}`},{t:`${rev} ${fmt(v)}`},{t:`${dir} ${fmt(c.kom.A/180*(c.komDays+1))}`},{t:`${dir} ${fmt(c.kom.A/180*(180-c.komDays))}`}];
+    const uniq=[...new Map(o.map(x=>[x.t,x])).values()];
+    steps.push({gen:true,gk:"case",caseHtml:c.html,step:lab(),q:"Hvordan gjøres de kommunale avgiftene opp mellom partene?",o:uniq.map(x=>x.t),a:0,
+      rows:[[`Dager ${c.kom.paid?"kjøper":"selger"} skal dekke`,c.komDays,"d"],[`${kr(c.kom.A)} / 180 × ${c.komDays}`,v]],total:v,
+      e:c.kom.paid?"Selger har betalt halvåret, så kjøper refunderer sin del.":"Kjøper betaler fakturaen, så selger dekker sine dager."});
+  }
+  // 5 kjøpers innbetaling
+  const rowsK=[["Kjøpesum",c.price]]; if(c.dok)rowsK.push(["Dokumentavgift",c.dok]); rowsK.push([c.type==="borettslag"?"Tinglysing hjemmelsovergang":"Tinglysing skjøte",S.tl]); if(c.lan)rowsK.push(["Tinglysing pantedokument",S.tl]); rowsK.push(["Grunnboksutskrift",S.gb]);
+  if(c.ffK)rowsK.push(["Kjøpers andel til forretningsfører",c.ffK]); if(c.kom)rowsK.push([`Kommunale avgifter (${c.kom.paid?"til selger":"fra selger"})`,Math.round(c.komAv)]); if(c.los)rowsK.push(["Løsøre",c.los]);
+  step("Hva skal kjøper betale inn til klientkonto før overtakelse?", c.innbet,
+    [c.innbet-c.ffK, c.innbet+c.fg, c.innbet-2*Math.round(c.komAv), c.innbet-S.gb, c.innbet-(c.lan?S.tl:-S.tl)].filter(x=>x!==c.innbet),
+    rowsK, "Kjøpesum + omkostninger + kjøpers del til forretningsfører ± avregninger. Fellesgjelden betales ikke inn.");
+  // 6 selgers utlegg
+  step("Hvor mye utgjør selgers samlede utlegg (inkl. provisjon) som overføres driftskonto?", c.utlegg,
+    [c.utlegg-c.prov, c.utlegg+c.tingl, c.utlegg-S.tl, c.utlegg+c.eier],
+    [["Grunnboksutskrift",S.gb],["Takst",c.takst],["Annonse",c.annonse]].concat(c.ffinfo?[["Opplysninger forretningsfører",c.ffinfo]]:[]).concat([["Pant med urådighet",S.tl],["Provisjon",c.prov]]),
+    "Kjøpers tinglysing og dokumentavgift er ikke selgers utlegg.");
+  // 7 utbetaling
+  const rowsS=[["Salgssum",c.price]]; if(c.av)rowsS.push(["Avregninger (netto)",c.av]); rowsS.push(["Renter",c.rs],["Utlegg",-c.utlegg]); if(c.L)rowsS.push(["Innfrielse lån",-c.L]); if(c.ffS)rowsS.push(["Selgers andel forretningsfører",-c.ffS]);
+  step("Hvor mye utbetales til selger i sluttoppgjøret?", c.utb,
+    [c.utb-2*c.rs, c.utb+c.ffS, c.utb-2*c.av, c.utb+c.prov, c.utb-c.tingl].filter(x=>x!==c.utb&&x>0),
+    rowsS, "Salgssum + renter ± avregninger − utlegg − lån − selgers andel til forretningsfører.");
+  // 8 klientkonto
+  step("Kartverket-fakturaen for tinglysing er betalt. Hva står igjen på klientkonto for kjøper?", S.gb,
+    [0, S.tl, c.tingl, S.gb+S.tl], [["Kjøpers grunnboksutskrift, fakturert senere",S.gb]],
+    "Grunnboksutskriften (attestgebyret) bestilles når selgers pant er slettet.");
+  // 9 hva endres hvis
+  if(c.type==="borettslag"){
+    const nd=dokavg(c.price);
+    step(`Tenk deg at ${c.G} i stedet var en selveierleilighet med samme kjøpesum, uten fellesgjeld. Hvor mye endres kjøpers innbetaling?`, nd,
+      [dokavg(c.price+c.fg), Math.round(c.price*0.025), nd+S.tl],[["Ny dokumentavgift av "+kr(Math.floor(c.price/1000)*1000),nd]],
+      "Svar: innbetalingen øker med dokumentavgiften. Alt annet er likt.", v=>"Øker med "+fmt(v));
+  } else {
+    step(`Tenk deg at ${c.G} i stedet var en andelsleilighet i borettslag (alt annet likt). Hvor mye endres kjøpers innbetaling?`, c.dok,
+      [Math.round(c.price*0.025), c.dok+S.tl, c.dok-S.tl],[["Dokumentavgiften faller bort",c.dok]],
+      "Borettslag har ikke dokumentavgift. Tinglysingsgebyrene er like.", v=>"Reduseres med "+fmt(v));
+  }
+  steps.forEach((s,i)=>{ s.step=`Del ${i+1} av ${steps.length}`; });
+  // sluttfasit på siste steg
+  steps[steps.length-1].final = c;
+  return steps;
+}
+
+// ---------- kundespesifikasjon ----------
+function ksRows(c){
+  const R=[]; let b=1; const add=(tekst,cols)=>R.push({b:b++,tekst,...cols});
+  add("Grunnboksutskrift",{uD:S.gb}); add("Takst",{uD:c.takst}); add("Annonse",{uD:c.annonse});
+  if(c.ffinfo) add("Opplysninger forretningsfører",{uD:c.ffinfo});
+  add("Kjøpekontrakt",{sK:c.price,kD:c.price}); add("Provisjon",{uD:c.prov}); add("Pant m/urådighet",{uD:S.tl});
+  add("Innbetalt fra kjøper",{kK:c.innbet,cD:c.innbet}); add("Faktura tinglysing",{uD:c.tingl});
+  add("Overføre utlegg",{sD:c.utlegg,uK:c.utlegg,cK:c.utlegg});
+  if(c.fk) add("Til forretningsfører",{sD:c.ffS,kD:c.ffK,cK:c.ffS+c.ffK});
+  if(c.av>0) add("Avregning",{sK:c.av,kD:c.av}); else if(c.av<0) add("Avregning",{sD:-c.av,kK:-c.av});
+  add("Renter",{sK:c.rs,cD:c.rs});
+  if(c.L) add("Innfri lån",{sD:c.L,cK:c.L});
+  add("Utbetal selger",{sD:c.utb,cK:c.utb});
+  add("Betaler tinglysing",{kD:c.tingl,uK:c.tingl,cK:c.tingl});
+  return R;
+}
+function ksTable(R){
+  const cols=["sD","sK","kD","kK","uD","uK","cD","cK"];
+  let h=`<div class="tblwrap"><table class="ks"><thead><tr><th rowspan="2">Bil.</th><th rowspan="2">Tekst</th><th colspan="2">Selger</th><th colspan="2">Kjøper</th><th colspan="2">Utlegg</th><th colspan="2">Klientkonto</th></tr><tr>${"<th>D</th><th>K</th>".repeat(4)}</tr></thead><tbody>`;
+  for(const r of R) h+=`<tr><td>${r.b}</td><td>${esc(r.tekst)}</td>${cols.map(k=>`<td class="n">${r[k]?kr(r[k]):""}</td>`).join("")}</tr>`;
+  return h+"</tbody></table></div>";
+}
+function makeFinn(){
+  let c, R, err, row, txt;
+  for(let tries=0;tries<20;tries++){
+    c=makeCase(); R=ksRows(c);
+    const types=["gebyr","kontrakt","utlegg","innbet","renter","betaling"];
+    if(c.fg) types.push("prov"); if(c.av) types.push("avregning"); if(c.type==="borettslag") types.push("dokbrl"); if(c.fk) types.push("eier");
+    err=pick(types);
+    const f=t=>R.find(r=>r.tekst===t);
+    if(err==="gebyr"){ row=f("Pant m/urådighet"); const old=pick([480,585,1060]); row.uD=old; txt=`Pant med urådighet er ført med ${old} kr. Gebyret i 2026 er 545 kr.`; }
+    else if(err==="kontrakt"){ row=f("Kjøpekontrakt"); row.sK=0;row.kD=0;row.sD=c.price;row.kK=c.price; txt="Kjøpekontrakten er ført med snudd retning. Riktig er kredit selger (tilgodehavende) og debet kjøper (skyld)."; }
+    else if(err==="utlegg"){ row=f("Overføre utlegg"); const v=c.utlegg+c.tingl; row.sD=v;row.uK=v;row.cK=v; txt=`Overføre utlegg inkluderer kjøpers tinglysing (${kr(c.tingl)}). Riktig beløp er ${kr(c.utlegg)}.`; }
+    else if(err==="innbet"){ row=f("Innbetalt fra kjøper"); row.kK=0; row.sD=c.innbet; txt="Innbetalingen fra kjøper er ført debet selger. Riktig er kredit kjøper (og debet klientkonto)."; }
+    else if(err==="renter"){ row=f("Renter"); row.sK=0; row.sD=c.rs; row.cD=0; row.cK=c.rs; txt="Rentene er ført som et fradrag hos selger. Renter som tilfaller selger skal krediteres selger og debiteres klientkonto."; }
+    else if(err==="betaling"){ const i=R.findIndex(r=>r.tekst==="Kjøpekontrakt"); R.splice(i,0,{b:0,tekst:"Betaler takst",uK:c.takst,cK:c.takst}); R.forEach((r,j)=>r.b=j+1); row=R[i]; txt="Takstfakturaen betales fra driftskontoen og skal ikke føres på kunden – bare mottaket av fakturaen føres som utlegg."; }
+    else if(err==="prov"){ row=f("Provisjon"); const wrong=Math.max(Math.round(c.price*0.025),35000); if(wrong===c.prov) continue; row.uD=wrong; txt=`Provisjonen er beregnet uten fellesgjeld. Riktig: 2,5 % av ${kr(c.price+c.fg)} = ${kr(c.prov)}.`; }
+    else if(err==="avregning"){ row=f("Avregning"); [row.sD,row.sK]=[row.sK,row.sD]; [row.kD,row.kK]=[row.kK,row.kD]; txt=`Avregningen er ført med feil retning. ${c.av>0?"Kjøper betaler selger, så det skal være kredit selger og debet kjøper.":"Selger betaler kjøper, så det skal være debet selger og kredit kjøper."}`; }
+    else if(err==="dokbrl"){ row=f("Faktura tinglysing"); const v=dokavg(c.price)+c.tingl; row.uD=v; txt=`Tinglysingsfakturaen inneholder dokumentavgift, men borettslag har ikke dokumentavgift. Riktig er ${kr(c.tingl)}.`; }
+    else if(err==="eier"){ row=f("Til forretningsfører"); row.sD=c.ffS-c.eier; row.kD=c.ffK+c.eier; txt=`Eierskiftegebyret (${kr(c.eier)}) er ført på kjøper. Det er selgers kostnad: selger ${kr(c.ffS)}, kjøper ${kr(c.ffK)}.`; }
+    if(row) break;
+  }
+  const others=shuffle(R.filter(r=>r!==row)).slice(0,3);
+  const o=shuffle([row,...others]);
+  return {gen:true,gk:"finn",caseHtml:c.html,html:ksTable(R),q:"Kundespesifikasjonen over har én feil. Hvilket bilag er feil?",o:o.map(r=>`Bilag ${r.b} – ${r.tekst}`),a:o.indexOf(row),e:txt,final:null};
+}
+
+// ---------- posteringer ----------
+const POST_SVAR = {
+  faktura:"Utlegg debet", betdrift:"Ingen føring på kunden", kontrakt:"Selger kredit, kjøper debet", innbet:"Kjøper kredit, klientkonto debet",
+  betkl:"Kjøper debet, utlegg kredit, klientkonto kredit", lan:"Selger debet, klientkonto kredit", utlegg:"Selger debet, utlegg kredit, klientkonto kredit",
+  renter:"Selger kredit, klientkonto debet", ff:"Selger debet og kjøper debet (hver sin del), klientkonto kredit", avrK:"Selger debet, kjøper kredit"
+};
+const POST_EV = [
+  ["faktura",a=>`Megler mottar faktura fra takstfirmaet på ${kr(a)} for selgers bolig.`],
+  ["faktura",()=>"Pant med urådighet kommer tinglyst i retur med faktura på 545 kr."],
+  ["betdrift",a=>`Megler betaler annonsefakturaen på ${kr(a)} fra driftskontoen.`],
+  ["kontrakt",a=>`Budet på ${kr(a*100)} aksepteres.`],
+  ["innbet",a=>`Kjøpers bank overfører ${kr(a*100+60000)} til klientkontoen.`],
+  ["betkl",a=>`Megler betaler Kartverkets faktura på ${kr(a*2)} for kjøpers dokumentavgift og tinglysing.`],
+  ["lan",a=>`Selgers lån på ${kr(a*40)} innfris.`],
+  ["utlegg",a=>`Selgers utlegg på ${kr(a*5)} (inkl. provisjon) overføres til driftskonto.`],
+  ["renter",()=>"Renter på klientkonto, 950 kr, tilfaller selger."],
+  ["ff",()=>"Forfalte felleskostnader og eierskiftegebyr overføres forretningsfører, fordelt på selger og kjøper."],
+  ["avrK",()=>"Selger skal betale kjøper 4 013 kr for ubetalte kommunale avgifter."],
+  ["kontrakt",()=>"Kjøper betaler selger 35 000 kr for løsøre (avregning i oppgjøret)."]
+];
+function makePost(){
+  const [k,fn]=pick(POST_EV), a=ri(20,90)*100;
+  const correct=POST_SVAR[k];
+  const others=shuffle(Object.values(POST_SVAR).filter(v=>v!==correct)).slice(0,3);
+  const o=shuffle([correct,...others]);
+  return {gen:true,gk:"post",q:fn(a)+" Hvordan føres dette i kundespesifikasjonen?",o,a:o.indexOf(correct),
+    e:"Selger kredit = det selger har til gode. Kjøper debet = det kjøper skylder. Utlegg debet = påløpt utlegg. Klientkonto debet = penger inn, kredit = penger ut."};
+}
+
+function finalTables(c){
+  const t=(title,rows,sumL,sum)=>`<h4>${title}</h4><div class="tblwrap"><table class="calc"><tbody>${rows.map(([l,v])=>`<tr><td>${esc(l)}</td><td class="n">${v<0?"−"+kr(-v):kr(v)}</td></tr>`).join("")}<tr class="sum"><td>${sumL}</td><td class="n">${kr(sum)}</td></tr></tbody></table></div>`;
+  const rk=[["Kjøpesum",c.price]]; if(c.dok)rk.push(["Dokumentavgift",c.dok]); rk.push(["Tinglysing skjøte/hjemmel",S.tl]); if(c.lan)rk.push(["Tinglysing pant",S.tl]); rk.push(["Grunnboksutskrift",S.gb]);
+  if(c.ffK)rk.push(["Forretningsfører (kjøpers del)",c.ffK]); if(c.kom)rk.push(["Kommunale avgifter",Math.round(c.komAv)]); if(c.los)rk.push(["Løsøre",c.los]);
+  const rs=[["Salgssum",c.price]]; if(c.av)rs.push(["Avregninger",c.av]); rs.push(["Renter",c.rs],["Utlegg inkl. provisjon",-c.utlegg]); if(c.L)rs.push(["Innfri lån",-c.L]); if(c.ffS)rs.push(["Forretningsfører (selgers del)",-c.ffS]);
+  return `<div class="final"><h3>Fasit for ${esc(c.G)}</h3>`+t("Kjøpers innbetaling",rk,"Innbetales",c.innbet)+t("Selgers oppgjør",rs,"Utbetales",c.utb)+"<h4>Kundespesifikasjon</h4>"+ksTable(ksRows(c))+"</div>";
+}
 
 // ---------- satser ----------
 const S = {tl:545, gb:260, dok:0.025, R:1345};
@@ -1028,6 +1256,15 @@ function genSelger(){
 
 const GENS = {omk:["Kjøpers omkostninger",genOmk], prov:["Provisjon og mva",genProv], avr:["Avregninger",genAvr], ff:["Forretningsfører",genFF], sel:["Selgers oppgjør",genSelger]};
 
+// ---------- nivå ----------
+const BASIS = new Set("kk1 kk2 kk3 kk4 kk6 kk9 kk10 kk11 kk12 kk13 kk14 in1 in2 in4 in5 in7 in8 gb1 gb2 gb3 gb5 gb8 gb9 gb10 gb11 ab1 ab3 ab4 ab7 ab8 ab9 ab10 ab11 da1 da2 da3 da4 da5 da7 da8 da11 da12 da13 da14 da15 da16 da17 da19 da20 da23 so1 so2 so3 so4 so6 so8 rv1 rv2 rv3 rv6 rv9 rv10 oj2 hv1 hv3 hv4 hv5 gj4 gj5 gj6 gj7 gj8 gj10 pr1 pr2 pr3 pr4 ir1 ir2 ir3 ir4 ir5 ir6 ir7 as1 as2 as5 as6 sp9 sp13 sp14 ar1 ar2 ar3 ar4 ar5 ar6 ar7 ar8 ar9 ar10 ar11 ar12 ar13 ar14 ar15 ar16 ar17 ff1 ff2 ff3 ff4 ff5 ff6 ff7 ff8 ff9 ff10".split(" "));
+let level = "basis";
+const inLevel = q => level==="alle" || BASIS.has(q[0]);
+// tema → leksjon som forklarer det
+const TEMA_LEK = {kk:1,in:5,gb:2,ab:3,da:4,so:5,rv:6,oj:7,hv:13,gj:7,pr:13,ir:12,as:13,sp:13,ar:8,ff:11};
+const GEN_LEK = {omk:4,prov:6,avr:8,ff:9,sel:10,case:10,finn:11,post:11};
+const EX_LABEL = {case:"Eksamenscase",finn:"Finn feilen",post:"Postering"};
+let examOn = new Set(["case","finn","post"]);
 // ---------- state ----------
 const $ = s => document.querySelector(s);
 const LS = "oppgjor2-feil";
@@ -1046,7 +1283,7 @@ function chipGroup(box, items, set){
   }
 }
 function updateCount(){
-  const n = Q.filter(q=>topicsOn.has(q[1])).length;
+  const n = Q.filter(q=>topicsOn.has(q[1]) && inLevel(q)).length;
   $("#topicCount").textContent = mode==="teori" ? `${n} spørsmål i valgte tema.` : "";
 }
 function refreshFeil(){
@@ -1058,10 +1295,12 @@ function refreshFeil(){
 function setMode(m){
   mode=m;
   document.querySelectorAll("#modeChips .chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.mode===m));
-  $("#topicSet").hidden = m!=="teori"; $("#genSet").hidden = m!=="regning"; updateCount();
+  $("#topicSet").hidden = m!=="teori"; $("#genSet").hidden = m!=="regning"; $("#examSet").hidden = m!=="eksamen"; $("#levelSet").hidden = !(m==="teori"||m==="blandet"); updateCount();
 }
 document.querySelectorAll("#modeChips .chip").forEach(c=>c.onclick=()=>{ if(!c.disabled) setMode(c.dataset.mode); });
-document.querySelectorAll("#countChips .chip").forEach(c=>c.onclick=()=>{ count=+c.dataset.n; document.querySelectorAll("#countChips .chip").forEach(x=>x.setAttribute("aria-pressed",x===c)); });
+document.querySelectorAll("#levelChips .chip").forEach(c=>c.onclick=()=>{ level=c.dataset.level; document.querySelectorAll("#levelChips .chip").forEach(x=>x.setAttribute("aria-pressed",x===c)); updateCount(); });
+document.querySelectorAll("#countChips .chip").forEach(c=>c.onclick=()=>{ count=+c.dataset.n; document.querySelectorAll("#levelChips .chip").forEach(c=>c.onclick=()=>{ level=c.dataset.level; document.querySelectorAll("#levelChips .chip").forEach(x=>x.setAttribute("aria-pressed",x===c)); updateCount(); });
+document.querySelectorAll("#countChips .chip").forEach(x=>x.setAttribute("aria-pressed",x===c)); });
 $("#allTopics").onclick=()=>{ topicsOn=new Set(Object.keys(TEMA)); chipGroup($("#topicChips"),Object.entries(TEMA),topicsOn); updateCount(); };
 $("#noTopics").onclick=()=>{ topicsOn=new Set([Object.keys(TEMA)[0]]); chipGroup($("#topicChips"),Object.entries(TEMA),topicsOn); updateCount(); };
 
@@ -1080,10 +1319,18 @@ function show(id){
 
 function startRound(list){
   if(list) deck=list;
+  else if(mode==="eksamen"){
+    const nC = examOn.has("case") ? (count>=40?3:count>=20?2:1) : 0;
+    const nX = Math.max(2, Math.round(count/5));
+    deck=[]; for(let i=0;i<nC;i++) deck.push(...caseSteps(makeCase()).map(s=>fromGen(s,"case")));
+    const extra=[]; if(examOn.has("finn")) for(let i=0;i<nX;i++) extra.push(fromGen(makeFinn(),"finn"));
+    if(examOn.has("post")) for(let i=0;i<nX;i++) extra.push(fromGen(makePost(),"post"));
+    deck.push(...shuffle(extra));
+  }
   else if(mode==="regning") deck=Array.from({length:Math.min(count,40)},makeGen);
   else if(mode==="feil"){ const w=loadWrong(); deck=shuffle(Q.filter(q=>w.includes(q[0]))).slice(0,count).map(fromBank); }
-  else if(mode==="blandet"){ const n=Math.min(count,60); const th=shuffle(Q).slice(0,Math.ceil(n*0.6)).map(fromBank); deck=shuffle(th.concat(Array.from({length:n-th.length},makeGen))); }
-  else deck=shuffle(Q.filter(q=>topicsOn.has(q[1]))).slice(0,count).map(fromBank);
+  else if(mode==="blandet"){ const n=Math.min(count,60); const th=shuffle(Q.filter(inLevel)).slice(0,Math.ceil(n*0.6)).map(fromBank); deck=shuffle(th.concat(Array.from({length:n-th.length},makeGen))); }
+  else deck=shuffle(Q.filter(q=>topicsOn.has(q[1]) && inLevel(q))).slice(0,count).map(fromBank);
   if(!deck.length) return;
   idx=0; score=0; roundWrong=[]; show("quiz"); renderQ();
 }
@@ -1093,8 +1340,10 @@ function renderQ(){
   $("#counter").textContent=`Spørsmål ${idx+1} av ${deck.length}`;
   $("#scoreNow").textContent=`${score} riktige`;
   $("#barFill").style.width=(idx/deck.length*100)+"%";
-  $("#qTag").textContent = q.gen ? "Regneoppgave – "+GENS[q.gk][0] : TEMA[q.t];
+  $("#qTag").textContent = q.gen ? (EX_LABEL[q.gk] ? EX_LABEL[q.gk]+(q.step?" – "+q.step:"") : "Regneoppgave – "+GENS[q.gk][0]) : TEMA[q.t];
   $("#qText").textContent=q.q;
+  const cb=$("#qCase"); if(q.caseHtml && q.gk==="case"){ cb.innerHTML='<div class="caselabel">Casen</div>'+q.caseHtml; cb.hidden=false; } else { cb.hidden=true; cb.innerHTML=""; }
+  const ex=$("#qExtra"); if(q.html){ ex.innerHTML=(q.caseHtml?'<details class="casedet"><summary>Vis casen</summary>'+q.caseHtml+'</details>':'')+q.html; ex.hidden=false; } else { ex.hidden=true; ex.innerHTML=""; }
   const st=$("#stamp"); st.className="stamp"; st.textContent="";
   const box=$("#opts"); box.innerHTML="";
   q.o.forEach((txt,i)=>{ const b=document.createElement("button"); b.className="opt"; b.type="button";
@@ -1117,6 +1366,10 @@ function answer(i){
     q.rows.forEach(([l,v,u])=>{ const r=t.insertRow(); r.insertCell().textContent=l; r.insertCell().textContent = u==="d" ? v+" dager" : (v<0?"−"+fmt(-v):fmt(v)); });
     const s=t.insertRow(); s.className="sum"; s.insertCell().textContent="Svar"; s.insertCell().textContent=fmt(q.total); fb.appendChild(t); }
   const p=document.createElement("p"); p.textContent=q.e; fb.appendChild(p);
+  if(q.final){ const f=document.createElement("div"); f.innerHTML=finalTables(q.final); fb.appendChild(f); }
+  const li = q.gen ? GEN_LEK[q.gk] : TEMA_LEK[q.t];
+  if(li!=null && LEK[li]){ const rb=document.createElement("button"); rb.type="button"; rb.className="linkbtn readmore";
+    rb.textContent=`Les om dette: Leksjon ${li+1} – ${LEK[li].tittel}`; rb.onclick=()=>openLesson(li); fb.appendChild(rb); }
   fb.hidden=false; $("#nextWrap").hidden=false; $("#nextBtn").focus({preventScroll:true});
   $("#scoreNow").textContent=`${score} riktige`;
 }
@@ -1157,7 +1410,7 @@ function openLesson(i){
   curL=i; const l=LEK[i];
   $("#lNr").textContent=`Leksjon ${i+1} av ${LEK.length}`; $("#lTitle").textContent=l.tittel; $("#lBody").innerHTML=l.html;
   $("#lPrev").hidden=i===0; $("#lNext").textContent=i===LEK.length-1?"Ferdig – til oversikten":"Neste leksjon";
-  const n=Q.filter(q=>l.ov.tema&&l.ov.tema.includes(q[1])).length;
+  const n=Q.filter(q=>l.ov.tema&&l.ov.tema.includes(q[1])&&BASIS.has(q[0])).length;
   $("#lPractice").textContent = `Øv på dette nå`+(l.ov.gen?` (teori + regneoppgaver)`:` (${Math.min(n,10)} spørsmål)`);
   markLest(l.id); show("lesson");
 }
@@ -1166,13 +1419,13 @@ $("#lNext").onclick=()=>{ if(curL<LEK.length-1) openLesson(curL+1); else { rende
 $("#lBack").onclick=()=>{ renderLearn(); show("learn"); };
 $("#lPractice").onclick=()=>{
   const ov=LEK[curL].ov; lastTab="learn";
-  let list = shuffle(Q.filter(q=>ov.tema&&ov.tema.includes(q[1]))).slice(0, ov.gen?6:10).map(fromBank);
+  let list = shuffle(Q.filter(q=>ov.tema&&ov.tema.includes(q[1])&&BASIS.has(q[0]))).slice(0, ov.gen?6:10).map(fromBank);
   if(ov.gen) for(let i=0;i<6;i++){ const k=pick(ov.gen); list.push(fromGen(GENS[k][1](),k)); }
   mode="leksjon"; startRound(shuffle(list));
 };
 $("#startLearn").onclick=()=>{ const s=lest(); const i=LEK.findIndex(l=>!s.has(l.id)); openLesson(i<0?0:i); };
 $("#retryWrongBtn").onclick=()=>{
-  const list=roundWrong.map(q=> q.gen ? fromGen(GENS[q.gk][1](),q.gk) : fromBank(Q.find(x=>x[0]===q.id)));
+  const list=roundWrong.map(q=> q.gen ? (EX_LABEL[q.gk] ? fromGen(q,q.gk) : fromGen(GENS[q.gk][1](),q.gk)) : fromBank(Q.find(x=>x[0]===q.id)));
   startRound(shuffle(list));
 };
 document.addEventListener("keydown",e=>{
@@ -1183,8 +1436,9 @@ document.addEventListener("keydown",e=>{
 });
 chipGroup($("#topicChips"),Object.entries(TEMA),topicsOn);
 chipGroup($("#genChips"),Object.entries(GENS).map(([k,v])=>[k,v[0]]),gensOn);
-$("#bankSize").textContent = Q.length;
-refreshFeil(); setMode("teori"); renderLearn(); show("learn");
+chipGroup($("#examChips"),[["case","Hel case steg for steg"],["finn","Finn feilen i kundespesifikasjonen"],["post","Posteringer"]],examOn);
+$("#bankSize").textContent = Q.length; $("#basisSize").textContent = BASIS.size;
+refreshFeil(); setMode("eksamen"); renderLearn(); show("learn");
 
 </script>
 </body>
