@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Oppgjør av eiendomshandler – øving EMS 3651</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Serif:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#F1F4EF;--sheet:#FBFCFA;--ink:#1C2B3A;--muted:#5D6A70;--rule:#C9D2CB;--ok:#2C7A57;--ok-bg:#E3F0E8;--bad:#B0362E;--bad-bg:#F6E4E1;--focus:#2F5FA7;
+--sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--serif:"IBM Plex Serif",Georgia,serif;--cond:"IBM Plex Sans Condensed","Arial Narrow",sans-serif;
+color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#11171D;--sheet:#182029;--ink:#E4E9E3;--muted:#9AA6A8;--rule:#2E3A44;--ok:#5DBB8C;--ok-bg:#163126;--bad:#E57B70;--bad-bg:#3A1E1B;--focus:#8DB3F0;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#11171D;--sheet:#182029;--ink:#E4E9E3;--muted:#9AA6A8;--rule:#2E3A44;--ok:#5DBB8C;--ok-bg:#163126;--bad:#E57B70;--bad-bg:#3A1E1B;--focus:#8DB3F0;color-scheme:dark}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1rem/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+.wrap{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+header.top{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;border-bottom:2px solid var(--ink);padding-bottom:.75rem;margin-bottom:2.25rem}
+.brand{font:700 1.05rem/1 var(--cond);letter-spacing:.02em}.brand span{font-weight:600;color:var(--muted);margin-left:.5rem}
+.linkbtn{background:none;border:0;padding:.25rem 0;color:var(--muted);cursor:pointer;text-decoration:underline;text-underline-offset:3px}.linkbtn:hover{color:var(--ink)}
+h1{font:600 clamp(1.9rem,5vw,2.6rem)/1.12 var(--serif);margin:0 0 .75rem;letter-spacing:-.01em}
+h2.sec{font:600 1.35rem/1.25 var(--serif);margin:2.25rem 0 .75rem}
+.lede{color:var(--muted);max-width:36rem;margin:0 0 2rem}
+.ledger{background:var(--sheet);border:1px solid var(--rule);border-left:4px solid var(--ink);padding:1.25rem 1.4rem 1rem;margin:0 0 2.5rem}
+.ledger h2{font:700 1rem/1.2 var(--cond);margin:0 0 .75rem;letter-spacing:.02em}
+.row{display:flex;align-items:baseline;gap:.5rem;padding:.3rem 0}.row dt{flex:0 1 auto}
+.row .dots{flex:1;border-bottom:1px dotted var(--rule);transform:translateY(-.3rem);min-width:1.5rem}
+.row dd{margin:0;font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+.ledger dl{margin:0}.ledger small{display:block;color:var(--muted);margin-top:.75rem;font-size:.82rem;line-height:1.45}
+fieldset{border:0;padding:0;margin:0 0 1.75rem}legend{font-weight:600;margin-bottom:.6rem;padding:0}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{border:1px solid var(--rule);background:var(--sheet);padding:.45rem .8rem;border-radius:2rem;cursor:pointer;font-size:.92rem}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}.chip:disabled{opacity:.45;cursor:not-allowed}
+.hint{color:var(--muted);font-size:.85rem;margin:.5rem 0 0}
+.mini{display:flex;gap:1rem;margin:.6rem 0 0}
+.primary{background:var(--ink);color:var(--paper);border:0;padding:.85rem 1.4rem;border-radius:.3rem;font-weight:600;cursor:pointer}.primary:hover{opacity:.9}
+.secondary{background:transparent;border:1px solid var(--ink);padding:.8rem 1.3rem;border-radius:.3rem;font-weight:600;cursor:pointer}
+.meta{display:flex;justify-content:space-between;color:var(--muted);font-size:.9rem;margin-bottom:.5rem;font-variant-numeric:tabular-nums}
+.bar{height:4px;background:var(--rule);margin-bottom:2rem}.bar i{display:block;height:100%;background:var(--ink);width:0;transition:width .3s ease}
+.card{position:relative;background:var(--sheet);border:1px solid var(--rule);padding:1.75rem 1.5rem 1.5rem;overflow:hidden}
+.tag{display:inline-block;font-size:.8rem;color:var(--muted);border:1px solid var(--rule);padding:.15rem .55rem;border-radius:2rem;margin-bottom:1rem;margin-right:6rem}
+.q{font:500 1.3rem/1.4 var(--serif);margin:0 0 1.4rem;max-width:34em}
+.opts{display:grid;gap:.6rem}
+.opt{display:flex;gap:.9rem;align-items:flex-start;text-align:left;width:100%;background:transparent;border:1px solid var(--rule);padding:.85rem 1rem;border-radius:.3rem;cursor:pointer;line-height:1.45}
+.opt:hover:not(:disabled){border-color:var(--ink)}
+.opt b{flex:0 0 1.7rem;height:1.7rem;display:grid;place-items:center;border:1px solid var(--rule);border-radius:50%;font-size:.82rem;font-weight:600}
+.opt:disabled{cursor:default}.opt.correct{border-color:var(--ok);background:var(--ok-bg)}.opt.correct b{border-color:var(--ok);color:var(--ok)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}.opt.wrong b{border-color:var(--bad);color:var(--bad)}.opt.dim{opacity:.55}
+.feedback{margin-top:1.25rem;border-top:1px solid var(--rule);padding-top:1rem}.feedback p{margin:.5rem 0 0}
+.tblwrap{overflow-x:auto}
+.feedback table,.ref table{border-collapse:collapse;margin:.25rem 0;font-variant-numeric:tabular-nums;font-size:.93rem;width:100%}
+.feedback td,.ref td,.ref th{padding:.3rem 1rem .3rem 0;vertical-align:top;text-align:left}
+.feedback td:last-child{text-align:right;padding-right:0;white-space:nowrap}
+.feedback tr.sum td{border-top:1px solid var(--ink);font-weight:600}
+.ref th{font-weight:600;border-bottom:1px solid var(--ink)}.ref td{border-bottom:1px solid var(--rule)}.ref p,.ref li{max-width:40rem}
+.next{margin-top:1.25rem;display:flex;justify-content:flex-end}
+.stamp{position:absolute;top:1.1rem;right:1.1rem;font:700 1.05rem/1 var(--cond);letter-spacing:.12em;padding:.45rem .7rem;border:3px solid currentColor;border-radius:.25rem;transform:rotate(-9deg);opacity:0;pointer-events:none}
+.stamp.ok{color:var(--ok)}.stamp.bad{color:var(--bad)}.stamp.show{animation:stamp .35s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes stamp{from{opacity:0;transform:rotate(-9deg) scale(1.8)}to{opacity:.85;transform:rotate(-9deg) scale(1)}}
+@media (prefers-reduced-motion:reduce){.stamp.show{animation:none;opacity:.85}.bar i{transition:none}}
+.score{font:600 clamp(3rem,12vw,4.5rem)/1 var(--serif);margin:0 0 .25rem;font-variant-numeric:tabular-nums}
+.review{list-style:none;padding:0;margin:2rem 0}.review li{border-top:1px solid var(--rule);padding:1rem 0}
+.review .rq{font:500 1.05rem/1.4 var(--serif);margin:0 0 .35rem}.review .ra{margin:0;color:var(--ok);font-weight:500}.review .re{margin:.35rem 0 0;color:var(--muted);font-size:.92rem}
+.actions{display:flex;flex-wrap:wrap;gap:.75rem}.kbd{color:var(--muted);font-size:.82rem;margin-top:1rem}
+
+.tabs{display:flex;gap:.25rem;flex-wrap:wrap}
+.tabs button{background:none;border:0;border-bottom:2px solid transparent;padding:.35rem .6rem;cursor:pointer;color:var(--muted);font-weight:500}
+.tabs button[aria-current="page"]{color:var(--ink);border-bottom-color:var(--ink)}
+header.top{flex-wrap:wrap;align-items:center}
+.learnbar{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin:0 0 1.5rem}
+.lessons{list-style:none;padding:0;margin:0;display:grid;gap:.5rem}
+.lrow{display:flex;align-items:center;gap:1rem;width:100%;text-align:left;background:var(--sheet);border:1px solid var(--rule);padding:.9rem 1rem;border-radius:.3rem;cursor:pointer}
+.lrow:hover{border-color:var(--ink)}
+.lnr{flex:0 0 2rem;height:2rem;display:grid;place-items:center;border:1px solid var(--ink);border-radius:50%;font:700 .9rem var(--cond)}
+.lrow.done .lnr{background:var(--ok);border-color:var(--ok);color:var(--paper)}
+.ltxt{flex:1;display:flex;flex-direction:column}.ltxt b{font:600 1.05rem/1.3 var(--serif)}.ltxt small{color:var(--muted);font-size:.88rem;margin-top:.15rem}
+.lst{color:var(--ok);font-size:.85rem;font-weight:600}
+.lnrtop{color:var(--muted);font-size:.9rem;margin:1.25rem 0 .25rem}
+.lesson{font-size:1.02rem;line-height:1.65}
+.lesson h3{font:600 1.2rem/1.3 var(--serif);margin:2rem 0 .6rem}
+.lesson p,.lesson li{max-width:40rem}.lesson li{margin:.3rem 0}
+.lesson ol.steps li{margin:.6rem 0}
+.callout{background:var(--sheet);border:1px solid var(--rule);border-left:4px solid var(--ok);padding:.9rem 1.1rem;margin:1.5rem 0;border-radius:.2rem}
+table.calc{border-collapse:collapse;width:100%;margin:.75rem 0 1rem;font-size:.95rem;font-variant-numeric:tabular-nums;background:var(--sheet)}
+table.calc td,table.calc th{border:1px solid var(--rule);padding:.45rem .6rem;vertical-align:top;text-align:left}
+table.calc th{font-weight:600}
+table.calc td.n{text-align:right;white-space:nowrap}
+table.calc tr.sum td{font-weight:600;border-top:2px solid var(--ink)}
+table.calc.small{font-size:.86rem}
+.lessonnav{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:space-between;margin-top:2.5rem;padding-top:1.25rem;border-top:1px solid var(--rule)}
+@media (max-width:520px){.lessonnav button{flex:1 1 100%}.tabs button{padding:.35rem .4rem}}
+[hidden]{display:none!important}
+footer{color:var(--muted);font-size:.82rem;margin-top:3rem;border-top:1px solid var(--rule);padding-top:1rem}
+@media (max-width:520px){.card{padding:1.4rem 1rem 1.1rem}.q{font-size:1.15rem}.stamp{font-size:.9rem;top:.8rem;right:.8rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><div class="brand">Oppgjør<span>EMS 3651</span></div>
+<nav class="tabs" aria-label="Hovedmeny"><button type="button" data-view="learn">Lær</button><button type="button" data-view="start">Øv</button><button type="button" data-view="ref">Satser og fasitfeil</button></nav></header>
+
+<section id="learn" hidden>
+<h1>Lær faget fra bunnen</h1>
+<p class="lede">15 korte leksjoner i den rekkefølgen det er lurt å lære dem. Hver leksjon har eksempler som er regnet ut, og en knapp som tar deg rett til øving på temaet.</p>
+<div class="learnbar"><button class="primary" id="startLearn" type="button">Fortsett der du slapp</button><span class="hint" id="learnProgress"></span></div>
+<ol class="lessons" id="lessonList"></ol>
+</section>
+
+<section id="lesson" hidden>
+<button class="linkbtn" id="lBack" type="button">← Alle leksjoner</button>
+<p class="lnrtop" id="lNr"></p>
+<h1 id="lTitle"></h1>
+<div class="lesson" id="lBody"></div>
+<div class="lessonnav"><button class="secondary" id="lPrev" type="button">Forrige</button><button class="primary" id="lPractice" type="button">Øv på dette nå</button><button class="secondary" id="lNext" type="button">Neste leksjon</button></div>
+</section>
+
+<section id="start" hidden>
+<h1>Øv på oppgjør av eiendomshandler</h1>
+<p class="lede"><span id="bankSize"></span> teorispørsmål fra læreboka og eksamenssettene, pluss regneoppgaver som lages på nytt hver gang etter samme metode som fasitene. Alle satser er oppdatert til 2026.</p>
+<aside class="ledger" aria-labelledby="satser">
+<h2 id="satser">Satser 2026</h2>
+<dl>
+<div class="row"><dt>Tinglysing av skjøte, pant, hjemmelserklæring ved arv</dt><span class="dots"></span><dd>545 kr</dd></div>
+<div class="row"><dt>Overføring av borettslagsandel</dt><span class="dots"></span><dd>545 kr</dd></div>
+<div class="row"><dt>Bekreftet grunnboksutskrift</dt><span class="dots"></span><dd>260 kr</dd></div>
+<div class="row"><dt>Sletting, pantefrafall, hjemmelserklæring ved uskifte</dt><span class="dots"></span><dd>0 kr</dd></div>
+<div class="row"><dt>Dokumentavgift (fast eiendom, minst 250 kr)</dt><span class="dots"></span><dd>2,5 %</dd></div>
+<div class="row"><dt>Rettsgebyr (R)</dt><span class="dots"></span><dd>1 345 kr</dd></div>
+</dl>
+<small>Kontrollert mot Kartverkets prisliste og regjeringen.no i oktober 2026. Boka er fra 2019 og oppgir 525, 430 og 172 kr – bruk satsene over.</small>
+</aside>
+<fieldset><legend>Hva vil du øve på?</legend>
+<div class="chips" id="modeChips">
+<button class="chip" type="button" data-mode="teori" aria-pressed="true">Teori</button>
+<button class="chip" type="button" data-mode="regning" aria-pressed="false">Regneoppgaver</button>
+<button class="chip" type="button" data-mode="blandet" aria-pressed="false">Blandet eksamensøving</button>
+<button class="chip" type="button" data-mode="feil" aria-pressed="false" id="feilChip">Mine feil</button>
+</div><p class="hint" id="feilHint"></p></fieldset>
+<fieldset id="topicSet"><legend>Tema</legend><div class="chips" id="topicChips"></div>
+<div class="mini"><button class="linkbtn" id="allTopics" type="button">Velg alle</button><button class="linkbtn" id="noTopics" type="button">Fjern alle</button></div>
+<p class="hint" id="topicCount"></p></fieldset>
+<fieldset id="genSet" hidden><legend>Oppgavetyper</legend><div class="chips" id="genChips"></div></fieldset>
+<fieldset><legend>Antall spørsmål</legend><div class="chips" id="countChips">
+<button class="chip" type="button" data-n="10" aria-pressed="false">10</button>
+<button class="chip" type="button" data-n="20" aria-pressed="true">20</button>
+<button class="chip" type="button" data-n="40" aria-pressed="false">40</button>
+<button class="chip" type="button" data-n="999" aria-pressed="false">Alle</button></div></fieldset>
+<button class="primary" id="startBtn" type="button">Start øving</button>
+<p class="kbd">Svar med tastene 1–4 eller A–D, og trykk Enter for neste.</p>
+</section>
+
+<section id="quiz" hidden>
+<div class="meta"><span id="counter"></span><span id="scoreNow"></span></div>
+<div class="bar"><i id="barFill"></i></div>
+<article class="card" aria-live="polite"><div class="stamp" id="stamp"></div><span class="tag" id="qTag"></span><h2 class="q" id="qText"></h2>
+<div class="opts" id="opts"></div><div class="feedback tblwrap" id="feedback" hidden></div>
+<div class="next" id="nextWrap" hidden><button class="primary" id="nextBtn" type="button">Neste spørsmål</button></div></article>
+</section>
+
+<section id="result" hidden>
+<p class="score" id="finalScore"></p><p class="lede" id="finalText"></p>
+<div class="actions"><button class="primary" id="againBtn" type="button">Ny runde</button><button class="secondary" id="retryWrongBtn" type="button">Ta feilene på nytt</button></div>
+<ul class="review" id="review"></ul>
+</section>
+
+<section id="ref" class="ref" hidden>
+<h1>Satser, regler og fasitfeil</h1>
+<p class="lede">Det du må ha på plass før eksamen, og feilene vi fant i fasitene i oppgaveboka.</p>
+<h2 class="sec">Regnereglene fasitene bruker</h2>
+<div class="tblwrap"><table><tbody>
+<tr><td>Dager</td><td>30 per måned, 90 per kvartal, 180 per halvår, 360 per år</td></tr>
+<tr><td>Overtakelsesdagen</td><td>Tilhører kjøper</td></tr>
+<tr><td>Avrunding av avregninger</td><td>Regn med desimaler, rund av netto til nærmeste krone</td></tr>
+<tr><td>Dokumentavgift</td><td>Grunnlag ned til nærmeste 1 000, avgift ned til nærmeste 10, minst 250 kr</td></tr>
+<tr><td>Grunnlag selveier</td><td>Kjøpesum − løsøre som inngår + fellesgjeld</td></tr>
+<tr><td>Provisjonsgrunnlag</td><td>Salgssum inkludert eventuell fellesgjeld, også i borettslag</td></tr>
+<tr><td>Mva i provisjon</td><td>1/5 av beløpet inkl. 25 % mva</td></tr>
+<tr><td>Forretningsfører</td><td>Forfalte måneder før overtakelse og eierskiftegebyr er selgers</td></tr>
+<tr><td>Kjøpers omkostninger</td><td>Betales fra klientkonto. Selgers utlegg betales fra driftskonto</td></tr>
+<tr><td>Fritak dokumentavgift</td><td>Ektefeller; samboere med 2 års felles adresse eller felles barn; legalarv (ideell andel); uskifte</td></tr>
+<tr><td>Forsinkelsesrente</td><td>Kalenderår (365 dager) – ikke 360</td></tr>
+</tbody></table></div>
+<h2 class="sec">Kjente feil i fasitene</h2>
+<div class="tblwrap"><table><thead><tr><th>Oppgave</th><th>Fasit</th><th>Riktig</th></tr></thead><tbody>
+<tr><td>Oppg. 4 Skogholtet – mva i provisjon</td><td>1 300 / 31 200</td><td>6 500 / 26 000</td></tr>
+<tr><td>Oppg. 7 Gamleveien – tinglysingsfaktura</td><td>1 190</td><td>1 090</td></tr>
+<tr><td>Oppg. 8 Colletts gate – bilag 7</td><td>4 534 780</td><td>4 534 800</td></tr>
+<tr><td>Oppg. 9 Nortongate – utbetaling til selger</td><td>3 549 460 (utlegg ikke trukket)</td><td>3 365 850, eller 3 365 305 inkl. pant med urådighet</td></tr>
+<tr><td>Oppg. 17 Oskleiva – hjemmelserklæring mangler</td><td>Utlegg 116 360, utbetaling 1 509 633</td><td>Utlegg 116 905, utbetaling 1 509 088</td></tr>
+<tr><td>Vår 2016 Svartorveien – kommunale avgifter (overtakelse 15.2)</td><td>2 582; innbetaling 4 501 182</td><td>4 916; innbetaling 4 503 516; utbetaling 1 850 881</td></tr>
+<tr><td>Case 2015/16 Heggveien – sum omkostninger</td><td>1 132</td><td>1 350</td></tr>
+<tr><td>Høst 2016 Russerveien – posteringssammendrag</td><td>191 170 og 12 807</td><td>191 090 og 11 673</td></tr>
+<tr><td>Høst 2016 oppg. 3b Bondeveien</td><td>Bygger på 3a: 4 824 650</td><td>Fra casen: 4 825 550 – skriv forutsetningen</td></tr>
+<tr><td>Høst 2017 Pepperveien – kjøpers tinglysing som selgers utlegg</td><td>Utlegg 53 740, utbetaling 1 375 285</td><td>Utlegg 52 650, utbetaling 1 376 375</td></tr>
+<tr><td>Høst 2017 oppg. 3a Saltveien – innbetalingene byttet om</td><td>Selveier 2 301 990</td><td>Selveier 2 359 490, borettslag 2 301 990</td></tr>
+<tr><td>Høst 2017 Oreganoveien – bilag 15</td><td>Leverandør −585</td><td>−545</td></tr>
+<tr><td>Høst 2020 oppg. 2c Bygdinveien</td><td>Dokumentavgift 225 000 på borettslag</td><td>Linjen skal ikke stå der; summen 1 350 er riktig</td></tr>
+<tr><td>Høst 2022 Makrellveien – pant med urådighet</td><td>585; utbetaling 4 139 061</td><td>545; utbetaling 4 139 101</td></tr>
+<tr><td>Case 2022/23 – betaling til Lokalavisen</td><td>17 500</td><td>30 500 (samlet utestående)</td></tr>
+</tbody></table></div>
+<p class="hint">Paragrafhenvisninger i boka gjelder lovverket per 2019. Eiendomsmeglingsloven er endret senere – sjekk lovdata.no før du siterer paragrafer.</p>
+</section>
+
+<footer>Studiemateriell, ikke juridisk rådgivning. Bygget på Lyngtveit-Petersson: <i>Oppgjør av eiendomshandler</i> (2019), oppgavesamlingen med løsningsforslag og Kartverkets satser for 2026.</footer>
+</div>
+<script>
+const TEMA = {
+  kk:"Klientmidler og klientkonto", in:"Inneståelse og bankens vilkår", gb:"Grunnbok, heftelser og pant",
+  ab:"Andels- og aksjebolig", da:"Gebyrer og dokumentavgift", so:"Sikringsobligasjon",
+  rv:"Renter, utlegg og vederlag", oj:"Oppstilling, journal og kompetanse", hv:"Hvitvasking og sikkerhet",
+  gj:"Gjennomføring av oppgjøret", pr:"Prosjektoppgjør", ir:"Instruksjonsrett og tilbakehold",
+  as:"Arv, skifte og skilsmisse", sp:"Fullmakt, tvangssalg og spesialtilfeller", ar:"Avregninger og eksamensteknikk",
+  ff:"Finn feilen"
+};
+// [id, tema, spørsmål, [riktig, feil, feil, feil], forklaring]  – riktig svar står først og stokkes ved visning
+const Q = [
+// ---------- Klientmidler ----------
+["kk1","kk","Hva omfattes av begrepet «klientmidler»?",["Penger og dokumenter betrodd foretaket","Bare penger på klientkontoen","Bare kjøpesum og omkostninger","Penger fram til overtakelsen"],"Klientmidler er alt som er betrodd foretaket for oppbevaring, også kjøpers banks pantedokument, signerte skjøter, aksjer og gjeldsbrev."],
+["kk2","kk","Hva innebærer bankens motregningserklæring for klientkontoen?",["Banken kan ikke motregne i klientmidlene","Banken dekker tap ved underslag","Banken garanterer høyest mulig rente","Banken kan trekke gebyrer fra kontoen"],"Krav banken har mot meglerforetaket, kan ikke dekkes av klientenes penger. Erklæringen skal være en del av klientkontoavtalen."],
+["kk3","kk","Foretaket har én samleklientkonto. Hvordan holdes oversikt over hvem pengene tilhører?",["Gjennom kundereskontro","Gjennom bankens kontoutskrift","Gjennom depotjournalen","Gjennom oppdragsjournalen"],"Reskontroen splitter hovedbokskontoen i én underkonto per kunde, slik at foretaket alltid vet hvem midlene tilhører."],
+["kk4","kk","Hvem kan disponere klientkontoen?",["Fagansvarlig og den hun gir skriftlig fullmakt","Daglig leder og fagansvarlig","Ansvarlig megler på hvert oppdrag","Styret og daglig leder i fellesskap"],"Fagansvarlig er bemyndiget i kraft av stillingen og kan gi skriftlig disposisjonsfullmakt etter en risikovurdering. Daglig leder har normalt ikke behov for tilgang."],
+["kk5","kk","Fagansvarlig slutter. Hva skjer med disposisjonsfullmaktene hun har gitt?",["De faller bort, og banken må varsles","De gjelder til de sies opp skriftlig","De gjelder til ny fagansvarlig er godkjent","De overføres til daglig leder"],"Disposisjonsretten opphører også hvis fagansvarlig ikke lenger oppfyller vilkårene, eller tillatelsen faller bort. Videre bruk er urettmessig."],
+["kk6","kk","Hvor ofte skal klientkontoene avstemmes?",["Hver måned","Hvert kvartal","Hvert halvår","Ved hvert avsluttet oppdrag"],"Avstemmingen skal skje snarest mulig etter månedsskiftet. Åpne poster skal rettes innen påfølgende måned."],
+["kk7","kk","Oppgjøret er satt bort til et oppgjørsforetak. Hvem skal kontrollere den månedlige avstemmingen?",["Meglerforetakets fagansvarlig","Oppgjørsforetakets fagansvarlig","Foretakets revisor","Ansvarlig megler på hvert oppdrag"],"Kontrollansvaret følger fagansvarlig selv om oppgjør og regnskap er satt bort. Kontrollen må kunne dokumenteres, f.eks. med dato og signatur."],
+["kk8","kk","Hva er et typisk eksempel på en «åpen post» i klientregnskapet?",["En innbetaling uten identifisert oppdrag","En faktura som ennå ikke har forfalt","Et beløp som holdes tilbake ved mangel","Renter som ikke er kapitalisert ennå"],"Innbetalingen står på kontoen uten motpost i klientregnskapet. Megler må skaffe bilag eller annen dokumentasjon på hvilken kunde den gjelder."],
+["kk9","kk","Når kan meglerforetaket trekke vederlaget sitt i oppgjøret i et forbrukeroppdrag?",["Med samtykke gitt etter at handel er inngått","Når det står i oppdragsavtalen","Når selger har fått oppgjørsoppstillingen","Når skjøtet er tinglyst"],"Trekk kan ikke forhåndsavtales i forbrukeroppdrag. Samtykket bør foreligge skriftlig."],
+["kk10","kk","Hvem kan betale meglers vederlag og utlegg?",["Bare oppdragsgiver","Kjøper eller selger etter avtale","Kjøper, hvis det står i salgsoppgaven","Den av partene som har penger på klientkonto"],"Annet kan bare avtales i næringsmeglingsoppdrag."],
+["kk11","kk","Hvem kan midlene på klientkontoen tilhøre?",["Kjøper eller selger","Meglerforetaket til oppgjøret er ferdig","Kjøpers bank til pantet er tinglyst","Banken som fører kontoen"],"Så lenge driftsmidler holdes adskilt, tilhører innestående alltid klientene."],
+["kk12","kk","Hvem skal godskrives renter av klientmidler?",["Den som eier pengene","Meglerforetaket","Alltid selger","Alltid kjøper"],"Rentene skal i sin helhet godskrives klientene, og det kan ikke avtales annet. Hvem som eier pengene, følger av avtalen og ufravikelig lov."],
+["kk13","kk","Plikter foretaket å betale ut 400 kr i renter til en klient? (Rettsgebyret er 1 345 kr i 2026.)",["Nei, beløpet er under ½ R","Ja, alle renter skal utbetales","Nei, beløpet er under 1 R","Ja, med mindre klienten frafaller dem"],"Renter som ikke overstiger et halvt rettsgebyr (672,50 kr) per klient i samme oppdrag, trenger ikke utbetales."],
+["kk14","kk","Hvorfor er det særlig alvorlig å blande klientmidler og driftsmidler?",["Midlene kan gå tapt ved foretakets konkurs","Det gir feil i mva-oppgjøret","Det gir lavere rente for klientene","Det bryter med reglene for bokføring av vederlag"],"Klientmidlene skal kunne identifiseres og holdes utenfor et eventuelt konkursbo."],
+
+// ---------- Inneståelse ----------
+["in1","in","Hva innebærer en inneståelseserklæring fra meglerforetaket?",["Et garantiansvar for at vilkår blir oppfylt","En bekreftelse på at kjøper er kredittverdig","En garanti for at eiendommen er uten mangler","Et løfte om tinglysing innen en frist"],"Megler tar økonomisk ansvar for at f.eks. kjøpers bank får pant som forutsatt."],
+["in2","in","Hva kjennetegner en «passiv» inneståelse?",["Vilkårene anses godtatt når pengene brukes","Megler signerer bankens fortrykte skjema","Megler har ikke økonomisk ansvar","Den gjelder bare kjøpers egenkapital"],"Banken stiller vilkår senest ved overføringen. Disponerer megler pengene, anses vilkårene godtatt."],
+["in3","in","Er meglers ansvar mindre ved passiv enn ved aktiv inneståelse?",["Nei, ansvaret er det samme","Ja, passiv gir bare ansvar for grov uaktsomhet","Ja, passiv er begrenset til pantets pålydende","Nei, passiv gir strengere ansvar"],"Rekkevidden beror på en avtalerettslig tolkning av vilkårene."],
+["in4","in","Pengene er overført i «bundet mandat», og vilkårene kan ikke oppfylles. Hva må megler gjøre?",["Få vilkårene endret eller returnere pengene","Bruke pengene og varsle banken etterpå","Holde pengene til overtakelsen er gjennomført","Utbetale til selger når skjøtet er tinglyst"],"Bundne midler kan ikke disponeres før alle vilkår er oppfylt."],
+["in5","in","Kjøpers bank overfører kjøpesummen og et pantedokument på et høyere beløp. Hva er meglers ansvar i utgangspunktet?",["Det mottatte beløpet","Pantets pålydende","Kjøpesum pluss omkostninger","Hele lånerammen"],"Et høyere pålydende utvider ikke i seg selv ansvaret. Det anbefales likevel å avklare ansvarsbegrensningen skriftlig."],
+["in6","in","Kan megler gi inneståelse når foretaket ikke håndterer tinglysing og oppgjør?",["Nei","Ja, hvis kjøpers bank krever det","Ja, hvis selger samtykker","Ja, begrenset til egenkapitalen"],"Megler må ha kontroll på oppgjøret. Begrensningen står normalt også i sikkerhetsforskriftene."],
+["in7","in","Hvilket forbehold fra kjøpers bank kan megler normalt IKKE akseptere?",["At ingen bruksretter skal tinglyses","At bankens pant tinglyses","At kjøper får hjemmel","At vilkårene oppfylles innen 6 måneder"],"Megler har ikke kontroll over hva andre tinglyser. Banken må ta det opp med kjøper, og megler må straks be om endrede vilkår."],
+["in8","in","Kjøpers pantedokument er ikke tinglysingsklart ved overtakelse. Hvordan vurderes det?",["Som kjøpers mislighold","Som selgers mislighold","Som en feil megler må dekke","Som uten betydning for overtakelsen"],"Kjøper har ikke betalt med befriende virkning når pengene ikke kan brukes som forutsatt. Banken må frafalle vilkår, ellers utsettes overtakelsen med forsinkelsesrente."],
+
+// ---------- Grunnbok ----------
+["gb1","gb","Hva er hoveddelene i en grunnboksutskrift?",["Hjemmel, heftelser og grunndata","Hjemmel, takst og arealer","Heftelser, avgifter og regulering","Eier, lån og forsikring"],"I tillegg vises rettigheter i andre eiendommer. Siden 2017 vises heftelsene kronologisk, uten skillet mellom pengeheftelser og servitutter."],
+["gb2","gb","Hva avgjør prioriteten mellom to pantedokumenter ved elektronisk tinglysing?",["Klokkeslettet for innføringen","Datoen for innføringen","Datoen for signering","Lånets størrelse"],"Ved papirtinglysing er dokumenter dagbokført samme dag sidestilt. Ved elektronisk tinglysing er klokkeslettet avgjørende."],
+["gb3","gb","To papirpant tinglyses samme dag, men det ene skal ha best prioritet. Hva må til?",["Prioritetsvikelse","Ny tinglysing dagen etter","Samtykke fra Kartverket","Sletting og ny tinglysing"],"Prioritetsvikelse påført ved førstegangs tinglysing koster ikke ekstra. Tinglyses den i ettertid, påløper nytt gebyr."],
+["gb4","gb","En leiekontrakt ble tinglyst for over 30 år siden og er ikke fornyet. Hva gjelder?",["Den er foreldet og kan slettes","Den kan bare slettes av leietaker","Den må mortifiseres","Den følger eiendommen til den sies opp"],"Er heftelsen tinglysingsmessig foreldet, kan hvem som helst begjære den slettet. Megler bør alltid sjekke dette først."],
+["gb5","gb","Hvilke tre hovedtyper pant finnes?",["Avtalepant, utleggspant og legalpant","Avtalepant, håndpant og sikringspant","Legalpant, salgspant og factoringpant","Utleggspant, arrest og forkjøpspant"],"Borettslag og eierseksjonssameier har i tillegg egne lovbestemte panteretter."],
+["gb6","gb","Hvor stort krav kan borettslaget dekke under sin lovbestemte panterett?",["Inntil 2 G","Inntil 1 G","Inntil 4 R","Inntil 12 måneders felleskostnader"],"Det samme beløpet gjelder for sameiernes legalpant i eierseksjoner."],
+["gb7","gb","Hvilket krav har kommunen IKKE legalpant for?",["Vannavgift til privat vannverk","Eiendomsskatt til kommunen","Kommunalt avfallsgebyr","Feieavgift etter brannvernloven"],"Et privatdrevet vannverk har ingen legalpanterett."],
+["gb8","gb","Hvordan finner megler ut om det finnes legalpantekrav på eiendommen?",["Ved å spørre kreditorene direkte","Ved å lese grunnboksutskriften","Ved å søke i Løsøreregisteret","Ved å sjekke matrikkelen"],"Legalpant verken kan eller skal tinglyses."],
+["gb9","gb","Selgers lån i en norsk bank skal innfris. Hva er riktig fremgangsmåte?",["Overføre under forutsetning av sletting","Kreve originalt pantedokument først","La selger innfri lånet selv","Vente til pantet er slettet"],"Megler må først innhente skriftlig bekreftelse på saldo. Finansinstitusjoner har lovpålagt sikkerhetsstillelse, så megler kan basere seg på inneståelse om sletting."],
+["gb10","gb","Selger har pant til en privatperson. Hva kreves før innfrielse?",["Originaldokumentet kvittert for avlysning","Skriftlig bekreftelse fra panthaver","Kopi av pantedokumentet","Bekreftet grunnboksutskrift"],"Er dokumentet uomsettelig, holder en sletteerklæring. Får ikke megler originalen, må oppgjøret som hovedregel bero."],
+["gb11","gb","Hvordan slettes et tinglyst utlegg?",["Ved løs erklæring fra utleggstager","Ved mortifikasjon","Ved betaling til namsmannen","Automatisk etter to år"],"Erklæringen kan også gis av utleggstagerens prosessfullmektig."],
+["gb12","gb","Kontrakten sier at eiendommen skal overdras «fri for heftelser». Hva betyr det?",["Også servitutter skal slettes","Bare pengeheftelser skal slettes","Bare pant til banker skal slettes","Kjøper overtar tinglyste erklæringer"],"Det er vanlig å liste opp i salgsoppgaven og kontrakten hvilke heftelser som følger med."],
+["gb13","gb","Hva er en pantattest?",["Utskrift med hjemmel og pengeheftelser","Bankens bekreftelse på innvilget lån","Kartverkets kvittering for sletting","Utskrift av alle tinglyste servitutter"],"Kjøpers bank ber ofte om original pantattest sammen med det tinglyste pantedokumentet."],
+["gb14","gb","Grunndata viser at eiendommen er skilt ut fra en annen eiendom. Hvorfor er det relevant?",["Heftelser på hovedbølet kan gjelde den","Det gir rett til fritak for dokumentavgift","Det gjør ervervet konsesjonspliktig","Det betyr at eiendommen er festet"],"Megler må vurdere å innhente grunnboksutskrift også for eiendommen den er skilt ut fra."],
+
+// ---------- Andels- og aksjebolig ----------
+["ab1","ab","Hvordan får avtalepant i en borettslagsandel rettsvern?",["Registrering i grunnboken","Melding til borettslagets styre","Registrering i Løsøreregisteret","Notering hos forretningsfører"],"Borettslagsandeler er registrert i grunnboken siden 2006."],
+["ab2","ab","Når må megler sjekke Løsøreregisteret ved salg av borettslagsandel?",["Ved eldre andeler ikke omsatt siden 2006","Ved alle salg av borettslagsandeler","Bare når selger har forbrukslån","Bare når andelen er nyetablert"],"Eldre utleggspant og beslagsforbud kan ha rettsvern i Løsøreregisteret. Det gjelder også hvis borettslaget ikke er registrert i grunnboken."],
+["ab3","ab","Hvor må megler undersøke heftelser ved salg av aksjebolig?",["Aksjeeierboken, grunnboken og Løsøreregisteret","Bare aksjeeierboken","Aksjeeierboken og Foretaksregisteret","Grunnboken og matrikkelen"],"Pant i aksjen føres i aksjeeierboken, utleggspant får rettsvern i Løsøreregisteret, og det kan være tinglyst erklæringer på selskapets eiendom."],
+["ab4","ab","Hva er rettsvernsakten for kjøpers erverv av aksjebolig?",["Melding om eierskiftet til selskapet","Innføring i aksjeeierboken","Tinglysing av skjøte","Signering av kjøpekontrakten"],"Innføringen i aksjeeierboken har ikke betydning for rettsvernet, men kjøper får ikke fulle rettigheter før den har skjedd."],
+["ab5","ab","Innskuddsbeviset til en aksjebolig er bortkommet. Hva gjelder?",["Det må mortifiseres","Selskapet utsteder et nytt","Aksjebeviset kan brukes i stedet","Det har ingen betydning for oppgjøret"],"Innskuddsbeviset er et verdipapir. Oppgjøret bør normalt avvente mortifikasjonen. Selve aksjebeviset er derimot ikke et verdipapir."],
+["ab6","ab","Hvilken sikring brukes ved salg av aksjebolig?",["Pantsettelseserklæring meldt til selskapet","Vanlig sikringsobligasjon i grunnboken","Sikringsobligasjon i Løsøreregisteret","Ingen sikring er mulig"],"Andre panteregler gjelder for aksjebolig. Det anbefales å utstede pantsettelseserklæring med urådighet."],
+["ab7","ab","Kan det opprettes nye boligaksjeselskaper i dag?",["Nei","Ja, fritt","Ja, med kommunens samtykke","Ja, med minst fem aksjonærer"],"Borettslagsloven forbyr opprettelse av nye boligaksjeselskaper."],
+["ab8","ab","Hvor stort eierskiftegebyr kan borettslaget kreve?",["Inntil 4 R, betalt av selger","Inntil 4 R, betalt av kjøper","Inntil 5 R, betalt av selger","Inntil 2 R, delt av partene"],"4 R er 5 380 kr i 2026. Det kan ikke avtales at andre enn den som avhender andelen, skal betale (borettslagsloven § 4-6)."],
+["ab9","ab","Hva kan laget kreve for et forhåndsvarsel om forkjøpsrett?",["Inntil 5 R","Inntil 4 R","Inntil 2 R","Inntil 1 R"],"Det følger av borettslagsloven § 4-22. Det kan avtales at kjøper betaler. Brukes forkjøpsretten, betaler den som overtar."],
+["ab10","ab","Laget har fått forhåndsvarsel. Hvor lang frist har forkjøpsrettshaverne?",["5 hverdager","10 dager","20 dager","1 måned"],"Uten forhåndsvarsel er fristen 20 dager fra laget fikk skriftlig melding om eierskiftet."],
+["ab11","ab","Når må en eventuell forkjøpsrett være avklart?",["Før overtakelse","Før kontraktsmøtet","Før tinglysing av pant","Før utbetaling til selger"],"Det samme gjelder styregodkjenning og eventuell forkjøpsrett for bortfester."],
+
+// ---------- Gebyrer og dokumentavgift ----------
+["da1","da","Hva koster tinglysing av et skjøte i 2026?",["545 kr","525 kr","585 kr","500 kr"],"525 kr er satsen i boka (2019), og 500 kr gjaldt i 2024. Fra 2025 er gebyret 545 kr."],
+["da2","da","Hva koster tinglysing av overføring av en borettslagsandel i 2026?",["545 kr","430 kr","260 kr","0 kr"],"Boka (2019) oppgir 430 kr. I dag er satsen den samme som for fast eiendom."],
+["da3","da","Hva koster en bekreftet grunnboksutskrift i 2026?",["260 kr","172 kr","240 kr","545 kr"],"172 kr står i boka (2019), og 240 kr gjaldt i 2024. Fra 2025 er satsen 260 kr."],
+["da4","da","Hva koster det å tinglyse sletting av et pantedokument?",["0 kr","545 kr","260 kr","172 kr"],"Sletting, pantefrafall og nedkvittering er gebyrfritt."],
+["da5","da","Hva koster tinglysing av hjemmelserklæring ved uskifte?",["0 kr","545 kr","260 kr","525 kr"],"Overføringen er også fritatt for dokumentavgift. Hjemmelserklæring ved arv og skifte koster derimot 545 kr."],
+["da6","da","Er det i dag forskjell på gebyret for papirtinglysing og elektronisk tinglysing?",["Nei","Ja, papir koster 585 kr","Ja, elektronisk er gratis","Ja, papir koster dobbelt"],"Gebyrene ble like fra 2024. I eldre eksamener og fasiter kan det stå ulike satser."],
+["da7","da","Hvordan avrundes dokumentavgiften?",["Grunnlag ned til 1 000, avgift ned til 10","Grunnlag ned til 1 000, avgift til nærmeste krone","Grunnlag til nærmeste 100, avgift ned til 10","Avgiften rundes opp til nærmeste 10"],"Eksempel fra boka: 2 195 500 gir grunnlag 2 195 000. 2,5 % = 54 875, som avrundes til 54 870."],
+["da8","da","Hva er minste dokumentavgift?",["250 kr","100 kr","545 kr","1 000 kr"],"Minstebeløpet følger av Stortingets vedtak om dokumentavgift."],
+["da9","da","Hvem er solidarisk ansvarlig med kjøper for at riktig dokumentavgift blir betalt?",["Eiendomsmegleren","Selger","Kjøpers bank","Kartverket"],"Derfor sender megler normalt ikke skjøtet før kjøper har betalt omkostningene."],
+["da10","da","Når utløses kravet på dokumentavgift?",["Når skjøtet begjæres tinglyst","Ved budaksept","Ved overtakelse","Når kjøpekontrakten signeres"],"Fakturaen kommer med det tinglyste dokumentet og forfaller etter 14 dager."],
+["da11","da","Kjøpesummen på 3 200 000 inkluderer møbler for 45 000. Hva er grunnlaget for dokumentavgiften?",["3 155 000","3 200 000","3 245 000","3 150 000"],"Løsøre trekkes ut. Kjøpesum og avgiftsgrunnlag blir forskjellige i skjøtet, så det bør legges ved en forklaring."],
+["da12","da","En selveierleilighet selges for 4 000 000 med 150 000 i fellesgjeld. Hva er grunnlaget for dokumentavgiften?",["4 150 000","4 000 000","3 850 000","4 075 000"],"Ved selveier legges overtatt fellesgjeld til, slik fasitene gjør i Utforveien og Makrellveien."],
+["da13","da","Hva kreves i tillegg til felles bolig og samlivsbrudd for at samboere skal slippe dokumentavgift?",["2 års felles adresse eller felles barn","1 års felles adresse eller felles barn","2 års felles adresse og felles barn","Felles lån på boligen"],"Adressen må være felles folkeregistrert adresse. Opphører samboerskapet ved død, holder det at de var registrert på samme adresse da dødsfallet skjedde."],
+["da14","da","Samboere i 10 måneder uten felles barn – den ene kjøper ut den andre. Hva gjelder?",["Avgift av den halvparten som overføres","Ingen dokumentavgift","Avgift av hele eiendommen","Halv sats av hele eiendommen"],"Vilkåret om 2 år eller felles barn er ikke oppfylt. Grunnlaget er verdien av den overførte andelen, som i Gjeldsveien og Skogholtet."],
+["da15","da","Samboere i 11 måneder med felles barn – den ene kjøper ut den andre. Hva gjelder?",["Fritak for dokumentavgift","Avgift av halvparten","Avgift av hele eiendommen","Fritak først etter 2 år"],"Felles barn oppfyller vilkåret uansett varighet, som i Bjørkveien og Grenseskilleveien."],
+["da16","da","Ektefeller skilles, og den ene overtar boligen. Hva gjelder for dokumentavgiften?",["Fritak","Avgift av halvparten","Avgift av hele","Fritak bare med felles barn"],"Tinglysingsgebyr for skjøte og eventuelt pant betales likevel, som i Tørrveien."],
+["da17","da","Hva omfatter fritaket for dokumentavgift ved arv etter loven?",["Den ideelle arveandelen i hver eiendom","Hele arven, uansett fordeling","Bare bolig, ikke fritidseiendom","Arv opp til en fast beløpsgrense"],"To søsken som arver en bolig og en hytte på 2 mill. hver og fordeler dem mellom seg, betaler avgift av 1 mill. hver."],
+["da18","da","Gir forskudd på arv fritak for dokumentavgift?",["Nei","Ja","Ja, til livsarvinger","Ja, hvis det er fast eiendom"],"Forskudd på arv regnes ikke som arveandel. Testamentsarv ut over lovens arveandel gir også avgift."],
+["da19","da","Hva er vilkåret for at en testamentsarving slipper dokumentavgift på hjemmelserklæringen?",["Videresalget tinglyses samme dag","Arvingen bor i boligen","Arvingen er livsarving","Eiendommen beholdes i 2 år"],"I praksis sendes hjemmelserklæring og skjøte samtidig, som i Oskleiva."],
+["da20","da","Hva er grunnlaget for dokumentavgiften ved førstegangsoverføring av et nyoppført hus som ikke er tatt i bruk?",["Tomtens salgsverdi","Hele kjøpesummen","Byggekostnadene","Kjøpesum minus mva"],"Det samme gjelder bygg under arbeid. Tomteverdien omfatter også vei, vann og kloakk."],
+["da21","da","Hvordan beregnes dokumentavgiften for nyoppførte eierseksjoner ved første overføring?",["Av tomteverdien etter eierbrøk","Av hver seksjons kjøpesum","Av hele tomteverdien per seksjon","Av byggekostnadene per seksjon"],"Problemstillingen er særlig aktuell i prosjektoppgjør."],
+["da22","da","Gjelder nybyggfritaket for en totalrehabilitering?",["Nei","Ja","Ja, over en viss kostnad","Ja, hvis grunnmuren beholdes"],"Bygget må være nyoppført i sin helhet. Gjenbruk av gammel grunnmur er nok til at fritaket faller bort."],
+["da23","da","Hva betales i dokumentavgift ved kjøp av andel i borettslag?",["Ingenting","2,5 % av kjøpesummen","2,5 % av totalprisen","Minstebeløpet på 250 kr"],"Andelen er ikke fast eiendom. Overføringen tinglyses likevel med gebyr på 545 kr."],
+
+// ---------- Sikringsobligasjon ----------
+["so1","so","Hvilke to elementer består en sikringsobligasjon av?",["Pantedokument og urådighetserklæring","Skjøte og urådighetserklæring","Pantedokument og bankgaranti","Kjøpekontrakt og pantedokument"],"Den kalles også pantedokument med urådighet, sikringsdokument eller bare «sikring»."],
+["so2","so","Hvem er panthaver og pantsetter i sikringsobligasjonen?",["Megler er panthaver, selger pantsetter","Kjøper er panthaver, selger pantsetter","Kjøpers bank er panthaver, kjøper pantsetter","Megler er panthaver, kjøper pantsetter"],"Pantsetter og hjemmelshaver må være de samme, eller det må foreligge fullmakt."],
+["so3","so","Hvor stort bør pålydende på sikringsobligasjonen være?",["Minst kjøpesummen","Selgers restgjeld","Kjøpers lånebeløp","Meglers vederlag og utlegg"],"Tinglyses den før salg, må kjøpesummen anslås. Blir kjøpesummen høyere, må det tinglyses tilleggssikkerhet."],
+["so4","so","Stopper urådighetserklæringen et utlegg i eiendommen?",["Nei","Ja","Ja, hvis den er tinglyst først","Bare hvis megler protesterer"],"Urådighet stanser ikke tvangspant, arrest eller konkurs – bare frivillige disposisjoner."],
+["so5","so","Hva gjør at meglerforetak i praksis må bruke sikringsobligasjon?",["Forsikringsgivers sikkerhetsforskrifter","Eiendomsmeglingslovens regler","Tinglysingslovens krav om sikring","Bankenes standard lånevilkår"],"Det er ikke lovpålagt. Høyesterett har slått fast at sikringen gir en reell pantesikkerhet (Rt. 2012 s. 335)."],
+["so6","so","Hvilken funksjon har IKKE sikringsobligasjonen?",["Å sikre kjøper mot skjulte mangler","Å sikre prioritet til kjøpers bank","Å gi kjøper pant ved selgers konkurs","Å hindre dobbeltsalg"],"Sikringen beskytter først og fremst kjøper og legger til rette for en trygg gjennomføring."],
+["so7","so","Skjøtet sendes til tinglysing mens sikringen fortsatt står. Hva må megler gjøre?",["Påføre «kan tinglyses» og signere","Slette sikringen først","Be selger signere skjøtet på nytt","Sende sikringen til sletting sammen med skjøtet"],"Urådigheten sperrer ellers tinglysingen. Skjøtet og kjøpers bankpant sendes samtidig."],
+["so8","so","Når bør sikringsobligasjonen helst slettes?",["Når selgers pant er slettet","Når skjøtet er tinglyst","Ved overtakelse","Etter kontraktsmøtet"],"Først da har kjøpers bank faktisk riktig prioritet. Holder kjøper tilbake penger, bør sikringen bli stående til tvisten er løst."],
+["so9","so","Kan megler slette bare urådighetsdelen av sikringsobligasjonen?",["Nei","Ja","Ja, mot ekstra gebyr","Ja, med selgers samtykke"],"Megler må derfor ta stilling til når hele sikringsobligasjonen skal slettes."],
+["so10","so","Kan meglerforetakets vederlagskrav mot selger dekkes under sikringsobligasjonen?",["Bare hvis pantsettelseserklæringen sier det","Ja, alltid, siden megler er panthaver","Nei, sikringen kan bare sikre kjøper","Ja, men bare for dokumenterte utlegg"],"Og selv da kan ikke megler stanse et oppgjør der partene har oppfylt. Det ville neppe være god meglerskikk."],
+["so11","so","Når er det særlig aktuelt å tinglyse sikringen allerede ved oppdragsinngåelse?",["Ved overbeheftet eiendom","Ved salg av borettslagsandel","Ved kontantkjøp","Ved salg av fritidsbolig"],"Sikringen tar da prioritet, fratar eieren råderetten og signaliserer at et frivillig salg er i gang."],
+
+// ---------- Renter, utlegg, vederlag ----------
+["rv1","rv","Salg etter avhendingsloven: når går eierrådigheten over kjøpesummen til selger?",["Ved overtakelse","Ved budaksept","Ved tinglysing av skjøtet","Ved kontraktsmøtet"],"Dette styrer renteberegningen: renter før overtakelse tilfaller normalt kjøper, renter etter tilfaller selger."],
+["rv2","rv","Tomt med bolig under oppføring: når går eierrådigheten over kjøpesummen til selger?",["Når kjøper får hjemmel","Ved overtakelse","Ved budaksept","Når § 12-garantien stilles"],"Uten forskudd mot § 47-garanti kan selger ikke godskrives renter før hjemmelsoverføring."],
+["rv3","rv","Hvem godskrives renter på kjøpers innbetalte omkostninger?",["Kjøper","Selger fra overtakelse","Meglerforetaket","De deles likt"],"Omkostningene er kjøpers penger helt til de er brukt slik det er avtalt."],
+["rv4","rv","Hvor mange dager regnes per år ved forsinkelsesrente?",["365","360","12 × 30","250"],"Forsinkelsesrente regnes etter kalenderåret (366 dager i skuddår). Avregningene i faget bruker derimot 30 dager per måned og 360 per år."],
+["rv5","rv","Foretaket vil betale ut renter før de er kapitalisert. Hvor tas pengene fra?",["Driftskontoen","Andre klienters midler","Kjøpers omkostninger","Selgers nettoproveny"],"Renter som kapitaliseres senere, er da driftsmidler og skal overføres driftskontoen."],
+["rv6","rv","Hva kreves for at megler skal få dekket et utlegg?",["At det er avtalt og dokumentert","At det er rimelig","At det er nødvendig for salget","At kjøper har godkjent det"],"Utlegget må være spesifisert i oppdragsavtalen og kunne dokumenteres krone for krone."],
+["rv7","rv","Megler får en samlefaktura for annonser uten fordeling per oppdrag. Hvordan behandles den?",["Den inngår i vederlaget","Den fordeles likt på oppdragene","Den belastes siste selger","Den belastes kjøperne"],"Utlegg må kunne knyttes til et konkret oppdrag."],
+["rv8","rv","Selger og megler blir muntlig enige om en ekstra avisannonse. Er avtalen gyldig?",["Ja, men megler har bevisbyrden","Nei, den må være skriftlig","Nei, utlegg kan ikke avtales i ettertid","Ja, og kjøper bærer kostnaden"],"En e-post som bekrefter avtalen, er god dokumentasjon. Reklamasjonsnemnda har flere ganger nektet megler dekning."],
+["rv9","rv","Når forfaller meglers vederlag?",["Når handel er kommet i stand","Ved overtakelse","Ved tinglysing av skjøtet","Ved utbetaling til selger"],"Ofte er det ved budaksept. Vederlaget skal bokføres som inntekt da."],
+["rv10","rv","Hvilken provisjonsmodell er forbudt i forbrukeroppdrag?",["Progressiv","Degressiv","Fast prosentsats","Fastpris"],"Forbudet skal sikre meglers uavhengighet."],
+["rv11","rv","Hvilket tilbud plikter meglerforetaket alltid å gi oppdragsgiver?",["Et timebasert tilbud","Et fastpristilbud","Et provisjonstilbud","Et tilbud uten utlegg"],"Vederlaget kan avtales som fastpris, timer, provisjon eller en kombinasjon."],
+["rv12","rv","I hvilke oppdrag kan trekk av vederlaget i oppgjøret avtales på forhånd?",["Prosjektmegling og næringsmegling","Alle forbrukeroppdrag","Salg av borettslagsandeler","Salg av fritidsboliger"],"I vanlige forbrukeroppdrag må samtykket gis etter at handel er kommet i stand."],
+
+// ---------- Oppstilling, journal, kompetanse ----------
+["oj1","oj","Når skal oppgjørsoppstillingen sendes partene?",["Straks oppgjøret er gjennomført","Ved overtakelse","Innen utgangen av året","Når partene ber om den"],"Oppstillingen skal vise de reelle transaksjonsdatoene, slik de fremgår av bankutskriften."],
+["oj2","oj","Hvorfor kommer kjøpers endelige oppgjørsoppstilling ofte senere enn selgers?",["Attestgebyret faktureres sent","Dokumentavgiften faktureres sent","Kjøpers bank må godkjenne den","Selger må godkjenne den først"],"Bekreftet grunnboksutskrift bestilles når selgers pant er slettet. Derfor står det ofte 260 kr igjen på klientkonto i fasitene."],
+["oj3","oj","Hvilke journaler skal en eiendomsmegler føre?",["Oppdrag, megling, bud og depot","Oppdrag, kasse, bud og time","Megling, bud, time og depot","Oppdrag, megling, kasse og depot"],"Oppgjørsforetak som bare gjør oppgjør for andre, fører en særskilt oppdragsjournal."],
+["oj4","oj","Hva skal føres i depotjournalen?",["Dokumenter som skjøter og pantobligasjoner","Alle bud med tidspunkt","Alle innbetalinger til klientkonto","Alle oppdragsavtaler"],"Journalen skal minst vise dato for mottak og utlevering. Dokumentene skal oppbevares avlåst og brannsikkert."],
+["oj5","oj","Et tinglyst skjøte kommer i retur og sendes til kjøper samme dag. Må det føres i depotjournalen?",["Ja, både inn og ut","Nei, ikke samme dag","Bare utlevering","Bare mottak"],"Et signert skjøte er et klientmiddel, også om det bare er hos megler i noen timer."],
+["oj6","oj","Hvem kan utføre oppgjøret?",["Medhjelper med oppgjørseksamen under tilsyn","Enhver ansatt under meglers tilsyn","Bare foretakets fagansvarlig","Bare ansvarlig megler personlig"],"Også ansvarlig megler og fullmektig kan utføre oppgjøret. Tilsynet avhenger av medhjelperens erfaring og hvor komplisert oppgjøret er."],
+["oj7","oj","Har en oppgjørsmedhjelper selvstendig ansvar for oppgjøret?",["Nei","Ja","Ja, med bestått eksamen","Ja, ved oppgjørsforetak"],"Oppgaven utføres på vegne av ansvarlig megler. Ved oppgjørsforetak eller -filial skjer tilsynet ved fagansvarlig der."],
+
+// ---------- Hvitvasking og sikkerhet ----------
+["hv1","hv","Når skal identitetskontroll av selger gjøres?",["Når oppdraget inngås","På kontraktsmøtet","Ved overtakelse","Før utbetaling"],"Kjøper kontrolleres før transaksjonen gjennomføres, ofte på kontraktsmøtet."],
+["hv2","hv","Er BankID gyldig identitetskontroll etter hvitvaskingsloven?",["Ja","Nei","Bare for selger","Bare sammen med pass"],"Elektronisk legitimasjon som BankID godtas."],
+["hv3","hv","Kjøper vil ikke medvirke til legitimasjonskontroll. Hva gjelder?",["Oppgjøret kan ikke gjennomføres","Oppgjøret gjennomføres med notat","Selger avgjør om det skal gjennomføres","Megler rapporterer og gjennomfører"],"Kan kundetiltak ikke gjennomføres, kan kundeforholdet ikke etableres."],
+["hv4","hv","Undersøkelser bekrefter mistanke om hvitvasking. Hvem rapporterer megler til?",["Økokrim","Finanstilsynet","Lokalt politi","Skatteetaten"],"Meldingen går til Enheten for finansiell etterretning i Økokrim. Plikten er personlig for styremedlemmer, ledere og ansatte."],
+["hv5","hv","Hva skjer med transaksjonen når megler rapporterer?",["Den stanses inntil Økokrim er varslet","Den gjennomføres som normalt","Den kanselleres","Den gjennomføres om ti dager"],"Megler må ikke avsløre at det undersøkes eller er rapportert."],
+["hv6","hv","Er hvitvaskingsplikten i konflikt med meglers taushetsplikt?",["Nei","Ja, taushetsplikten går foran","Ja, overfor oppdragsgiver","Bare hvis kunden protesterer"],"Rapportering skjer uten hinder av taushetsplikten."],
+["hv7","hv","Hvilket forhold er et typisk varsel om høy hvitvaskingsrisiko?",["Selger skal ikke motta oppgjøret","Kjøper har lån i norsk bank","Boligen selges til prisantydning","Kjøper har vært på to visninger"],"Andre eksempler er kontanter, betaling fra et land uten tilknytning, kjøp usett og stor egenkapital sett mot inntekt."],
+["hv8","hv","Hvor stor sikkerhet må et eiendomsmeglingsforetak minst stille?",["45 mill. kr","15 mill. kr","30 mill. kr","50 mill. kr"],"Ansvaret kan begrenses til 15 mill. kr per skadelidt per formidling. 30 mill. var kravet før 2015."],
+["hv9","hv","Hvem beskytter sikkerhetsstillelsen først og fremst?",["Kunden som lider tap","Foretakets egen formue","Ansvarlig megler personlig","Forsikringsselskapet"],"Ansvarsforsikringen beskytter foretakets formue. Sikkerhetsstiller krever regress for utbetalinger."],
+["hv10","hv","Kjøpesummen er 60 mill. kr. Plikter megler å utvide sikkerheten?",["Nei, men partene bør varsles","Ja, alltid","Ja, og kjøper betaler","Nei, og ingen skal varsles"],"Det er ofte nok å utvide kriminalitetsdekningen i oppgjørsfasen."],
+
+// ---------- Gjennomføring ----------
+["gj1","gj","Hvilke tre hovedfaser har et normaloppgjør?",["Klargjøring, før og etter overtakelse","Budrunde, kontrakt og tinglysing","Oppdrag, salg og overtakelse","Kontrakt, overtakelse og arkivering"],"Grunnlaget er kjøpekontrakten og ufravikelig kontraktslovgivning."],
+["gj2","gj","Selger står ikke som hjemmelshaver fordi hun sitter i uskifte. Hva må fremlegges?",["Uskifteattest","Skifteattest","Fullmakt fra arvingene","Dødsattest"],"Er selger arving, kreves skifteattest og hjemmelserklæring, og eventuelt testament."],
+["gj3","gj","Selger råder over eiendommen på grunnlag av fullmakt. Hvilket krav gjelder?",["Original og bevitnet","Kopi signert av selger","Original uten vitner","Elektronisk kopi"],"Fullmakten er et nødvendig hjelpedokument ved tinglysing."],
+["gj4","gj","Hva bør megler gjøre rundt 14 dager før overtakelse?",["Nye undersøkelser, blant annet av grunnboken","Slette sikringsobligasjonen i grunnboken","Sende skjøtet til tinglysing hos Kartverket","Utbetale et forskudd til selger"],"Megler får ikke varsel om nye utlegg og må derfor overvåke grunnboken."],
+["gj5","gj","Kjøper har ikke betalt på overtakelsesdagen. Hva bør megler råde selger til?",["Ikke å gjennomføre overtakelsen","Å overta mot forsinkelsesrente","Å overta mot et depositum","Å overta og heve senere"],"Overlevering uten betaling gir kjøper kreditt og dermed utvidet tilbakeholdsrett. Selger kan som hovedregel heller ikke heve etter overtakelse."],
+["gj6","gj","Hvorfor sendes skjøtet og kjøpers bankpant til tinglysing samtidig?",["Pantet krever at kjøper har hjemmel","Kartverket gir rabatt for samlet innsending","Selger må signere begge","Banken krever det av renteårsaker"],"Ved e-tinglysing skjer det umiddelbart. På papir sendes dokumentene i samme forsendelse."],
+["gj7","gj","Hvor lang tid tar det typisk fra innfrielse til selgers pant er slettet?",["Rundt to måneder","Én til to dager","To uker","Et halvt år"],"Megler må følge opp, overvåke grunnboken og eventuelt purre banken."],
+["gj8","gj","Salget skjer som ledd i konkursbehandling. Hvilken legalpanterett må megler være særlig oppmerksom på?",["Boets panterett for boomkostninger","Borettslagets panterett","Kommunens panterett for vann","Arbeidstakernes lønnskrav"],"Panteretten er begrenset til 700 R og går foran all annen lovbestemt pant."],
+["gj9","gj","Hva menes med «pro & contra» i oppgjøret?",["Avregninger mellom kjøper og selger","Fordeling av meglers vederlag","Prioriteten mellom pantene","Kjøpers og selgers forbehold"],"Typiske poster er kommunale avgifter, felleskostnader, olje og leieinntekter."],
+["gj10","gj","Selgers lån er innfridd. Hva skjer så med nettoprovenyet?",["Vederlaget trekkes, resten utbetales","Alt utbetales, vederlaget faktureres","Det holdes i tre måneder","Det sendes til selgers bank"],"Meglers tilgodehavende overføres til driftskonto med gyldig samtykke, og resten utbetales etter selgers oppgjørsinstruks."],
+
+// ---------- Prosjekt ----------
+["pr1","pr","Hvor stor skal garantien etter buofl. § 12 minst være etter overtakelse?",["5 % i 5 år","3 % i 5 år","5 % i 3 år","10 % i 5 år"],"Før overtakelse er kravet minst 3 %. Ved andel i borettslag beregnes garantien av innskudd pluss andel fellesgjeld."],
+["pr2","pr","Utbygger har ikke stilt § 12-garanti. Hva gjelder for kjøpers betaling?",["Kjøper har ingen betalingsplikt","Kjøper må betale 10 %","Kjøper må betale til klientkonto","Kjøper må betale halvparten"],"Megler må varsle kjøper skriftlig og følge opp utbygger."],
+["pr3","pr","Hva kreves for at kjøper av bolig under oppføring kan betale forskudd?",["Forskuddsgaranti (§ 47)","Pant i eiendommen","Garanti etter § 12","Depositum på sperret konto"],"Selv med forskudd skal minst 10 % av vederlaget gjenstå til overtakelse."],
+["pr4","pr","Tomt med bolig under oppføring: hvor lenge har kjøper instruksjonsrett over pengene?",["Til hjemmelsoverføring","Til overtakelse","Til budaksept","Til ferdigattest"],"Kjøper har dermed utvidet tilbakeholdsrett sammenlignet med avhendingsloven."],
+["pr5","pr","Ferdigstillelsesdato er ikke avtalt. Hvilken varslingsfrist gjelder for overtakelse?",["Minst 7 dager","Minst 3 dager","Minst 14 dager","Minst 30 dager"],"Det kan avtales lengre frist, men ikke kortere."],
+["pr6","pr","Hva må foreligge før overtakelse av en nyoppført bolig?",["Ferdigattest eller avtalt brukstillatelse","Innsendt søknad om ferdigattest","Takst og tilstandsrapport fra utbygger","Forskuddsgaranti etter § 47"],"Ved midlertidig brukstillatelse skjerpes meglers undersøkelses- og rådgivningsplikt."],
+["pr7","pr","Hvor lenge kan utbygger av et nyetablert borettslag utsette hjemmelsoverføringen?",["Inntil 2 år","Inntil 6 måneder","Inntil 1 år","Inntil 5 år"],"Fristen regnes fra overtakelse og må avtales med kjøper."],
+["pr8","pr","Kontraktsposisjonen er transportert til en forbruker. Når kan merverdien utbetales?",["Når siste kjøper har fått hjemmel","Når transporten er avtalt","Når byggingen starter","Når utbygger samtykker"],"Transport krever utbyggers samtykke og at den opprinnelige kjøperen er forbruker."],
+["pr9","pr","Hva er virkningen av at kjøper deponerer omtvistet vederlag etter buofl. § 49?",["Det likestilles med betaling","Det regnes som mislighold","Selger får hevingsrett","Pengene frigis etter 14 dager"],"Selger kan ikke holde tilbake sin ytelse. Deponert beløp disponeres bare etter felles instruks eller rettskraftig avgjørelse."],
+["pr10","pr","Byggelånsbanken vil bare slette pant hvis kjøper ikke holder tilbake penger. Kan det aksepteres?",["Nei","Ja","Ja, hvis kjøper signerer","Ja, i borettslag"],"Forbeholdet begrenser kjøpers ufravikelige rettigheter. Kjøper må uansett informeres før bindende avtale."],
+["pr11","pr","En næringsdrivende selger en nyoppført bolig til en forbruker innen 6 måneder etter ferdigstillelse. Hva gjelder?",["Selger må stille § 12-garanti","Ingen garanti, det er bruktbolig","Selger må stille § 47-garanti","Kjøper må stille sikkerhet"],"Det følger av avhendingsloven § 2-11 (i kraft 1. januar 2019)."],
+
+// ---------- Instruksjonsrett ----------
+["ir1","ir","Avhendingsloven: når mister kjøper instruksjonsretten over kjøpesummen?",["Ved overtakelse","Ved tinglysing av skjøtet","Ved budaksept","Når selgers lån er innfridd"],"Høyesterett (Rt. 2006 s. 31): når kjøper har betalt og fått overta, kan han ikke lenger instruere megler om tilbakehold."],
+["ir2","ir","Kjøper instruerer tilbakehold før overtakelse. Megler mener grunnlaget er svakt. Hva gjelder?",["Megler må etterkomme instruksen","Megler kan nekte","Selger må samtykke","Megler fastsetter beløpet"],"Megler skal ikke ta stilling til grunnlaget, men må veilede kjøper og varsle selger."],
+["ir3","ir","Når kan kjøper holde tilbake penger også etter overtakelse?",["Ved kreditt eller svik fra selger","Når kjøpet er lånefinansiert","Når megler er enig i kravet","Når kjøpers bank krever det"],"Overlevering uten full betaling er kreditt. Derfor fraråder megler slik overtakelse."],
+["ir4","ir","Hva må en tilbakeholdsinstruks fra kjøper inneholde?",["Et konkret beløp","Selgers samtykke","En takst over mangelen","En begrunnelse godkjent av megler"],"Den som gir instruksen, bærer risikoen for at den er tydelig nok."],
+["ir5","ir","Hvor mye kan kjøper holde tilbake?",["Det som trengs for å sikre kravet","Hele kjøpesummen uansett krav","Inntil 10 % av kjøpesummen","Det beløpet selger godtar"],"Kjøper bærer risikoen for at tilbakeholdet er berettiget og ikke for stort, men får et visst slingringsmonn."],
+["ir6","ir","Kan selger nekte å utstede skjøtet fordi kjøper holder tilbake penger?",["Nei","Ja","Ja, til tvisten er avgjort","Ja, med meglers samtykke"],"Kjøpers tilbakeholdsrett krever ikke selgers samtykke."],
+["ir7","ir","Hvordan frigis et tilbakeholdt beløp?",["Ved felles instruks eller dom","Når megler anser saken løst","Automatisk etter 6 måneder","Når selger ber om det"],"Avgjørelsen må være rettskraftig. Rentene fordeles som regel etter samme nøkkel som beløpet."],
+
+// ---------- Arv og skifte ----------
+["as1","as","Hva er vilkåret for privat skifte av et dødsbo?",["En arving overtar gjeldsansvaret","Alle arvinger er enige om fordelingen","Det finnes testament","Boet har positiv formue"],"Arvingene som påtar seg gjeldsansvaret, får skifteattest og kan disponere boets midler."],
+["as2","as","Flere gjeldsovertakende arvinger er uenige om salg. Hva gjelder?",["Det kreves enighet","Flertallet bestemmer","Eldste arving bestemmer","Den med størst arvedel bestemmer"],"Flertallsvedtak gjelder ikke ved privat skifte."],
+["as3","as","Hvor lenge gjelder den standardiserte fullmakten ved privat skifte høyst?",["2 år fra arvefallet","1 år fra arvefallet","Til eiendommen er solgt","Ubegrenset"],"Den gjelder til skiftet er avsluttet eller fullmakten trekkes, men ikke mer enn to år. Rett til å disponere fast eiendom må fremgå særskilt."],
+["as4","as","Det er oppnevnt testamentsfullbyrder. Hvem skal megler forholde seg til?",["Testamentsfullbyrderen","Arvingene på skifteattesten","Den eldste arvingen","Tingretten"],"Skifteattesten utstedes til fullbyrderen. Livsarvinger og ektefelle kan protestere innen 60 dager etter dødsfallet."],
+["as5","as","Gjenlevende ektefelle i uskifte vil selge boligen. Må arvingene samtykke?",["Nei","Ja, alle","Ja, flertallet","Ja, livsarvingene"],"Gjenlevende råder tilnærmet som eier. Det gjelder begrensninger for gaver og arvemessige disposisjoner."],
+["as6","as","Boet skiftes offentlig. Hvem signerer skjøtet?",["Bostyrer eller tingretten","Arvingene i fellesskap","Den eldste arvingen","Megler med fullmakt"],"Ved offentlig skifte forholder megler seg ikke til arvingene."],
+["as7","as","Kan en legatar som har fått eiendommen i testament, signere hjemmelserklæringen?",["Nei","Ja","Ja, med advokat","Ja, hvis det er bolig"],"En legatar er ikke arving i skiftelovens forstand og kan ikke påta seg gjeldsansvar. En testamentsarving som har gjort det, kan signere alene."],
+["as8","as","Boligen selges ved offentlig skifte av felleseie, og den ene ektefellen vil kjøpe. Hva gjelder?",["Ektefellen byr på hele boligen","Ektefellen kjøper bare den andres halvpart","Ektefellen kjøper til takst","Ektefellen har forkjøpsrett"],"Full kjøpesum må betales. Ektefellen får en forholdsmessig del tilbake gjennom skifteoppgjøret."],
+["as9","as","Den ikke-eiende ektefellen mener å ha krav på del av provenyet. Hva gjelder for megler?",["Hun må begjære arrest i provenyet","Megler holder tilbake halvparten","Megler stanser salget","Megler utbetaler halvparten til henne"],"Innsigelser som strider mot grunnboken, kan ikke hensyntas. Bestrides selve salget, må det begjæres midlertidig forføyning."],
+
+// ---------- Fullmakt og spesialtilfeller ----------
+["sp1","sp","Hva kreves for at en fullmakt skal gi rett til å utstede skjøte?",["Bevitnet underskrift og sivilstandserklæring","Bevitnet underskrift alene","Notarialbekreftet underskrift","Underskrift med BankID"],"Skal fullmektigen overføre til seg selv eller transportere fullmakten, må det stå uttrykkelig."],
+["sp2","sp","Megler sender en kopi av fullmakten til Kartverket. Hva kreves?",["Attestert rett kopi – megler har originalen","At kopien er bevitnet på nytt","At kjøper signerer på kopien","Ingenting særskilt"],"Påtegningen sidestilles med en inneståelseserklæring."],
+["sp3","sp","Kan en prokurist overdra foretakets faste eiendom?",["Nei","Ja","Ja, med styreleders samtykke","Ja, under en beløpsgrense"],"Det krever signaturrett. Prokura dekker derimot transport, prioritetsvikelse, pantefrafall og sletting."],
+["sp4","sp","En mindreårig eier en andel i boligen som skal selges. Hvem må samtykke?",["Statsforvalteren","Barneverntjenesten","Tingretten","Ingen, foreldrene bestemmer"],"Statsforvalteren het tidligere Fylkesmannen. Vedtaket angir normalt også hvor oppgjøret skal utbetales."],
+["sp5","sp","Hva krever Kartverket før en fremtidsfullmakt kan brukes ved tinglysing?",["Stadfestelse fra Statsforvalteren","Tinglysing av fullmakten","Legeerklæring","To nye vitner"],"Fremtidsfullmakten trer i kraft når fullmaktsgiver ikke lenger kan ivareta sine interesser."],
+["sp6","sp","Kjøper får in blanco-skjøte og tinglyser ikke. Hva er kjøpers største risiko?",["Å tape eiendommen ved selgers konkurs","Å betale dokumentavgift to ganger","Å miste boligkjøperforsikringen","Å miste retten til å reklamere"],"Kjøper har ikke rettsvern. Megler må informere om risikoen."],
+["sp7","sp","Hva skiller «utsatt overdragelse» fra reell in blanco?",["Oppgjøret er ikke gjennomført før tinglysing","Det betales ikke dokumentavgift","Megler har mindre ansvar","Sikringen slettes ved overtakelse"],"Sikringen blir stående, og omkostningene bør være innbetalt til klientkonto."],
+["sp8","sp","Overbeheftet eiendom: hvilke kreditorer bør megler vie mest oppmerksomhet?",["Grensekreditorene","De med best prioritet","Kommunen","Kjøpers bank"],"Også de med dårligst prioritet er viktige. De best sikrede får uansett innfrielse."],
+["sp9","sp","Hva må megler presisere ved innhenting av pantefrafall?",["At gjelden består","At kreditor får dekning senere","At gjelden slettes","At megler garanterer betaling"],"Kreditor skal ikke loves et bestemt beløp. Det normale er et generelt pantefrafall."],
+["sp10","sp","Hva betyr opptrinnsrett?",["Etterstående pant rykker opp","Kjøper rykker frem i budkøen","Megler kan øke sikringen","Banken kan øke lånet"],"Pant med dårligst prioritet bør derfor slettes straks etter overskjøting."],
+["sp11","sp","Hva sier dekningsprinsippet ved tvangssalg?",["Budet må dekke bedre prioriterte heftelser","Alle kreditorer skal ha full dekning","Saksøker skal dekkes først","Budet må være minst lik takst"],"Er prinsippet ikke oppfylt, må tingretten heve tvangssalget."],
+["sp12","sp","Hva dekkes først av kjøpesummen ved tvangssalg?",["Rettsgebyr og medhjelpers godtgjørelse","Tinglyste pant etter prioritet","Saksøkers krav","Legalpant"],"Deretter legalpant og så tinglyste pengekrav etter prioritet. Et overskudd går til hjemmelshaveren."],
+["sp13","sp","Når skal kjøper ved tvangssalg betale?",["3 måneder fra oppgjørsdagen","14 dager etter budaksept","Ved overtakelse","1 måned fra stadfestelsen"],"Betalingsplikten inntrer likevel ikke før to uker etter at stadfestelsen er rettskraftig."],
+["sp14","sp","Hvilken domstol behandler mortifikasjonssaker?",["Brønnøy tingrett","Oslo tingrett","Tingretten der eiendommen ligger","Borgarting lagmannsrett"],"Fristen etter kunngjøring er to måneder. Melder ingen seg, avsies dom."],
+["sp15","sp","Mortifikasjonsdommen er avsagt. Er pantet da slettet i grunnboken?",["Nei, det må begjæres slettet","Ja, automatisk","Ja, etter ankefristen","Ja, når banken bekrefter"],"Ved særlige omstendigheter og betryggende garanti kan det avsies kjennelse med samme virkning som dom (hastemortifikasjon)."],
+["sp16","sp","Et pant til en privatperson er bortkommet. Bør megler gjøre deloppgjør og holde tilbake et anslått beløp?",["Nei, oppgjøret bør bero","Ja, lik pantets pålydende","Ja, med selgers samtykke","Ja, lik pålydende pluss 10 %"],"Megler kan ikke vite renter og omkostninger under panteretten, eller hvem som er den reelle rettighetshaveren."],
+["sp17","sp","Et konsesjonspliktig erverv skal tinglyses. Hva gjelder?",["Det kan ikke tinglyses uten konsesjon","Det tinglyses, og konsesjon søkes etterpå","Megler kan signere egenerklæringen","Konsesjon gjelder bare landbruk"],"Egenerklæring eller søknad kan ikke signeres ved fullmakt. Kommunen registrerer utfallet i matrikkelen."],
+
+// ---------- Avregninger og eksamensteknikk ----------
+["ar1","ar","Hvem tilhører overtakelsesdagen i avregningene i faget?",["Kjøper","Selger","Den deles","Den som har betalt"],"Ved overtakelse 10.1 dekker kjøper 10.–30. januar: 21 dager."],
+["ar2","ar","Hvordan teller faget dager i avregninger?",["30 per måned, 360 per år","Faktiske dager, 365 per år","Faktiske dager, 360 per år","31 per måned, 365 per år"],"Det gir 90 dager per kvartal og 180 per halvår. Forsinkelsesrente regnes derimot med kalenderår."],
+["ar3","ar","Når avrundes avregningsbeløpene?",["Netto til slutt","Hver linje for seg","Hver linje nedover","De avrundes ikke"],"Fredensborgveien: 2 333,33 − 466,67 = 1 866,67, som blir 1 867. Rundes hver linje først, blir svaret 1 866."],
+["ar4","ar","Selger har forskuddsbetalt kommunale avgifter for halvåret. Hvem betaler hvem?",["Kjøper betaler selger","Selger betaler kjøper","Ingen avregning","Kommunen refunderer selger"],"Formel: halvårsbeløp / 180 × kjøpers dager."],
+["ar5","ar","Kommunale avgifter for kvartalet er ubetalt og faktureres kjøper etter overtakelse. Hvem betaler hvem?",["Selger betaler kjøper","Kjøper betaler selger","Ingen avregning","Kommunen fordeler"],"Olav Kyrres vei (vår 2022): 12 900 / 90 × 28 = 4 013 fra selger."],
+["ar6","ar","Leie betales etterskuddsvis den 30. til ny eier. Overtakelse er 25.10. Hvem betaler hvem?",["Kjøper betaler selger for 24 dager","Selger betaler kjøper for 6 dager","Kjøper betaler selger for 25 dager","Ingen avregning"],"Kjøper mottar hele oktoberleien, men selger eide boligen 1.–24. oktober."],
+["ar7","ar","Borettslag: felleskostnadene er betalt til og med november. Overtakelse 10.1. Hva skal selger dekke?",["Desember, 9 dager i januar og eierskiftegebyr","9 dager i januar og eierskiftegebyr","Desember og januar","Desember og eierskiftegebyr"],"Alle forfalte måneder før overtakelse er selgers. Kjøper dekker januar fra og med den 10."],
+["ar8","ar","Overtakelse er 1.3, og mars er ikke betalt. Hvem dekker mars?",["Kjøper","Selger","De deler","Ingen ennå"],"Fasiten til Hyseveien sier at du alternativt kan forutsette at kjøper betaler direkte – men da må du skrive det og begrunne det."],
+["ar9","ar","Hvilken kostnad belastes selger i faget?",["Eierskiftegebyr","Tinglysing av hjemmelsovergang","Grunnboksutskrift for kjøper","Tinglysing av kjøpers pant"],"Casene sier at oppdragsgiver belastes eierskiftegebyret, og borettslagsloven tillater bare å kreve det av selger."],
+["ar10","ar","Andel: salgssum 2 000 000, fellesgjeld 750 000, provisjon 2,5 % inkl. mva. Hva er provisjonen?",["68 750 kr","50 000 kr","55 000 kr","61 875 kr"],"Fellesgjelden skal med i provisjonsgrunnlaget: 2 750 000 × 2,5 %."],
+["ar11","ar","Provisjonen er 32 500 kr inkl. 25 % mva. Hvor mye er mva?",["6 500 kr","8 125 kr","1 300 kr","5 200 kr"],"Mva er 1/5 av et beløp inkl. 25 % mva. Fasiten til Oppgave 4 (Skogholtet) har feil her: 1 300."],
+["ar12","ar","Fra hvilken konto betales kjøpers tinglysingsfaktura?",["Klientkontoen","Driftskontoen","Kjøpers egen konto","Selgers oppgjørskonto"],"Selgers utlegg betales derimot fra driftskontoen og hentes inn ved oppgjøret."],
+["ar13","ar","Når bokføres kjøpesummen på kunden?",["Ved budaksept","På kontraktsmøtet","Ved overtakelse","Ved tinglysing"],"Kredit selger (hans tilgodehavende), debet kjøper (hans gjeld)."],
+["ar14","ar","Alt er betalt og selger har fått oppgjøret. Hva står typisk igjen på klientkonto for kjøper?",["260 kr","0 kr","545 kr","1 090 kr"],"Det er grunnboksutskriften (attestgebyret), som bestilles når selgers pant er slettet."],
+["ar15","ar","Kjøper betaler 18 000 for møbler i tillegg til kjøpesummen. Påvirker det dokumentavgiften?",["Nei","Ja, det legges til","Ja, det trekkes fra","Ja, hvis over 10 000"],"Det er løsøre utenfor kjøpesummen og avregnes bare mellom partene. Er løsøret inkludert i kjøpesummen, skal det trekkes ut av grunnlaget."],
+["ar16","ar","Hvordan føres renter som tilfaller selger i selgers oppgjør?",["De legges til","De trekkes fra","De utbetales kjøper","De beholdes av megler"],"I fasitene står rentene i samme kolonne som fradragene – men de skal legges til."],
+["ar17","ar","Utleggssaldoen i casen ser lav ut i forhold til provisjonen. Hva gjør du på eksamen?",["Bruker den oppgitte saldoen","Regner provisjonen på nytt","Legger provisjonen til saldoen","Ser bort fra saldoen"],"Saldoene er oppgitt som utgangspunkt. Skriv eventuelle forutsetninger i besvarelsen."],
+
+// ---------- Finn feilen ----------
+["ff1","ff","I en kundespesifikasjon fra 2026 er pant med urådighet ført med 480 kr. Hva er feil?",["Gebyret skal være 545 kr","Det skal føres på kjøper","Det skal ikke føres","Det skal være 260 kr"],"480, 585 og 1 060 kr er gamle satser som går igjen i «finn feilen»-oppgavene."],
+["ff2","ff","Selgers «overføre utlegg» inkluderer kjøpers tinglysingsfaktura. Hva er feil?",["Det er kjøpers kostnad","Den skal halveres","Den skal betales fra driftskonto","Ingenting"],"Kjøpers omkostninger betales med kjøpers penger på klientkonto. Feilen finnes i Utforveien og Olav Kyrres vei, og i fasiten til Pepperveien (høst 2017)."],
+["ff3","ff","Betaling av grunnboksutskrift fra driftskontoen er ført på kundespesifikasjonen. Hva er feil?",["Betalingen berører ikke kunden","Den skal føres på kjøper","Den skal føres dobbelt","Ingenting"],"Bare mottak av fakturaen føres som utlegg på kunden. Betalingen føres i sammendraget og på leverandøren."],
+["ff4","ff","Kjøpekontrakten er ført debet selger og kredit kjøper. Hva er feil?",["Retningen er snudd","Den skal føres på utlegg","Den skal føres ved overtakelse","Ingenting"],"Riktig er kredit selger (tilgodehavende) og debet kjøper (skyld). Feilen finnes i Olav Kyrres vei (vår 2022)."],
+["ff5","ff","Løsøre som kjøper betaler selger, er ført mot klientkontoen. Hvordan skal det føres?",["Kredit selger, debet kjøper","Debet klientkonto, kredit selger","Debet utlegg, kredit selger","Kredit kjøper, debet selger"],"Pengene er allerede inne i kjøpers innbetaling. Avregningen flytter dem bare fra kjøper til selger."],
+["ff6","ff","Innbetalingen fra kjøpers bank er ført debet selger. Hvordan skal den føres?",["Kredit kjøper, debet klientkonto","Kredit selger, debet klientkonto","Debet kjøper, kredit klientkonto","Debet utlegg, kredit kjøper"],"Kjøpers innbetaling reduserer kjøpers skyld."],
+["ff7","ff","Provisjonen for en selveier med fellesgjeld er beregnet av kjøpesummen alene. Hva er feil?",["Fellesgjelden skal med","Den skal beregnes av takst","Fellesgjelden skal trekkes fra","Ingenting"],"Makrellveien: 2,5 % av (6 850 000 + 78 544) = 173 214, ikke 87 000."],
+["ff8","ff","Utstyr som kjøper betaler selger, er ført debet selger og kredit kjøper. Hva er feil?",["Retningen er snudd","Det skal føres på utlegg","Det skal føres mot driftskonto","Ingenting"],"Riktig er kredit selger, debet kjøper. Valdresflyveien (vår 2021) hadde denne feilen."],
+["ff9","ff","Hele fakturaen for ubetalte kommunale avgifter (12 900) er ført som kredit for selger. Hva er feil?",["Selger skylder bare sin del til kjøper","Hele beløpet skal belastes kjøper","Beløpet skal deles likt","Ingenting"],"Kjøper betaler fakturaen, så selger skylder kjøper for sine dager: 12 900 / 90 × 28 = 4 013."],
+["ff10","ff","Borettslag: tinglysingsfakturaen inneholder dokumentavgift. Hva er feil?",["Andeler har ikke dokumentavgift","Avgiften skal beregnes av fellesgjelden","Den skal betales av selger","Ingenting"],"Bare 545 + 545 for hjemmel og pant. Hyseveien hadde 2 300 kr på feil linje – riktig tinglysing er 1 090 kr."]
+];
+
+// Leksjoner: {id, nr, tittel, kort, html, ov:{tema:[...], gen:[...]}}
+const LEK = [
+{id:"l1", tittel:"Hva er et eiendomsoppgjør?", kort:"Meglerens rolle, hvem som er involvert og hvorfor oppgjøret går via megler.", ov:{tema:["gj","kk"]}, html:`
+<p>Når en bolig selges, skal to ting bytte eier: <b>boligen</b> går fra selger til kjøper, og <b>pengene</b> går fra kjøper til selger. Grunnprinsippet er <b>ytelse mot ytelse</b> – ingen skal måtte gi fra seg sitt uten å være sikret det de skal ha tilbake.</p>
+<p>I praksis kan det ikke skje samtidig. Kjøper betaler med bankoverføring, tinglysing tar tid, og selger har ofte lån med pant i boligen som må innfris med pengene fra salget. Kjøpers bank vil ha pant i boligen før den slipper pengene. Derfor trengs en <b>nøytral mellommann</b>: eiendomsmegleren.</p>
+<h3>Hvem er involvert?</h3>
+<div class="tblwrap"><table class="calc"><tbody>
+<tr><td><b>Selger</b></td><td>Eier boligen. Er vanligvis også <b>oppdragsgiver</b> – den som har gitt megler oppdraget og betaler meglers vederlag og utlegg.</td></tr>
+<tr><td><b>Kjøper</b></td><td>Betaler kjøpesum + omkostninger (dokumentavgift, tinglysingsgebyrer, grunnboksutskrift) inn til meglers klientkonto.</td></tr>
+<tr><td><b>Kjøpers bank</b></td><td>Låner ut penger og stiller vilkår: pantet skal tinglyses med riktig prioritet, og kjøper skal få hjemmel.</td></tr>
+<tr><td><b>Selgers bank</b></td><td>Har pant i boligen. Lånet innfris fra oppgjøret, og pantet slettes.</td></tr>
+<tr><td><b>Kartverket</b></td><td>Fører grunnboken og tinglyser skjøte, pant og sletting. Fakturerer gebyrer og dokumentavgift.</td></tr>
+<tr><td><b>Forretningsfører</b></td><td>Administrerer borettslag og sameier. Skal ha forfalte felleskostnader og eierskiftegebyr.</td></tr>
+</tbody></table></div>
+<h3>Meglerens jobb i oppgjøret</h3>
+<ul>
+<li>Ta imot kjøpers penger på <b>klientkontoen</b> og passe på dem.</li>
+<li>Sørge for at kjøper får <b>hjemmel</b> (skjøtet tinglyses) og at kjøpers bank får sitt <b>pant</b> tinglyst.</li>
+<li><b>Innfri selgers lån</b> slik at boligen blir fri for selgers pengeheftelser.</li>
+<li>Gjøre opp <b>avregninger</b> mellom partene (f.eks. kommunale avgifter som selger har betalt på forskudd).</li>
+<li>Trekke meglers <b>vederlag og utlegg</b> og <b>utbetale resten</b> (nettoprovenyet) til selger.</li>
+</ul>
+<div class="callout"><b>Husk:</b> Megler skal ivareta <i>begge</i> parter. Megler tar aldri stilling til hvem som har rett i en tvist – megler følger avtalen, loven og instruks fra den som har råderett over pengene.</div>
+<h3>Lovene du må kjenne navnet på</h3>
+<p><b>Avhendingslova</b> gjelder vanlig salg av brukt bolig. <b>Bustadoppføringslova</b> gjelder ny bolig under oppføring. <b>Eiendomsmeglingsloven</b> med forskrift sier hvordan megler skal oppføre seg og behandle klientmidler. <b>Tinglysingsloven</b> styrer grunnboken. <b>Hvitvaskingsloven</b> krever kontroll av kundene.</p>
+`},
+{id:"l2", tittel:"Klientkonto og klientmidler", kort:"Hvem eier pengene hos megler, og hvem kan bruke dem.", ov:{tema:["kk","rv"]}, html:`
+<p>Meglerforetaket har to slags bankkontoer, og de må aldri blandes:</p>
+<div class="tblwrap"><table class="calc"><thead><tr><th>Driftskonto (1930)</th><th>Klientkonto (1940)</th></tr></thead><tbody>
+<tr><td>Foretakets egne penger.</td><td>Kundenes penger – tilhører alltid kjøper eller selger.</td></tr>
+<tr><td>Brukes til å betale selgers utlegg underveis (takst, annonse, grunnboksutskrift).</td><td>Kjøpers innbetaling, renter, og alt som skal fordeles i oppgjøret.</td></tr>
+</tbody></table></div>
+<p><b>Klientmidler</b> er ikke bare penger. Også kjøpers banks pantedokument og et signert skjøte er klientmidler som megler oppbevarer for andre.</p>
+<h3>Reglene du må kunne</h3>
+<ul>
+<li>Klientmidler skal holdes <b>adskilt</b> fra foretakets egne penger og kunne identifiseres – det sikrer kundene hvis meglerforetaket går konkurs.</li>
+<li>Alle bruker en <b>samleklientkonto</b>, og <b>kundereskontroen</b> viser hvem som eier hva.</li>
+<li>Bare <b>fagansvarlig</b> (og den hun gir skriftlig fullmakt) kan disponere klientkontoen.</li>
+<li>Banken må gi en <b>motregningserklæring</b>: bankens krav mot foretaket kan ikke dekkes av kundenes penger.</li>
+<li>Klientkontoen <b>avstemmes hver måned</b>.</li>
+<li>Megler kan bare trekke sitt <b>vederlag</b> fra oppgjøret med samtykke fra oppdragsgiver gitt <i>etter</i> at handel er inngått.</li>
+</ul>
+<h3>Renter – hvem får dem?</h3>
+<p>Den som <b>eier pengene</b>, får rentene. Ved vanlig salg (avhendingslova) eier kjøper kjøpesummen fram til <b>overtakelse</b>, deretter selger. Kjøpers omkostninger (dokumentavgift og gebyrer) er alltid kjøpers penger til de brukes. Renter under <b>½ rettsgebyr</b> (672,50 kr i 2026) per klient trenger ikke utbetales.</p>
+<div class="callout"><b>Husk:</b> Selgers utlegg betales fra <b>driftskontoen</b> underveis og hentes inn fra klientkontoen ved oppgjøret. Kjøpers omkostninger betales fra <b>klientkontoen</b> med kjøpers egne penger.</div>
+`},
+{id:"l3", tittel:"Grunnboken, hjemmel og pant", kort:"Hvem eier boligen på papiret, hva som hefter i den, og prioritet.", ov:{tema:["gb"]}, html:`
+<p><b>Grunnboken</b> er Kartverkets register over hvem som eier eiendommer og hvilke rettigheter som hefter i dem. En <b>grunnboksutskrift</b> viser:</p>
+<ul><li><b>Hjemmelsopplysninger</b> – hvem som står som eier («hjemmelshaver»).</li><li><b>Heftelser</b> – pant, servitutter (f.eks. veirett), erklæringer.</li><li><b>Grunndata</b> – hvilken eiendom den er skilt ut fra.</li></ul>
+<h3>Begreper</h3>
+<div class="tblwrap"><table class="calc"><tbody>
+<tr><td><b>Hjemmel</b></td><td>Den som står registrert som eier. Kjøper får hjemmel når <b>skjøtet</b> tinglyses.</td></tr>
+<tr><td><b>Tinglysing</b></td><td>Registrering i grunnboken. Gir <b>rettsvern</b> – retten gjelder overfor alle.</td></tr>
+<tr><td><b>Pant</b></td><td>Sikkerhet for et lån. Avtalepant (banklån), utleggspant (tvang fra kreditor), legalpant (lovbestemt, f.eks. borettslag og kommunen).</td></tr>
+<tr><td><b>Prioritet</b></td><td>Rekkefølgen pantene dekkes i. «Først i tid, best i rett» – ved elektronisk tinglysing teller klokkeslettet.</td></tr>
+<tr><td><b>Prioritetsvikelse</b></td><td>En panthaver godtar å stå bak en annen.</td></tr>
+</tbody></table></div>
+<h3>Hvordan slettes selgers pant?</h3>
+<ul>
+<li><b>Bank:</b> megler innhenter skriftlig saldo og overfører pengene «under forutsetning av at pantet slettes».</li>
+<li><b>Privatperson som panthaver:</b> megler må ha <b>originalt pantedokument kvittert for avlysning</b> før pengene sendes.</li>
+<li><b>Utlegg:</b> slettes med en løs erklæring fra kreditor.</li>
+<li><b>Legalpant</b> (f.eks. ubetalt eiendomsskatt eller felleskostnader) tinglyses ikke – megler må spørre kreditorene.</li>
+</ul>
+<div class="callout"><b>Husk:</b> Kjøpers bank vil normalt ha <b>1. prioritet</b>. Derfor må alle selgers pant slettes, og skjøtet og kjøpers pant sendes til tinglysing <b>samtidig</b> – pantet kan ikke tinglyses før kjøper har hjemmel.</div>
+`},
+{id:"l4", tittel:"Eierformer: selveier, sameie og borettslag", kort:"Hva som er forskjellen, og hvorfor det endrer regnestykket.", ov:{tema:["ab"]}, html:`
+<p>Eierformen styrer nesten alt i oppgjøret: om det er dokumentavgift, hva som tinglyses, og om det er en forretningsfører involvert.</p>
+<div class="tblwrap"><table class="calc"><thead><tr><th></th><th>Selveier (enebolig)</th><th>Eierseksjon (sameie)</th><th>Borettslag (andel)</th></tr></thead><tbody>
+<tr><td>Hva kjøpes</td><td>Fast eiendom</td><td>Fast eiendom (seksjon)</td><td>En andel i et lag – ikke fast eiendom</td></tr>
+<tr><td>Overføres med</td><td>Skjøte</td><td>Skjøte</td><td>Hjemmelsovergang for andel</td></tr>
+<tr><td>Dokumentavgift</td><td>Ja, 2,5 %</td><td>Ja, 2,5 % – fellesgjeld legges til grunnlaget</td><td><b>Nei</b></td></tr>
+<tr><td>Fellesgjeld</td><td>–</td><td>Kan finnes</td><td>Vanlig</td></tr>
+<tr><td>Forretningsfører</td><td>Nei</td><td>Ja</td><td>Ja</td></tr>
+<tr><td>Eierskiftegebyr</td><td>Nei</td><td>Etter avtale/vedtekter</td><td>Inntil 4 R (5 380 kr), alltid selger</td></tr>
+</tbody></table></div>
+<h3>Fellesgjeld</h3>
+<p>Fellesgjeld er laget eller sameiets lån, fordelt på boenhetene. Kjøper overtar andelen sin av gjelden <b>uten at det går penger via megler</b>. Derfor:</p>
+<ul>
+<li><b>Totalpris</b> = kjøpesum + andel fellesgjeld (+ omkostninger).</li>
+<li><b>Provisjonen</b> beregnes av salgssum <b>inkludert</b> fellesgjeld.</li>
+<li><b>Kjøpers innbetaling</b> til megler omfatter <b>ikke</b> fellesgjelden.</li>
+</ul>
+<h3>Forkjøpsrett i borettslag</h3>
+<p>Andre andelseiere (og medlemmer i boligbyggelaget) kan ha rett til å overta andelen til samme pris. Fristen er <b>20 dager</b> etter melding om eierskiftet, eller <b>5 hverdager</b> hvis andelen er forhåndsutlyst (gebyr inntil 5 R). Forkjøpsretten må være avklart <b>før overtakelse</b>.</p>
+<h3>Aksjebolig</h3>
+<p>En aksje i et boligaksjeselskap med rett til en bolig. Eierskiftet får rettsvern ved <b>melding til selskapet</b>. Megler må sjekke aksjeeierboken, grunnboken og Løsøreregisteret. Det kan ikke opprettes nye boligaksjeselskaper.</p>
+`},
+{id:"l5", tittel:"Kjøpers omkostninger og dokumentavgift", kort:"Gebyrene for 2026, avrunding og når det ikke er dokumentavgift.", ov:{tema:["da"], gen:["omk"]}, html:`
+<p>I tillegg til kjøpesummen betaler kjøper <b>omkostninger</b>. Bruk alltid dagens satser – boka er fra 2019 og har gamle tall.</p>
+<div class="tblwrap"><table class="calc"><tbody>
+<tr><td>Dokumentavgift (fast eiendom)</td><td class="n">2,5 %</td></tr>
+<tr><td>Tinglysing av skjøte / hjemmelsovergang for andel</td><td class="n">545 kr</td></tr>
+<tr><td>Tinglysing av hvert pantedokument</td><td class="n">545 kr</td></tr>
+<tr><td>Bekreftet grunnboksutskrift (kjøpers «attest»)</td><td class="n">260 kr</td></tr>
+</tbody></table></div>
+<h3>Avrunding av dokumentavgiften</h3>
+<ol><li>Finn grunnlaget (vanligvis kjøpesummen).</li><li>Rund grunnlaget <b>ned</b> til nærmeste 1 000.</li><li>Gang med 2,5 %.</li><li>Rund avgiften <b>ned</b> til nærmeste 10. Minst 250 kr.</li></ol>
+<h3>Hva er grunnlaget?</h3>
+<ul>
+<li><b>Løsøre inkludert i kjøpesummen</b> (møbler, maskiner, inventar) trekkes <b>fra</b>.</li>
+<li><b>Fellesgjeld i sameie</b> legges <b>til</b>.</li>
+<li><b>Borettslag:</b> ingen dokumentavgift i det hele tatt.</li>
+<li>Løsøre som kjøpes <b>i tillegg</b> til kjøpesummen påvirker ikke avgiften.</li>
+</ul>
+<h3>Eksempel</h3>
+<p>Enebolig solgt for 1 200 000, inkludert maskiner og løsøre for 66 500. Kjøper tar opp lån (ett pantedokument).</p>
+<div class="tblwrap"><table class="calc"><tbody>
+<tr><td>Kjøpesum 1 200 000 − løsøre 66 500</td><td class="n">1 133 500</td></tr>
+<tr><td>Grunnlag avrundet ned til 1 000</td><td class="n">1 133 000</td></tr>
+<tr><td>× 2,5 % = 28 325 → ned til nærmeste 10</td><td class="n">28 320</td></tr>
+<tr><td>Tinglysing skjøte</td><td class="n">545</td></tr>
+<tr><td>Tinglysing pantedokument</td><td class="n">545</td></tr>
+<tr><td>Grunnboksutskrift</td><td class="n">260</td></tr>
+<tr class="sum"><td>Omkostninger</td><td class="n">29 670</td></tr>
+<tr class="sum"><td>Kjøper innbetaler 1 200 000 + 29 670</td><td class="n">1 229 670</td></tr>
+</tbody></table></div>
+<h3>Når slipper man dokumentavgift?</h3>
+<div class="tblwrap"><table class="calc"><tbody>
+<tr><td>Ektefeller ved skilsmisse</td><td>Fritak</td></tr>
+<tr><td>Samboere ved samlivsbrudd – felles bolig + minst <b>2 års felles adresse</b> eller <b>felles barn</b></td><td>Fritak</td></tr>
+<tr><td>Samboere i 10 måneder uten barn</td><td>Avgift av den halvparten som overføres</td></tr>
+<tr><td>Arv etter loven</td><td>Fritak for den ideelle arveandelen</td></tr>
+<tr><td>Testamentsarving som selger videre</td><td>Fritak hvis skjøtet til kjøper tinglyses <b>samme dag</b></td></tr>
+<tr><td>Uskifte</td><td>Fritak – og gratis tinglysing</td></tr>
+<tr><td>Nybygg, første salg</td><td>Avgift bare av tomteverdien</td></tr>
+</tbody></table></div>
+<div class="callout"><b>Husk:</b> Ved samlivsbrudd er kjøpesummen bare <b>halvparten</b> av verdien – kjøper overtar bare den andres del. Er det avgift, beregnes den av den halvparten.</div>
+`},
+{id:"l6", tittel:"Sikringsobligasjon og inneståelse", kort:"Hvordan megler sikrer kjøper og kjøpers bank.", ov:{tema:["so","in"]}, html:`
+<h3>Sikringsobligasjonen («pant med urådighet»)</h3>
+<p>Rett etter at kjøpekontrakten er signert, tinglyser megler et pantedokument i selgers eiendom med <b>meglerforetaket som panthaver</b>, og en <b>urådighetserklæring</b> fra selger. Den:</p>
+<ul>
+<li>tar opp prioritet, slik at megler kan garantere at kjøpers bank får riktig plass,</li>
+<li>gir kjøper pantesikkerhet hvis selger går konkurs før skjøtet er tinglyst,</li>
+<li>hindrer selger i å selge eller pantsette boligen på nytt (dobbeltsalg).</li>
+</ul>
+<p>Pålydende skal være <b>minst kjøpesummen</b>. Tinglysingsgebyret (545 kr) er et <b>utlegg på selger</b>. Urådigheten stopper ikke utlegg, arrest eller konkurs. Sikringen slettes når handelen er gjennomført – helst når selgers pant faktisk er slettet.</p>
+<h3>Inneståelse og «bundne midler»</h3>
+<p>Kjøpers bank overfører lånet med <b>vilkår</b>, f.eks.: «Beløpet overføres under forutsetning av at vedlagte pantedokument tinglyses med 1. prioritet.» Bruker megler pengene, har megler godtatt vilkårene og står inne for at de blir oppfylt (<b>passiv inneståelse</b>).</p>
+<ul>
+<li>Pengene er <b>bundne</b> – de kan ikke brukes før vilkårene er oppfylt.</li>
+<li>Kan vilkårene ikke oppfylles, må banken endre dem, ellers må pengene sendes tilbake.</li>
+<li>Meglers ansvar er i utgangspunktet begrenset til <b>beløpet som er mottatt</b>.</li>
+<li>Vilkår megler ikke kontrollerer (f.eks. «ingen bruksretter skal tinglyses») kan ikke aksepteres.</li>
+</ul>
+`},
+{id:"l7", tittel:"Vederlag, provisjon og utlegg", kort:"Hva selger betaler megler, og hvordan mva skilles ut.", ov:{tema:["rv"], gen:["prov"]}, html:`
+<p><b>Vederlag</b> er meglers honorar, ofte en <b>provisjon</b> i prosent av salgssummen. <b>Utlegg</b> er kostnader megler har lagt ut for selger: grunnboksutskrift, takst, annonser, opplysninger fra forretningsfører, tinglysing av sikringen. Begge betales av <b>oppdragsgiver</b> (selger).</p>
+<h3>Slik regner du provisjon</h3>
+<ol>
+<li>Grunnlag = salgssum <b>+ eventuell fellesgjeld</b>.</li>
+<li>Gang med satsen (oppgaven oppgir den, f.eks. 2,5 % inkl. mva).</li>
+<li>Sjekk <b>minimumsprovisjonen</b> – blir prosenten lavere, gjelder minimum.</li>
+<li>Skill ut mva: <b>mva = 1/5</b> av beløpet inkl. 25 % mva. Vederlag = 4/5.</li>
+</ol>
+<div class="tblwrap"><table class="calc"><tbody>
+<tr><td colspan="2"><i>Andel i borettslag: salgssum 900 000, fellesgjeld 500 000, sats 3,5 % inkl. mva, minimum 35 000</i></td></tr>
+<tr><td>Grunnlag 900 000 + 500 000</td><td class="n">1 400 000</td></tr>
+<tr><td>× 3,5 %</td><td class="n">49 000</td></tr>
+<tr><td>Mva (1/5)</td><td class="n">9 800</td></tr>
+<tr><td>Vederlagsinntekt (4/5)</td><td class="n">39 200</td></tr>
+</tbody></table></div>
+<div class="callout"><b>Feilen alle gjør:</b> mva er ikke 25 % av beløpet inkl. mva. 25 % av 49 000 er 12 250 – feil. 49 000 / 1,25 = 39 200, og 49 000 − 39 200 = 9 800.</div>
+<h3>Regler</h3>
+<ul>
+<li>Utlegg må være avtalt i oppdragsavtalen og dokumentert med faktura.</li>
+<li>Vederlaget forfaller når handel er inngått – i oppgavene bokføres provisjonen samme dag som budaksept.</li>
+<li>Progressiv provisjon er forbudt i forbrukeroppdrag.</li>
+<li>Ved samlivsbrudd brukes ofte <b>minimumsprovisjon</b>, og salgsomkostningene deles likt.</li>
+</ul>
+`},
+{id:"l8", tittel:"Oppgjøret steg for steg", kort:"Fra budaksept til utbetaling – i riktig rekkefølge.", ov:{tema:["gj","oj"]}, html:`
+<ol class="steps">
+<li><b>Oppdrag inngås.</b> ID-kontroll av selger (hvitvasking). Megler bestiller grunnboksutskrift, takst, info fra forretningsfører, annonse – fakturaene er <b>utlegg på selger</b>, betalt fra driftskonto.</li>
+<li><b>Budaksept.</b> Kjøpesummen bokføres samme dag. Provisjonen bokføres.</li>
+<li><b>Kontraktsmøte.</b> Kjøpekontrakt, skjøte og sikringsobligasjon signeres. ID-kontroll av kjøper. Sikringen sendes til tinglysing.</li>
+<li><b>Klargjøring.</b> Megler sjekker kontrakten, hjemmelen, heftelsene, restgjeld på selgers lån, forkjøpsrett og fullmakter.</li>
+<li><b>Ca. 14 dager før overtakelse.</b> Ny sjekk av grunnboken (nye utlegg?). Avregninger forberedes.</li>
+<li><b>Innbetaling.</b> Kjøper betaler kjøpesum + omkostninger (± avregninger) til klientkontoen. Megler sjekker bankens vilkår.</li>
+<li><b>Overtakelse.</b> Kjøper får nøklene. Selger får råderett over pengene. Har ikke kjøper betalt, frarådes overtakelse.</li>
+<li><b>Tinglysing.</b> Skjøte og kjøpers pant sendes til Kartverket samtidig.</li>
+<li><b>Tinglyst retur + faktura.</b> Kartverket fakturerer dokumentavgift og gebyrer (kjøpers – betales fra klientkonto).</li>
+<li><b>Oppgjør til selger.</b> Selgers lån innfris, eventuell forretningsfører betales, meglers utlegg og vederlag overføres til driftskonto, resten utbetales selger.</li>
+<li><b>Etterarbeid.</b> Følg opp at selgers pant slettes. Bestill bekreftet grunnboksutskrift for kjøper (260 kr) – den siste kostnaden. Slett sikringen. Send oppgjørsoppstillinger.</li>
+</ol>
+<div class="callout"><b>Husk:</b> Megler utbetaler ikke noe til selger før kjøper har fått <b>rettsvern</b> – skjøtet må være tinglyst uten anmerkninger.</div>
+`},
+{id:"l9", tittel:"Avregninger mellom kjøper og selger", kort:"Dagberegning, hvem betaler hvem, og formelen.", ov:{tema:["ar"], gen:["avr"]}, html:`
+<p>Noen kostnader og inntekter gjelder en periode som deles av selger og kjøper. Megler fordeler dem per <b>overtakelsesdagen</b>.</p>
+<h3>Regnereglene i faget</h3>
+<ul>
+<li>Hver måned har <b>30 dager</b>. Kvartal = 90, halvår = 180, år = 360.</li>
+<li><b>Overtakelsesdagen tilhører kjøper.</b> Overtakelse 10.1 → kjøper har 10.–30. januar = 30 − 10 + 1 = <b>21 dager</b>. Selger har 1.–9. = 9 dager.</li>
+<li>Regn med desimaler og rund av <b>netto</b> til nærmeste krone til slutt.</li>
+</ul>
+<h3>Hvem betaler hvem? Spør: hvem har betalt (eller fått) pengene?</h3>
+<div class="tblwrap"><table class="calc"><thead><tr><th>Situasjon</th><th>Hvem betaler</th><th>For hvilke dager</th></tr></thead><tbody>
+<tr><td>Selger har <b>forskuddsbetalt</b> en kostnad (felleskostnader, kommunale avgifter, festeavgift)</td><td>Kjøper → selger</td><td>Kjøpers dager</td></tr>
+<tr><td>Kostnaden er <b>ikke betalt</b>, og kjøper får fakturaen senere</td><td>Selger → kjøper</td><td>Selgers dager</td></tr>
+<tr><td>Leie er betalt <b>forskuddsvis til selger</b></td><td>Selger → kjøper</td><td>Kjøpers dager</td></tr>
+<tr><td>Leie betales <b>etterskuddsvis</b>, eller er ubetalt, og <b>kjøper</b> får den inn</td><td>Kjøper → selger</td><td>Selgers dager</td></tr>
+<tr><td>Olje, utstyr, møbler kjøper overtar</td><td>Kjøper → selger</td><td>Avtalt pris</td></tr>
+</tbody></table></div>
+<p><b>Formel:</b> beløp for perioden ÷ dager i perioden × antall dager som skal dekkes.</p>
+<h3>Eksempel 1 – forskuddsbetalt</h3>
+<p>Overtakelse 12.10. Selger har betalt kommunale avgifter for 2. halvår (1.7–30.12) med 7 500 kr.</p>
+<div class="tblwrap"><table class="calc"><tbody>
+<tr><td>Kjøpers dager: oktober 30 − 12 + 1 = 19, november 30, desember 30</td><td class="n">79 dager</td></tr>
+<tr><td>7 500 / 180 × 79 = 3 291,67</td><td class="n">3 292</td></tr>
+<tr class="sum"><td colspan="2">Kjøper betaler selger 3 292 kr</td></tr>
+</tbody></table></div>
+<h3>Eksempel 2 – flere poster</h3>
+<p>Overtakelse 15.1. Leie 5 000/mnd er betalt til og med desember (januar ubetalt – kjøper får den inn). Kommunale avgifter 6 000 for 1. halvår er ikke betalt (forfall 1.3, kjøper betaler).</p>
+<div class="tblwrap"><table class="calc"><tbody>
+<tr><td>Leie: selgers dager 14 → 5 000 / 30 × 14 = 2 333,33</td><td class="n">Kjøper → selger</td></tr>
+<tr><td>Kommunale: selgers dager 14 → 6 000 / 180 × 14 = 466,67</td><td class="n">Selger → kjøper</td></tr>
+<tr class="sum"><td>Netto 2 333,33 − 466,67 = 1 866,67</td><td class="n">Kjøper betaler selger 1 867</td></tr>
+</tbody></table></div>
+<div class="callout"><b>Husk:</b> Avregning i kjøpers favør <b>trekkes fra</b> kjøpers innbetaling og fra selgers oppgjør. Avregning i selgers favør <b>legges til</b> begge.</div>
+`},
+{id:"l10", tittel:"Borettslag og sameie: oppgjør med forretningsfører", kort:"Forfalte felleskostnader og eierskiftegebyr.", ov:{tema:["ab","ar"], gen:["ff"]}, html:`
+<p>Felleskostnadene forfaller den <b>1. i hver måned</b>. Forretningsfører krever ofte at <b>alt som er forfalt</b> og <b>eierskiftegebyret</b> betales i oppgjøret. Megler betaler hele beløpet og fordeler det mellom partene.</p>
+<h3>Fordelingen</h3>
+<ul>
+<li><b>Selger:</b> alle ubetalte <b>hele måneder før</b> overtakelsesmåneden + dagene før overtakelse i overtakelsesmåneden + <b>eierskiftegebyret</b>.</li>
+<li><b>Kjøper:</b> dagene fra og med overtakelsesdagen i overtakelsesmåneden. Kjøpers del legges til innbetalingen.</li>
+<li>Overtakelse den 1.? Da betaler kjøper hele måneden.</li>
+</ul>
+<h3>Eksempel</h3>
+<p>Felleskostnader 3 800/mnd, betalt til og med november. Overtakelse 10.1. Eierskiftegebyr 3 440.</p>
+<div class="tblwrap"><table class="calc"><thead><tr><th></th><th>Selger</th><th>Kjøper</th></tr></thead><tbody>
+<tr><td>Desember (hel måned)</td><td class="n">3 800</td><td class="n"></td></tr>
+<tr><td>Januar 1.–9. (9 dager) / 10.–30. (21 dager)</td><td class="n">1 140</td><td class="n">2 660</td></tr>
+<tr><td>Eierskiftegebyr</td><td class="n">3 440</td><td class="n"></td></tr>
+<tr class="sum"><td>Sum</td><td class="n">8 380</td><td class="n">2 660</td></tr>
+<tr class="sum"><td>Til forretningsfører totalt</td><td class="n" colspan="2">11 040</td></tr>
+</tbody></table></div>
+<div class="callout"><b>Spesialtilfelle:</b> Har selger allerede betalt overtakelsesmåneden, betaler kjøper sine dager til <b>selger</b> i stedet for til forretningsfører. Kjøpers innbetaling blir den samme.</div>
+`},
+{id:"l11", tittel:"Oppstillingene: kjøpers innbetaling og selgers oppgjør", kort:"Malen du bruker i nesten alle eksamensoppgaver.", ov:{tema:["ar"], gen:["sel","omk"]}, html:`
+<h3>Kjøpers innbetaling</h3>
+<div class="tblwrap"><table class="calc"><tbody>
+<tr><td>Kjøpesum (uten fellesgjeld)</td><td class="n">+</td></tr>
+<tr><td>Dokumentavgift (ikke borettslag)</td><td class="n">+</td></tr>
+<tr><td>Tinglysing skjøte / hjemmelsovergang</td><td class="n">+ 545</td></tr>
+<tr><td>Tinglysing pant (hvis lån), per dokument</td><td class="n">+ 545</td></tr>
+<tr><td>Grunnboksutskrift</td><td class="n">+ 260</td></tr>
+<tr><td>Kjøpers del til forretningsfører</td><td class="n">+</td></tr>
+<tr><td>Løsøre kjøpt i tillegg</td><td class="n">+</td></tr>
+<tr><td>Avregninger: i selgers favør + / i kjøpers favør −</td><td class="n">±</td></tr>
+<tr><td>Forskudd kjøper allerede har betalt</td><td class="n">−</td></tr>
+<tr class="sum"><td>= Innbetales til overtakelse</td><td class="n"></td></tr>
+</tbody></table></div>
+<h3>Selgers oppgjør</h3>
+<div class="tblwrap"><table class="calc"><tbody>
+<tr><td>Salgssum</td><td class="n">+</td></tr>
+<tr><td>Renter som tilfaller selger</td><td class="n">+</td></tr>
+<tr><td>Løsøre / avregninger i selgers favør</td><td class="n">+</td></tr>
+<tr><td>Utlegg inkl. provisjon</td><td class="n">−</td></tr>
+<tr><td>Innfrielse av lån (inkl. renter)</td><td class="n">−</td></tr>
+<tr><td>Selgers del til forretningsfører (forfalt + eierskiftegebyr)</td><td class="n">−</td></tr>
+<tr><td>Avregninger i kjøpers favør</td><td class="n">−</td></tr>
+<tr><td>Tilbakeholdt beløp</td><td class="n">−</td></tr>
+<tr class="sum"><td>= Utbetales til selger</td><td class="n"></td></tr>
+</tbody></table></div>
+<h3>Eksempel (Oppgave 10 i boka)</h3>
+<p>Selveierleilighet solgt for 2 500 000. Selgers utlegg inkl. provisjon 75 400. Lån 1 300 000. Renter til selger 1 500. Kjøper låner (ett pant).</p>
+<div class="tblwrap"><table class="calc"><thead><tr><th>Kjøper</th><th></th><th>Selger</th><th></th></tr></thead><tbody>
+<tr><td>Kjøpesum</td><td class="n">2 500 000</td><td>Salgssum</td><td class="n">2 500 000</td></tr>
+<tr><td>Dokumentavgift</td><td class="n">62 500</td><td>− Utlegg</td><td class="n">75 400</td></tr>
+<tr><td>Skjøte + pant</td><td class="n">1 090</td><td>− Lån</td><td class="n">1 300 000</td></tr>
+<tr><td>Grunnboksutskrift</td><td class="n">260</td><td>+ Renter</td><td class="n">1 500</td></tr>
+<tr class="sum"><td>Innbetales</td><td class="n">2 563 850</td><td>Utbetales</td><td class="n">1 126 100</td></tr>
+</tbody></table></div>
+<div class="callout"><b>Sjekk alltid:</b> Står provisjonen allerede i «samlede utlegg», eller oppgis den separat? Er eierskiftegebyret med? Begge går igjen som feller.</div>
+`},
+{id:"l12", tittel:"Bokføring: sammendrag og kundespesifikasjon", kort:"Kontoene og de ti posteringene du må kunne til oppgave 1.", ov:{tema:["ff","ar"]}, html:`
+<p>Eksamenens oppgave 1 er nesten alltid: «fortsett posteringene i posteringssammendraget, kundespesifikasjonene og leverandørarkene». Du fører tre steder:</p>
+<ul>
+<li><b>Posteringssammendraget</b> – all økonomisk aktivitet i foretaket. Hver linje skal <b>gå i null</b>.</li>
+<li><b>Kundespesifikasjonen</b> – én per eiendom, viser selger, kjøper, utlegg og klientkonto.</li>
+<li><b>Leverandørarket</b> – én per leverandør (Kartverket, takstfirma, avis…).</li>
+</ul>
+<h3>Kontoene i sammendraget</h3>
+<div class="tblwrap"><table class="calc"><tbody>
+<tr><td>1500 Utlegg</td><td>Kostnader lagt ut for kunder (+ når påløpt, − når hentet inn)</td></tr>
+<tr><td>1930 Driftskonto</td><td>Foretakets egne penger</td></tr>
+<tr><td>1940 Klientkonto</td><td>Kundenes penger (+ inn, − ut)</td></tr>
+<tr><td>2400 Leverandør</td><td>Gjeld til leverandører (− ved faktura, + ved betaling)</td></tr>
+<tr><td>2410 Kundespesifikasjon</td><td>Motpost for kundenes mellomværende</td></tr>
+<tr><td>2700 Utgående mva</td><td>Mva-delen av provisjonen (−)</td></tr>
+<tr><td>3000 Vederlagsinntekt</td><td>Meglers inntekt (−)</td></tr>
+</tbody></table></div>
+<h3>Kundespesifikasjonen – slik leser du den</h3>
+<p>Kolonner: SELGER debet/kredit · KJØPER debet/kredit · UTLEGG debet/kredit · KLIENTKONTO debet/kredit.</p>
+<ul>
+<li><b>Selger kredit</b> = det selger har til gode. <b>Selger debet</b> = det som trekkes fra.</li>
+<li><b>Kjøper debet</b> = det kjøper skylder. <b>Kjøper kredit</b> = det kjøper har betalt.</li>
+<li><b>Utlegg debet</b> = påløpt utlegg. <b>Utlegg kredit</b> = utlegg dekket.</li>
+<li><b>Klientkonto debet</b> = penger inn. <b>Klientkonto kredit</b> = penger ut.</li>
+</ul>
+<h3>De ti posteringene</h3>
+<div class="tblwrap"><table class="calc small"><thead><tr><th>Hendelse</th><th>Sammendraget</th><th>Kundespesifikasjonen</th></tr></thead><tbody>
+<tr><td>Mottar faktura (grunnbok, takst, annonse, pant m/urådighet)</td><td>Utlegg +X, leverandør −X</td><td>Utlegg debet X</td></tr>
+<tr><td>Betaler faktura fra driftskonto</td><td>Drift −X, leverandør +X</td><td><i>Ingen føring</i></td></tr>
+<tr><td>Budaksept / kjøpekontrakt</td><td>Kundespes X / −X</td><td>Selger kredit, kjøper debet</td></tr>
+<tr><td>Provisjon P</td><td>Utlegg +P, mva −P/5, vederlag −4P/5</td><td>Utlegg debet P</td></tr>
+<tr><td>Innbetaling fra kjøper/bank</td><td>Klient +X, kundespes −X</td><td>Kjøper kredit, klient debet</td></tr>
+<tr><td>Kjøpers tinglysingsfaktura mottatt</td><td>Utlegg +X, leverandør −X</td><td>Utlegg debet X</td></tr>
+<tr><td>Kjøpers tinglysing betalt fra klientkonto</td><td>Utlegg −X, klient −X, leverandør +X, kundespes +X</td><td>Kjøper debet, utlegg kredit, klient kredit</td></tr>
+<tr><td>Innfri selgers lån</td><td>Klient −L, kundespes +L</td><td>Selger debet, klient kredit</td></tr>
+<tr><td>Overføre selgers utlegg</td><td>Utlegg −U, drift +U, klient −U, kundespes +U</td><td>Selger debet, utlegg kredit, klient kredit</td></tr>
+<tr><td>Utbetale selger</td><td>Klient −N, kundespes +N</td><td>Selger debet, klient kredit</td></tr>
+</tbody></table></div>
+<p>I tillegg: <b>renter</b> til selger (klient +, selger kredit), <b>avregning</b> kjøper→selger (selger kredit, kjøper debet), og <b>overføring til forretningsfører</b> (selger debet sin del, kjøper debet sin del, klient kredit totalen).</p>
+<div class="callout"><b>Kontroll:</b> Når oppgjøret er ferdig, skal selgers linje gå i null. Hos kjøper står ofte <b>260 kr</b> igjen – grunnboksutskriften som ikke er fakturert ennå.</div>
+`},
+{id:"l13", tittel:"Instruksjonsrett og tilbakehold", kort:"Hvem bestemmer over pengene, og når.", ov:{tema:["ir"]}, html:`
+<p>Megler eier ikke pengene og bestemmer ikke over dem. Megler må følge instruks fra den som har <b>råderett</b> – selv om megler er uenig.</p>
+<div class="tblwrap"><table class="calc"><thead><tr><th>Type salg</th><th>Kjøper har råderett til</th></tr></thead><tbody>
+<tr><td>Brukt bolig (avhendingslova)</td><td><b>Overtakelse</b></td></tr>
+<tr><td>Ny bolig under oppføring (bustadoppføringslova)</td><td><b>Hjemmelsoverføring</b> (skjøtet tinglyst)</td></tr>
+</tbody></table></div>
+<h3>Tilbakehold</h3>
+<ul>
+<li>Før overtakelse kan kjøper be megler holde tilbake et beløp, f.eks. på grunn av en mangel. Megler <b>må</b> følge instruksen.</li>
+<li>Instruksen må angi et <b>konkret beløp</b>. Kjøper kan holde tilbake det som trengs for å sikre kravet.</li>
+<li>Megler vurderer ikke om kravet er berettiget – det er partenes risiko. Megler veileder kjøper og varsler selger.</li>
+<li>Pengene blir stående på klientkonto til partene gir <b>felles instruks</b> eller det kommer en rettskraftig avgjørelse. Rentene fordeles etter samme nøkkel.</li>
+<li>Unntak etter overtakelse: hvis selger har gitt <b>kreditt</b> (overlevert uten betaling) eller opptrådt <b>svikaktig</b>.</li>
+</ul>
+<h3>Eksempel</h3>
+<p>80 000 holdes tilbake. Partene blir enige om at kjøper får 70 000. Rentene er 2 000.</p>
+<div class="tblwrap"><table class="calc"><tbody>
+<tr><td>Kjøper: 70 000 + 7/8 av rentene (1 750)</td><td class="n">71 750</td></tr>
+<tr><td>Selger: 10 000 + 1/8 av rentene (250)</td><td class="n">10 250</td></tr>
+</tbody></table></div>
+`},
+{id:"l14", tittel:"Samlivsbrudd, arv og andre spesialtilfeller", kort:"Situasjonene eksamen liker å teste.", ov:{tema:["as","sp","pr","hv"]}, html:`
+<h3>Samlivsbrudd og skilsmisse</h3>
+<p>Den ene kjøper ut den andre. Kjøpesummen er <b>halvparten</b> av verdien. Har de felles lån, innfris det fra klientkonto: kjøper betaler inn sin halvdel, og selgers halvdel trekkes fra oppgjøret. Salgsomkostningene deles ofte likt. Dokumentavgift: se fritakene i leksjon 5.</p>
+<h3>Arv og skifte</h3>
+<ul>
+<li><b>Privat skifte:</b> arvingene som påtar seg gjelden, får skifteattest og må være <b>enige</b> om salget.</li>
+<li><b>Uskifte:</b> gjenlevende ektefelle selger alene. Hjemmelserklæring ved uskifte er gratis og fritatt for dokumentavgift.</li>
+<li><b>Offentlig skifte:</b> bostyrer eller tingretten signerer skjøtet.</li>
+<li>Hjemmelserklæring ved arv koster 545 kr og er <b>selgers</b> kostnad. Sendes den samtidig med skjøtet til kjøper, betaler bare kjøper dokumentavgift.</li>
+</ul>
+<h3>Ny bolig (prosjekt)</h3>
+<p>Utbygger må stille <b>§ 12-garanti</b> (3 % før, 5 % etter overtakelse, i 5 år) før kjøper har betalingsplikt. Forskudd krever <b>§ 47-garanti</b>. Kjøper har råderett over pengene til skjøtet er tinglyst.</p>
+<h3>Hvitvasking</h3>
+<p>Selger ID-kontrolleres når oppdraget inngås, kjøper før oppgjøret. Uten ID-kontroll – ikke oppgjør. Mistanke undersøkes og rapporteres til <b>Økokrim</b>, uten å si det til kunden.</p>
+<h3>Andre</h3>
+<p><b>Overbeheftet eiendom</b> (mer gjeld enn verdi): megler må få pantefrafall fra kreditorene før salg. <b>Tvangssalg</b>: tingretten, medhjelper, fordelingskjennelse. <b>Mortifikasjon</b>: bortkommet pantedokument, behandles av Brønnøy tingrett.</p>
+`},
+{id:"l15", tittel:"Slik løser du eksamen", kort:"Mønsteret i oppgavene, sjekklister og fellene.", ov:{tema:["ff","ar"]}, html:`
+<h3>Eksamen følger nesten alltid samme mønster</h3>
+<ol>
+<li><b>Fortsett posteringene</b> fra casen (sammendrag, kundespesifikasjoner, leverandører).</li>
+<li><b>«Hva endres hvis …»</b> – samme eiendom med en endret forutsetning (selveier i stedet for borettslag, annen overtakelsesdato, tilbakehold). Sett opp gammel og ny oppstilling og vis differansen.</li>
+<li><b>Ny kundespesifikasjon</b> for én eiendom, eller <b>finn feilene</b> i en ferdig utfylt kundespesifikasjon.</li>
+<li><b>Hva utbetales selger / hva innbetaler kjøper?</b></li>
+</ol>
+<h3>Sjekkliste for «finn feilen»</h3>
+<ul>
+<li>Utdaterte gebyrer: 480, 585, 1 060, 172 → skal være 545 og 260.</li>
+<li>Provisjon: riktig sats? Fellesgjeld med i grunnlaget? Minimum?</li>
+<li>Dokumentavgift: løsøre trukket fra, fellesgjeld lagt til, avrundet riktig? Ingen avgift på borettslag?</li>
+<li>Kjøpers tinglysing ført som selgers utlegg?</li>
+<li>Betaling fra driftskonto ført på kunden?</li>
+<li>Snudd retning (kjøpekontrakt, løsøre, avregninger, innfrielse)?</li>
+<li>Innbetaling ført på selger i stedet for kjøper?</li>
+<li>Mangler utbetalingen til selger, eller tilbakeholdt beløp?</li>
+</ul>
+<h3>De vanligste fellene</h3>
+<ul>
+<li>Renter til selger skal <b>legges til</b>, ikke trekkes fra.</li>
+<li>Mva er 1/5, ikke 25 %.</li>
+<li>Samboerfritak krever 2 år <b>eller</b> felles barn.</li>
+<li>Overtakelsesdagen er kjøpers.</li>
+<li>Rund av netto, ikke hver linje.</li>
+<li>Bruk de oppgitte saldoene i casen – ikke regn dem på nytt.</li>
+<li>Skriv forutsetningene dine når oppgaven er uklar.</li>
+</ul>
+<div class="callout"><b>Tips:</b> Gå til «Satser og fasitfeil» før eksamen – fasitene i oppgaveboka har 15 kjente feil, så ikke stol blindt på dem.</div>
+`}
+];
+
+// ---------- satser ----------
+const S = {tl:545, gb:260, dok:0.025, R:1345};
+const MND = ["","januar","februar","mars","april","mai","juni","juli","august","september","oktober","november","desember"];
+const fmt = n => Math.round(n).toLocaleString("nb-NO") + " kr";
+const ri = (a,b) => a + Math.floor(Math.random()*(b-a+1));
+const pick = a => a[Math.floor(Math.random()*a.length)];
+const shuffle = a => {a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const dokavg = g => g<=0?0:Math.max(250, Math.floor(Math.floor(g/1000)*1000*S.dok/10)*10);
+const dkr = n => (Math.round(n*100)/100).toLocaleString("nb-NO",{minimumFractionDigits:0,maximumFractionDigits:2});
+
+function opts(correct, cands, unit){
+  const out=[correct];
+  for(const c of cands){ if(out.length>=4)break; if(c>0 && !out.some(x=>Math.abs(x-c)<1)) out.push(c); }
+  let k=1; while(out.length<4){ const c=correct+(k%2?1:-1)*S.tl*Math.ceil(k/2); if(c>0&&!out.some(x=>Math.abs(x-c)<1))out.push(c); k++; }
+  return out.map(v=>({v,t:unit?unit(v):fmt(v)}));
+}
+function mk(id,q,options,correctIdx,e,rows,total){ return {id,gen:true,q,o:options.map(x=>x.t),a:correctIdx,e,rows,total}; }
+
+// ---------- generator 1: kjøpers omkostninger ----------
+function genOmk(){
+  const type = pick(["enebolig","enebolig","seksjon","borettslag"]);
+  const price = ri(1500,9500)*1000 + pick([0,0,500,250,750]);
+  const pants = pick([0,1,1,1,2]);
+  const pTxt = pants===0?"Kjøper betaler med oppsparte midler.":pants===1?"Kjøper tinglyser ett pantedokument.":"Kjøper tinglyser to pantedokumenter.";
+  let q, grunn=0, rows=[], wrong=[], extra="";
+  if(type==="enebolig"){
+    const los = Math.random()<0.5 ? ri(15,180)*500 + pick([0,0,250]) : 0;
+    grunn = price - los;
+    q = `En selveid enebolig selges for ${fmt(price)}${los?`, inkludert løsøre verdsatt til ${fmt(los)}`:""}. ${pTxt} Hva er kjøpers samlede omkostninger?`;
+    if(los) { rows.push(["Avgiftsgrunnlag "+fmt(price)+" − løsøre "+fmt(los), grunn]); wrong.push(dokavg(price)+S.tl*(1+pants)+S.gb); }
+  } else if(type==="seksjon"){
+    const fg = ri(40,420)*1000 + ri(0,999);
+    grunn = price + fg;
+    q = `En selveierleilighet selges for ${fmt(price)}. Seksjonens andel fellesgjeld er ${fmt(fg)}. ${pTxt} Hva er kjøpers samlede omkostninger?`;
+    rows.push(["Avgiftsgrunnlag "+fmt(price)+" + fellesgjeld "+fmt(fg), grunn]);
+    wrong.push(dokavg(price)+S.tl*(1+pants)+S.gb);
+  } else {
+    const fg = ri(100,900)*1000;
+    q = `En andel i borettslag selges for ${fmt(price)}. Andel fellesgjeld er ${fmt(fg)}. ${pTxt} Hva er kjøpers samlede omkostninger?`;
+    wrong.push(dokavg(price)+S.tl*(1+pants)+S.gb, dokavg(price+fg)+S.tl*(1+pants)+S.gb);
+  }
+  const d = dokavg(grunn);
+  const total = d + S.tl + S.tl*pants + S.gb;
+  if(type!=="borettslag"){
+    const g1=Math.floor(grunn/1000)*1000;
+    rows.push([`Dokumentavgift: ${fmt(g1)} × 2,5 % = ${dkr(g1*S.dok)}, avrundet ned til nærmeste 10`, d]);
+    rows.push(["Tinglysing skjøte", S.tl]);
+    wrong.push(Math.round(grunn*S.dok)+S.tl*(1+pants)+S.gb);
+  } else {
+    rows.push(["Dokumentavgift (ikke for borettslag)",0]);
+    rows.push(["Tinglysing hjemmelsovergang",S.tl]);
+  }
+  if(pants) rows.push([`Tinglysing pantedokument × ${pants}`, S.tl*pants]);
+  rows.push(["Bekreftet grunnboksutskrift", S.gb]);
+  wrong.push(d + (type==="borettslag"?430:525)*(1+pants) + 172, d + S.tl*(1+pants), d + S.tl*(pants?pants+1:2)+S.gb);
+  const o = opts(total, shuffle(wrong));
+  return mk(null,q,o,0, type==="borettslag"?"Borettslagsandel er ikke fast eiendom, så det er ingen dokumentavgift – heller ikke av fellesgjelden.":"Dokumentavgiften beregnes av grunnlaget rundet ned til nærmeste 1 000, og avgiften rundes ned til nærmeste 10.", rows, total);
+}
+
+// ---------- generator 2: provisjon ----------
+function genProv(){
+  const c = pick([{p:2.5,min:35000},{p:3.0,min:30000},{p:1.25,min:30000},{p:3.5,min:35000}]);
+  const type = pick(["selveier","seksjon","borettslag"]);
+  const price = Math.random()<0.2 ? ri(500,1100)*1000 : ri(1500,9000)*1000;
+  const fg = type==="selveier"?0:ri(50,800)*1000+ri(0,999);
+  const base = price+fg;
+  const prov = Math.max(Math.round(base*c.p/100), c.min);
+  const askMva = Math.random()<0.35;
+  const pTxt = String(c.p).replace(".",",");
+  const desc = type==="selveier"?`En selveid enebolig selges for ${fmt(price)}.`:type==="seksjon"?`En selveierleilighet selges for ${fmt(price)} og har ${fmt(fg)} i fellesgjeld.`:`En andel i borettslag selges for ${fmt(price)} + andel fellesgjeld ${fmt(fg)}.`;
+  const rule = `Standardsats: ${pTxt} % inkl. mva. av salgssummen inkludert eventuell fellesgjeld, minimum ${fmt(c.min)} inkl. mva.`;
+  const rows=[["Provisjonsgrunnlag", base],[`${pTxt} % av grunnlaget = ${dkr(base*c.p/100)}${base*c.p/100<c.min?" → minimum gjelder":""}`, prov]];
+  if(askMva){
+    const mva = Math.round(prov/5);
+    rows.push(["Mva = 1/5 av beløpet inkl. mva", mva],["Vederlag (4/5)", prov-mva]);
+    const o = opts(mva, shuffle([Math.round(prov*0.25), Math.round(Math.max(Math.round(price*c.p/100),c.min)/5), Math.round(prov*0.2*0.8), Math.round(prov/4)]));
+    return mk(null,`${desc} ${rule} Hvor mye av provisjonen er merverdiavgift?`,o,0,"Mva-delen av et beløp inkl. 25 % mva er beløpet / 1,25 × 0,25 = 1/5.",rows,mva);
+  }
+  const o = opts(prov, shuffle([Math.max(Math.round(price*c.p/100),c.min), Math.round(base*c.p/100), Math.round(base*c.p/100*1.25), Math.round(base*c.p/100/1.25)]));
+  return mk(null,`${desc} ${rule} Hva blir provisjonen inkl. mva?`,o,0,"Fellesgjelden skal med i grunnlaget, og minimumsprovisjonen gjelder hvis prosentsatsen gir et lavere beløp.",rows,prov);
+}
+
+// ---------- generator 3: avregning ----------
+function daysFrom(d,m,end){ return (30-d+1) + 30*(end-m); }
+function daysBefore(d,m,start){ return 30*(m-start) + (d-1); }
+function genAvr(){
+  const kind = pick(["fk","komHalv","komIkke","aar","leieFor","leieEtter","aarSenere"]);
+  let m = ri(1,12), d = ri(2,28), amt, days, base, buyerPays, txt, perTxt;
+  if(kind==="fk"){ amt=ri(15,70)*100; days=daysFrom(d,m,m); base=30; buyerPays=true;
+    txt=`Selger har forskuddsbetalt felleskostnadene for ${MND[m]} på ${fmt(amt)}.`; perTxt="måned"; }
+  else if(kind==="komHalv"){ amt=ri(30,150)*100; const h=m<=6?1:2; const end=h===1?6:12; days=daysFrom(d,m,end); base=180; buyerPays=true;
+    txt=`Selger har betalt de kommunale avgiftene for ${h===1?"første":"andre"} halvår på ${fmt(amt)}.`; perTxt="halvår"; }
+  else if(kind==="komIkke"){ amt=ri(30,150)*100; const h=m<=6?1:2; const start=h===1?1:7; days=daysBefore(d,m,start); if(days<1){d=ri(5,28);days=daysBefore(d,m,start);} base=180; buyerPays=false;
+    txt=`De kommunale avgiftene for ${h===1?"første":"andre"} halvår er ${fmt(amt)}. De er ikke betalt, og fakturaen forfaller etter overtakelse og betales av kjøper.`; perTxt="halvår"; }
+  else if(kind==="aar"){ amt=ri(20,180)*100; days=daysFrom(d,m,12); base=360; buyerPays=true;
+    const w=pick(["festeavgiften","de kommunale avgiftene","kontingenten til veilaget"]);
+    txt=`Selger har betalt ${w} for hele året: ${fmt(amt)}.`; perTxt="år"; }
+  else if(kind==="leieFor"){ amt=ri(40,150)*100; days=daysFrom(d,m,m); base=30; buyerPays=false;
+    txt=`Boligen har en utleiedel. Leien er ${fmt(amt)} per måned, betales forskuddsvis den 1., og leien for ${MND[m]} er betalt til selger.`; perTxt="måned"; }
+  else if(kind==="leieEtter"){ amt=ri(40,150)*100; days=d-1; base=30; buyerPays=true;
+    txt=`Boligen har en utleiedel. Leien er ${fmt(amt)} per måned og betales etterskuddsvis den 30. til den som eier boligen da.`; perTxt="måned"; }
+  else { amt=ri(30,150)*100; days=daysBefore(d,m,1); if(days<1){m=ri(2,12);days=daysBefore(d,m,1);} base=360; buyerPays=false;
+    const w=pick(["vaktselskapet","brøytingen","veiavgiften"]);
+    txt=`Fakturaen for ${w} på ${fmt(amt)} for hele året sendes ut etter overtakelse til ny eier.`; perTxt="år"; }
+  const val = amt/base*days, v = Math.round(val);
+  const dir = buyerPays?"Kjøper betaler selger":"Selger betaler kjøper", rev = buyerPays?"Selger betaler kjøper":"Kjøper betaler selger";
+  const alt = [
+    {v,t:`${dir} ${fmt(v)}`},
+    {v,t:`${rev} ${fmt(v)}`},
+    {v:Math.round(amt/base*(days+1)),t:`${dir} ${fmt(amt/base*(days+1))}`},
+    {v:Math.round(amt/base*(base-days)),t:`${dir} ${fmt(amt/base*(base-days))}`},
+    {v:Math.round(amt/base*Math.max(days-1,1)),t:`${dir} ${fmt(amt/base*Math.max(days-1,1))}`}
+  ];
+  const seen=new Set(), o=[];
+  for(const x of alt){ if(o.length<4 && !seen.has(x.t)){seen.add(x.t);o.push(x);} }
+  const q = `Overtakelse er ${d}.${m}. ${txt} Hvem betaler hvem, og hvor mye?`;
+  const who = buyerPays?"kjøper":"selger";
+  const rows=[[`Dager ${who} skal dekke (overtakelsesdagen er kjøpers)`, days, "d"],[`${fmt(amt)} / ${base} × ${days} = ${dkr(val)}`, v]];
+  return mk(null,q,o,0,`Faget regner med ${base===30?"30 dager per måned":base===180?"180 dager per halvår":"360 dager per år"}. ${buyerPays?"Kjøper refunderer selger for kjøpers periode.":"Selger dekker sin egen periode overfor kjøper."}`,rows,v);
+}
+
+// ---------- generator 4: forretningsfører ----------
+function genFF(){
+  const fk = ri(10,60)*100, m = ri(1,4), back = pick([0,0,1,1,2,3]), d = pick([1,ri(2,28),ri(2,28),ri(2,28)]);
+  const eier = pick([2400,3000,3200,3400,3440,4200,4400,5380]);
+  const lastPaid = ((m-1-back+11)%12)+1;
+  const selgerMnd = back;
+  const sel = fk*selgerMnd + fk/30*(d-1) + eier, kj = fk/30*(30-d+1);
+  const selR = Math.round(sel), kjR = Math.round(kj);
+  const ask = pick(["selger","kjoper","total"]);
+  const q = `Andel i borettslag. Felleskostnadene er ${fmt(fk)} per måned med forfall den 1., og de er betalt til og med ${MND[lastPaid]}. Eierskiftegebyret er ${fmt(eier)}. Overtakelse er ${d}.${m}. Forretningsfører krever forfalte felleskostnader og eierskiftegebyr betalt i oppgjøret. ` +
+    (ask==="selger"?"Hvor mye skal belastes selger?":ask==="kjoper"?"Hvor mye skal belastes kjøper?":"Hvor mye skal totalt overføres forretningsfører?");
+  const tot = selR+kjR;
+  const correct = ask==="selger"?selR:ask==="kjoper"?kjR:tot;
+  const cands = ask==="selger"?[Math.round(fk/30*(d-1)+eier), Math.round(sel-eier), Math.round(fk*(selgerMnd+1)+eier), Math.round(fk*selgerMnd + fk/30*d + eier)]
+    : ask==="kjoper"?[Math.round(fk/30*(30-d)), Math.round(kj+eier), fk, Math.round(fk/30*(d-1))]
+    : [tot-eier, fk*(selgerMnd+1), tot+fk, Math.round(fk*selgerMnd+eier)];
+  const rows=[];
+  if(selgerMnd) rows.push([`Selger: ${selgerMnd} hel${selgerMnd>1?"e":""} måned${selgerMnd>1?"er":""} før overtakelsesmåneden`, fk*selgerMnd]);
+  if(d>1) rows.push([`Selger: ${d-1} dager i ${MND[m]}`, Math.round(fk/30*(d-1))]);
+  rows.push(["Selger: eierskiftegebyr", eier],[`Kjøper: ${30-d+1} dager i ${MND[m]}`, kjR]);
+  const o = opts(correct, shuffle(cands));
+  return mk(null,q,o,0,"Alle forfalte måneder før overtakelsesmåneden er selgers. Overtakelsesmåneden deles: selger dagene før overtakelse, kjøper fra og med overtakelsesdagen. Eierskiftegebyret er selgers.",rows,correct);
+}
+
+// ---------- generator 5: selgers oppgjør ----------
+function genSelger(){
+  const price = ri(1500,12000)*1000, borett = Math.random()<0.35;
+  const utl = ri(40,260)*1000 + ri(0,999), lan = Math.random()<0.15?0:Math.min(ri(100,8000)*1000+ri(0,999), price-utl-50000);
+  const renter = Math.random()<0.7?ri(3,30)*50:0;
+  const eier = borett?pick([3200,3440,4400]):0, ffDel = borett?ri(0,40)*100:0;
+  const los = Math.random()<0.3?ri(5,80)*1000:0;
+  let tilb = Math.random()<0.25?ri(5,30)*10000:0;
+  const pre = price + renter + los - utl - lan - eier - ffDel;
+  if(tilb > pre*0.7) tilb = 0;
+  const pay = pre - tilb;
+  let q = `${borett?"En andel i borettslag":"En selveid bolig"} er solgt for ${fmt(price)}. Samlede utlegg selger skal belastes (inkl. provisjon) er ${fmt(utl)}. `;
+  q += lan?`Selgers lån på ${fmt(lan)} inkl. renter innfris. `:"Eiendommen er gjeldfri. ";
+  if(renter) q += `Renter på klientkonto som tilfaller selger er ${fmt(renter)}. `;
+  if(borett) q += `Selger skal dekke eierskiftegebyr på ${fmt(eier)}${ffDel?` og ${fmt(ffDel)} i forfalte felleskostnader`:""} til forretningsfører. `;
+  if(los) q += `Kjøper betaler i tillegg ${fmt(los)} for løsøre, gjort opp i oppgjøret. `;
+  if(tilb) q += `Kjøper har holdt tilbake ${fmt(tilb)} på klientkonto på grunn av en påstått mangel. `;
+  q += "Hvor mye utbetales til selger nå?";
+  const cands=[];
+  if(renter) cands.push(pay-2*renter);
+  if(borett) cands.push(pay+eier);
+  if(tilb) cands.push(pay+tilb);
+  if(los) cands.push(pay-los);
+  cands.push(pay+utl-Math.round(utl*0.8), pay-S.tl, pay+S.gb);
+  const rows=[["Salgssum",price]];
+  if(renter)rows.push(["+ renter",renter]); if(los)rows.push(["+ løsøre",los]);
+  rows.push(["− utlegg inkl. provisjon",-utl]); if(lan)rows.push(["− innfrielse av lån",-lan]);
+  if(eier)rows.push(["− eierskiftegebyr",-eier]); if(ffDel)rows.push(["− forfalte felleskostnader",-ffDel]); if(tilb)rows.push(["− tilbakeholdt beløp",-tilb]);
+  const o = opts(pay, shuffle(cands));
+  return mk(null,q,o,0,"Renter og løsøre legges til. Utlegg, lån, selgers del til forretningsfører og et tilbakeholdt beløp trekkes fra.",rows,pay);
+}
+
+const GENS = {omk:["Kjøpers omkostninger",genOmk], prov:["Provisjon og mva",genProv], avr:["Avregninger",genAvr], ff:["Forretningsfører",genFF], sel:["Selgers oppgjør",genSelger]};
+
+// ---------- state ----------
+const $ = s => document.querySelector(s);
+const LS = "oppgjor2-feil";
+let mode="teori", count=20, topicsOn=new Set(Object.keys(TEMA)), gensOn=new Set(Object.keys(GENS));
+let deck=[], idx=0, score=0, answered=false, roundWrong=[];
+const loadWrong=()=>{try{return JSON.parse(localStorage.getItem(LS)||"[]")}catch(e){return[]}};
+const saveWrong=a=>{try{localStorage.setItem(LS,JSON.stringify(a))}catch(e){}};
+
+function chipGroup(box, items, set){
+  box.innerHTML="";
+  for(const [k,label] of items){
+    const b=document.createElement("button"); b.className="chip"; b.type="button"; b.textContent=label;
+    b.setAttribute("aria-pressed", set.has(k));
+    b.onclick=()=>{ if(set.has(k)&&set.size>1)set.delete(k); else set.add(k); b.setAttribute("aria-pressed",set.has(k)); updateCount(); };
+    box.appendChild(b);
+  }
+}
+function updateCount(){
+  const n = Q.filter(q=>topicsOn.has(q[1])).length;
+  $("#topicCount").textContent = mode==="teori" ? `${n} spørsmål i valgte tema.` : "";
+}
+function refreshFeil(){
+  const w=loadWrong().filter(id=>Q.some(q=>q[0]===id));
+  $("#feilChip").disabled = w.length===0;
+  $("#feilHint").textContent = w.length?`${w.length} spørsmål du har svart feil på ligger i «Mine feil».`:"Spørsmål du svarer feil på, havner i «Mine feil».";
+  if(!w.length && mode==="feil") setMode("teori");
+}
+function setMode(m){
+  mode=m;
+  document.querySelectorAll("#modeChips .chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.mode===m));
+  $("#topicSet").hidden = m!=="teori"; $("#genSet").hidden = m!=="regning"; updateCount();
+}
+document.querySelectorAll("#modeChips .chip").forEach(c=>c.onclick=()=>{ if(!c.disabled) setMode(c.dataset.mode); });
+document.querySelectorAll("#countChips .chip").forEach(c=>c.onclick=()=>{ count=+c.dataset.n; document.querySelectorAll("#countChips .chip").forEach(x=>x.setAttribute("aria-pressed",x===c)); });
+$("#allTopics").onclick=()=>{ topicsOn=new Set(Object.keys(TEMA)); chipGroup($("#topicChips"),Object.entries(TEMA),topicsOn); updateCount(); };
+$("#noTopics").onclick=()=>{ topicsOn=new Set([Object.keys(TEMA)[0]]); chipGroup($("#topicChips"),Object.entries(TEMA),topicsOn); updateCount(); };
+
+function fromBank(q){ const order=shuffle([0,1,2,3]); return {id:q[0],t:q[1],q:q[2],o:order.map(i=>q[3][i]),a:order.indexOf(0),e:q[4]}; }
+function fromGen(g,key){ const order=shuffle(g.o.map((_,i)=>i)); return {...g,gk:key,o:order.map(i=>g.o[i]),a:order.indexOf(g.a)}; }
+function makeGen(){ const k=pick([...gensOn]); return fromGen(GENS[k][1](),k); }
+
+let lastTab="learn";
+function show(id){
+  ["learn","lesson","start","quiz","result","ref"].forEach(s=>$("#"+s).hidden=(s!==id));
+  const tab = id==="lesson"?"learn":(id==="quiz"||id==="result")?lastTab:id;
+  if(id==="learn"||id==="start"||id==="ref") lastTab=id;
+  document.querySelectorAll(".tabs button").forEach(b=>b.setAttribute("aria-current", b.dataset.view===tab?"page":"false"));
+  window.scrollTo(0,0);
+}
+
+function startRound(list){
+  if(list) deck=list;
+  else if(mode==="regning") deck=Array.from({length:Math.min(count,40)},makeGen);
+  else if(mode==="feil"){ const w=loadWrong(); deck=shuffle(Q.filter(q=>w.includes(q[0]))).slice(0,count).map(fromBank); }
+  else if(mode==="blandet"){ const n=Math.min(count,60); const th=shuffle(Q).slice(0,Math.ceil(n*0.6)).map(fromBank); deck=shuffle(th.concat(Array.from({length:n-th.length},makeGen))); }
+  else deck=shuffle(Q.filter(q=>topicsOn.has(q[1]))).slice(0,count).map(fromBank);
+  if(!deck.length) return;
+  idx=0; score=0; roundWrong=[]; show("quiz"); renderQ();
+}
+
+function renderQ(){
+  const q=deck[idx]; answered=false;
+  $("#counter").textContent=`Spørsmål ${idx+1} av ${deck.length}`;
+  $("#scoreNow").textContent=`${score} riktige`;
+  $("#barFill").style.width=(idx/deck.length*100)+"%";
+  $("#qTag").textContent = q.gen ? "Regneoppgave – "+GENS[q.gk][0] : TEMA[q.t];
+  $("#qText").textContent=q.q;
+  const st=$("#stamp"); st.className="stamp"; st.textContent="";
+  const box=$("#opts"); box.innerHTML="";
+  q.o.forEach((txt,i)=>{ const b=document.createElement("button"); b.className="opt"; b.type="button";
+    b.innerHTML=`<b>${"ABCD"[i]}</b><span></span>`; b.querySelector("span").textContent=txt; b.onclick=()=>answer(i); box.appendChild(b); });
+  $("#feedback").hidden=true; $("#nextWrap").hidden=true;
+  $("#nextBtn").textContent = idx===deck.length-1?"Se resultat":"Neste spørsmål";
+}
+
+function answer(i){
+  if(answered) return; answered=true;
+  const q=deck[idx], ok=i===q.a;
+  document.querySelectorAll("#opts .opt").forEach((b,j)=>{ b.disabled=true; b.classList.add(j===q.a?"correct":j===i?"wrong":"dim"); });
+  let w=loadWrong();
+  if(ok){ score++; if(q.id && mode==="feil") w=w.filter(x=>x!==q.id); }
+  else { roundWrong.push(q); if(q.id && !w.includes(q.id)) w.push(q.id); }
+  saveWrong(w);
+  const st=$("#stamp"); st.textContent=ok?"TINGLYST":"ANMERKET"; st.className="stamp "+(ok?"ok":"bad"); void st.offsetWidth; st.classList.add("show");
+  const fb=$("#feedback"); fb.innerHTML="";
+  if(q.rows){ const t=document.createElement("table");
+    q.rows.forEach(([l,v,u])=>{ const r=t.insertRow(); r.insertCell().textContent=l; r.insertCell().textContent = u==="d" ? v+" dager" : (v<0?"−"+fmt(-v):fmt(v)); });
+    const s=t.insertRow(); s.className="sum"; s.insertCell().textContent="Svar"; s.insertCell().textContent=fmt(q.total); fb.appendChild(t); }
+  const p=document.createElement("p"); p.textContent=q.e; fb.appendChild(p);
+  fb.hidden=false; $("#nextWrap").hidden=false; $("#nextBtn").focus({preventScroll:true});
+  $("#scoreNow").textContent=`${score} riktige`;
+}
+function next(){ if(!answered)return; idx++; if(idx<deck.length){renderQ();window.scrollTo({top:0});} else finish(); }
+function finish(){
+  $("#barFill").style.width="100%";
+  const n=deck.length, pct=Math.round(score/n*100);
+  $("#finalScore").textContent=`${score} av ${n}`;
+  $("#finalText").textContent = pct===100?"Alt riktig. Oppgjøret er klart for utbetaling.":pct>=75?`${pct} % riktig. Se over feilene under.`:`${pct} % riktig. Les forklaringene og ta feilene på nytt.`;
+  $("#retryWrongBtn").hidden = roundWrong.length===0;
+  const ul=$("#review"); ul.innerHTML="";
+  roundWrong.forEach(q=>{ const li=document.createElement("li");
+    const a=document.createElement("p"); a.className="rq"; a.textContent=q.q;
+    const b=document.createElement("p"); b.className="ra"; b.textContent="Riktig svar: "+q.o[q.a];
+    const c=document.createElement("p"); c.className="re"; c.textContent=q.e; li.append(a,b,c); ul.appendChild(li); });
+  show("result");
+}
+$("#startBtn").onclick=()=>startRound();
+$("#nextBtn").onclick=next;
+$("#againBtn").onclick=()=>{refreshFeil();show(lastTab==="learn"?"learn":"start"); if(lastTab==="learn")renderLearn();};
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{ refreshFeil(); if(b.dataset.view==="learn") renderLearn(); if(b.dataset.view==="start") setMode(document.querySelector('#modeChips [aria-pressed="true"]').dataset.mode); show(b.dataset.view); });
+
+// ---------- Lær ----------
+const LSL="oppgjor2-lest";
+const lest=()=>{try{return new Set(JSON.parse(localStorage.getItem(LSL)||"[]"))}catch(e){return new Set()}};
+const markLest=id=>{const s=lest();s.add(id);try{localStorage.setItem(LSL,JSON.stringify([...s]))}catch(e){}};
+function renderLearn(){
+  const s=lest(), ol=$("#lessonList"); ol.innerHTML="";
+  LEK.forEach((l,i)=>{ const li=document.createElement("li"); const b=document.createElement("button"); b.type="button"; b.className="lrow";
+    b.innerHTML=`<span class="lnr">${i+1}</span><span class="ltxt"><b></b><small></small></span><span class="lst"></span>`;
+    b.querySelector("b").textContent=l.tittel; b.querySelector("small").textContent=l.kort; b.querySelector(".lst").textContent=s.has(l.id)?"Lest":"";
+    if(s.has(l.id)) b.classList.add("done");
+    b.onclick=()=>openLesson(i); li.appendChild(b); ol.appendChild(li); });
+  $("#learnProgress").textContent=`${[...s].filter(id=>LEK.some(l=>l.id===id)).length} av ${LEK.length} leksjoner lest`;
+}
+let curL=0;
+function openLesson(i){
+  curL=i; const l=LEK[i];
+  $("#lNr").textContent=`Leksjon ${i+1} av ${LEK.length}`; $("#lTitle").textContent=l.tittel; $("#lBody").innerHTML=l.html;
+  $("#lPrev").hidden=i===0; $("#lNext").textContent=i===LEK.length-1?"Ferdig – til oversikten":"Neste leksjon";
+  const n=Q.filter(q=>l.ov.tema&&l.ov.tema.includes(q[1])).length;
+  $("#lPractice").textContent = `Øv på dette nå`+(l.ov.gen?` (teori + regneoppgaver)`:` (${Math.min(n,10)} spørsmål)`);
+  markLest(l.id); show("lesson");
+}
+$("#lPrev").onclick=()=>openLesson(curL-1);
+$("#lNext").onclick=()=>{ if(curL<LEK.length-1) openLesson(curL+1); else { renderLearn(); show("learn"); } };
+$("#lBack").onclick=()=>{ renderLearn(); show("learn"); };
+$("#lPractice").onclick=()=>{
+  const ov=LEK[curL].ov; lastTab="learn";
+  let list = shuffle(Q.filter(q=>ov.tema&&ov.tema.includes(q[1]))).slice(0, ov.gen?6:10).map(fromBank);
+  if(ov.gen) for(let i=0;i<6;i++){ const k=pick(ov.gen); list.push(fromGen(GENS[k][1](),k)); }
+  mode="leksjon"; startRound(shuffle(list));
+};
+$("#startLearn").onclick=()=>{ const s=lest(); const i=LEK.findIndex(l=>!s.has(l.id)); openLesson(i<0?0:i); };
+$("#retryWrongBtn").onclick=()=>{
+  const list=roundWrong.map(q=> q.gen ? fromGen(GENS[q.gk][1](),q.gk) : fromBank(Q.find(x=>x[0]===q.id)));
+  startRound(shuffle(list));
+};
+document.addEventListener("keydown",e=>{
+  if($("#quiz").hidden) return;
+  const k=e.key.toLowerCase(), map={"1":0,"2":1,"3":2,"4":3,a:0,b:1,c:2,d:3};
+  if(!answered && k in map && map[k]<deck[idx].o.length){ e.preventDefault(); answer(map[k]); }
+  else if(answered && e.key==="Enter" && document.activeElement!==$("#nextBtn")){ e.preventDefault(); next(); }
+});
+chipGroup($("#topicChips"),Object.entries(TEMA),topicsOn);
+chipGroup($("#genChips"),Object.entries(GENS).map(([k,v])=>[k,v[0]]),gensOn);
+$("#bankSize").textContent = Q.length;
+refreshFeil(); setMode("teori"); renderLearn(); show("learn");
+
+</script>
+</body>
+</html>
