@@ -248,7 +248,7 @@ const TEMA = {
   rv:"Renter, utlegg og vederlag", oj:"Oppstilling, journal og kompetanse", hv:"Hvitvasking og sikkerhet",
   gj:"Gjennomføring av oppgjøret", pr:"Prosjektoppgjør", ir:"Instruksjonsrett og tilbakehold",
   as:"Arv, skifte og skilsmisse", sp:"Fullmakt, tvangssalg og spesialtilfeller", ar:"Avregninger og eksamensteknikk",
-  ff:"Finn feilen"
+  ff:"Typiske føringsfeil"
 };
 // [id, tema, spørsmål, [riktig, feil, feil, feil], forklaring] – riktig svar står først og stokkes ved visning
 const Q = [
@@ -261,7 +261,7 @@ const Q = [
 ["kk6","kk","Hvor ofte skal klientkontoen avstemmes?",["Hver måned","Hvert kvartal","Hvert halvår","Én gang i året"],"Avstemming betyr å sjekke at regnskapet stemmer med banken."],
 ["kk7","kk","Oppgjøret er satt bort til et annet foretak. Hvem må sjekke avstemmingen?",["Fagansvarlig i meglerforetaket","Fagansvarlig i oppgjørsforetaket","Revisor","Ingen, ansvaret er flyttet"],"Kontrollansvaret blir hos meglerforetakets fagansvarlig."],
 ["kk8","kk","Hva er en «åpen post» i klientregnskapet?",["En innbetaling uten kjent oppdrag","En faktura som ikke har forfalt","Et tilbakeholdt beløp","Renter som ikke er utbetalt"],"Megler må finne ut hvilken kunde pengene tilhører."],
-["kk9","kk","Når kan megler trekke sitt honorar fra oppgjøret?",["Når selger samtykker etter salget","Når det står i oppdragsavtalen","Når kjøper har betalt","Når skjøtet er tinglyst"],"I vanlige boligsalg kan dette ikke avtales på forhånd."],
+["kk9","kk","Når kan megler trekke sitt honorar fra oppgjøret?",["Når selger samtykker etter at handelen er inngått","Når det står i oppdragsavtalen","Når kjøper har betalt","Når skjøtet er tinglyst"],"I vanlige boligsalg kan dette ikke avtales på forhånd."],
 ["kk10","kk","Hvem betaler meglers honorar og utlegg?",["Oppdragsgiver","Kjøper","Kjøper og selger deler","Den som har mest på klientkonto"],"Oppdragsgiver er den som har gitt megler oppdraget – vanligvis selger."],
 ["kk11","kk","Hvem kan pengene på klientkontoen tilhøre?",["Kjøper eller selger","Meglerforetaket","Kjøpers bank","Banken som har kontoen"],"Pengene tilhører aldri meglerforetaket."],
 ["kk12","kk","Hvem får renter av pengene på klientkontoen?",["Den som eier pengene", "Meglerforetaket", "Selger, uansett tidspunkt", "Kjøper, uansett tidspunkt"],"Dette kan ikke avtales bort."],
@@ -290,7 +290,7 @@ const Q = [
 ["gb9","gb","Selgers lån i en norsk bank skal betales ned. Hva gjør megler?",["Sender pengene med krav om sletting","Krever pantedokumentet i retur først","Lar selger betale banken selv","Venter til banken har slettet pantet"],"Megler henter først skriftlig saldo fra banken."],
 ["gb10","gb","Selger har pant til en privatperson. Hva må megler ha før lånet betales?",["Det originale pantedokumentet", "En e-post fra långiveren", "En kopi av pantedokumentet", "En ny grunnboksutskrift"],"Originalen må være kvittert for sletting. Ellers må oppgjøret vente."],
 ["gb11","gb","Hvordan slettes et utlegg i boligen?",["Med erklæring fra kreditor","Ved mortifikasjon","Ved betaling til Kartverket","Automatisk etter to år"],"Utlegg er tvangspant fra en kreditor som ikke har fått betalt."],
-["gb12","gb","Kontrakten sier «fri for heftelser». Hva betyr det?",["Også f.eks. veiretter skal slettes","Bare banklån skal slettes","Kjøper overtar alle heftelser","Ingenting særskilt"],"Det er vanlig å skrive i kontrakten hvilke heftelser som skal bli stående."],
+["gb12","gb","Kontrakten sier «fri for heftelser». Hva betyr det?",["Også heftelser som ikke er pant skal slettes","Bare banklån skal slettes","Kjøper overtar alle heftelser","Ingenting særskilt"],"For eksempel tinglyste erklæringer. Derfor skriver man i kontrakten hvilke heftelser som skal bli stående."],
 ["gb13","gb","Hva er en pantattest?",["Utskrift som viser eier og pant","Bankens lånebekreftelse","Kvittering for sletting","Liste over alle servitutter"],"Kjøpers bank vil ofte ha den etter tinglysing."],
 ["gb14","gb","Eiendommen er skilt ut fra en større eiendom. Hvorfor er det viktig?",["Gamle heftelser kan følge med","Den slipper dokumentavgift","Den trenger konsesjon","Den er festet"],"Megler bør sjekke grunnboken for den opprinnelige eiendommen også."],
 
@@ -308,12 +308,12 @@ const Q = [
 ["ab11","ab","Når må forkjøpsretten i borettslaget være avklart?",["Før overtakelse","Før kontraktsmøtet","Før budrunden","Før utbetaling til selger"],"Forkjøpsrett betyr at andre andelseiere kan kjøpe leiligheten til samme pris."],
 
 // ---------- Gebyrer og dokumentavgift ----------
-["da1","da","Hva koster det å tinglyse et skjøte i 2026?",["545 kr","525 kr","585 kr","500 kr"],"525 kr står i boka fra 2019. 500 kr var satsen i 2024."],
+["da1","da","Hva koster det å tinglyse et skjøte i 2026?",["545 kr","525 kr","585 kr","430 kr"],"525 kr står i boka fra 2019. 545 kr gjelder i 2026."],
 ["da2","da","Hva koster det å tinglyse eierskifte av en borettslagsleilighet i 2026?",["545 kr","430 kr","260 kr","0 kr"],"Boka fra 2019 sier 430 kr. I dag er det samme pris som for skjøte."],
 ["da3","da","Hva koster en bekreftet grunnboksutskrift i 2026?",["260 kr","172 kr","240 kr","545 kr"],"172 kr står i boka fra 2019. 240 kr var satsen i 2024."],
 ["da4","da","Hva koster det å slette et pant?",["0 kr","545 kr","260 kr","172 kr"],"Sletting er gratis."],
 ["da5","da","Hva koster det å tinglyse eierskifte til en enke eller enkemann som sitter i uskifte?",["0 kr","545 kr","260 kr","525 kr"],"Uskifte betyr at gjenlevende ektefelle overtar boet uten å dele med arvingene. Det er heller ingen dokumentavgift."],
-["da6","da","Koster det mer å tinglyse på papir enn elektronisk i dag?",["Nei","Ja, papir koster 585 kr","Ja, elektronisk er gratis","Ja, papir koster dobbelt"],"Prisene ble like i 2024. Eldre eksamener kan ha ulike satser."],
+["da6","da","Koster det mer å tinglyse på papir enn elektronisk i dag?",["Nei","Ja, papir koster 585 kr","Ja, elektronisk er gratis","Ja, papir koster dobbelt"],"Det koster det samme. Eldre eksamener og fasiter kan ha ulike satser for papir og elektronisk."],
 ["da7","da","Hvordan rundes dokumentavgiften av?",["Grunnlag ned til tusen, avgift ned til ti","Grunnlag ned til tusen, avgift til krone","Grunnlag til hundre, avgift ned til ti","Avgiften rundes opp til nærmeste ti"],"Eksempel: 2 195 500 → 2 195 000 × 2,5 % = 54 875 → 54 870."],
 ["da8","da","Hva er minste dokumentavgift?",["250 kr","100 kr","545 kr","1 000 kr"],"Blir 2,5 % mindre enn 250 kr, betaler man 250 kr."],
 ["da9","da","Hvem må betale dokumentavgiften hvis kjøper ikke gjør det?",["Megler","Selger","Kjøpers bank","Ingen"],"Megler er ansvarlig sammen med kjøper. Derfor sendes ikke skjøtet før kjøper har betalt."],
@@ -375,7 +375,7 @@ const Q = [
 ["hv4","hv","Hvem melder megler mistanke om hvitvasking til?",["Økokrim","Finanstilsynet","Politiet lokalt","Skatteetaten"],"Meldingen går til Økokrims enhet for finansiell etterretning."],
 ["hv5","hv","Hva skjer med oppgjøret når megler melder mistanke?",["Det stoppes til Økokrim er varslet", "Det gjennomføres som normalt", "Det avbrytes for godt", "Det utsettes i tre måneder"],"Megler kan ikke fortelle kunden om meldingen."],
 ["hv6","hv","Hindrer meglers taushetsplikt melding om hvitvasking?",["Nei","Ja","Ja, overfor selger","Bare hvis kunden nekter"],"Plikten til å melde går foran taushetsplikten."],
-["hv7","hv","Hva er et varsel om mulig hvitvasking?",["Pengene skal ikke til selger","Kjøper har lån i norsk bank","Boligen selges til prisantydning","Kjøper har vært på visning"],"Andre varsler er kontanter og betaling fra et land uten tilknytning."],
+["hv7","hv","Hva er et varsel om mulig hvitvasking?",["Selger vil ha oppgjøret betalt til en annen","Kjøper har lån i norsk bank","Boligen selges til prisantydning","Kjøper har vært på visning"],"Andre varsler er kontanter og betaling fra et land uten tilknytning."],
 ["hv8","hv","Hvor stor sikkerhet må et meglerforetak minst ha?",["45 mill. kr","15 mill. kr","30 mill. kr","50 mill. kr"],"Sikkerheten kan begrenses til 15 mill. kr per kunde per salg."],
 ["hv9","hv","Hvem beskytter meglerforetakets sikkerhetsstillelse?",["Kunden som taper penger","Meglerforetaket","Megleren personlig","Forsikringsselskapet"],"Ansvarsforsikringen beskytter derimot meglerforetaket."],
 ["hv10","hv","En bolig selges for 60 mill. Må megler øke sikkerheten?",["Nei, men partene bør få beskjed","Ja, alltid","Ja, og kjøper betaler","Nei, og ingen skal varsles"],"Ofte utvides forsikringen mot underslag i oppgjørsperioden."],
@@ -383,7 +383,7 @@ const Q = [
 // ---------- Gjennomføring ----------
 ["gj1","gj","Hvilke tre faser har et oppgjør?",["Forberedelse, overtakelse og etterarbeid","Budrunde, kontrakt og tinglysing","Oppdrag, salg og overtakelse","Kontrakt, overtakelse og arkiv"],"Boka kaller fasene klargjøring, forberedelse til overtakelse og etter overtakelse."],
 ["gj2","gj","Selger sitter i uskifte og står ikke som eier. Hva må hun vise?",["Uskifteattest","Skifteattest","Fullmakt fra arvingene","Dødsattest"],"Uskifteattesten viser at hun kan disponere boet."],
-["gj3","gj","Selger selger med fullmakt fra eieren. Hva kreves?",["Original fullmakt med vitner", "Kopi av fullmakten, signert av eier", "Original fullmakt uten vitner", "Fullmakt sendt på e-post"],"Fullmakten trengs for å tinglyse skjøtet."],
+["gj3","gj","Noen selger boligen med fullmakt fra eieren. Hva kreves?",["Original fullmakt med vitner", "Kopi av fullmakten, signert av eier", "Original fullmakt uten vitner", "Fullmakt sendt på e-post"],"Fullmakten trengs for å tinglyse skjøtet."],
 ["gj4","gj","Hva gjør megler cirka 14 dager før overtakelse?",["Sjekker grunnboken på nytt","Sletter sikringsobligasjonen","Tinglyser skjøtet","Betaler selger et forskudd"],"Megler får ikke beskjed om nye utlegg og må sjekke selv."],
 ["gj5","gj","Kjøper har ikke betalt på overtakelsesdagen. Hva råder megler selger til?",["Ikke å gi fra seg nøklene","Å overta mot forsinkelsesrente","Å overta mot depositum","Å overta og heve senere"],"Gir selger fra seg nøklene uten betaling, gir hun kjøper kreditt."],
 ["gj6","gj","Hvorfor sendes skjøtet og kjøpers bankpant til tinglysing samtidig?",["Kjøper må eie boligen før banken får pant","Kartverket gir rabatt for begge samtidig","Selger må signere begge dokumentene","Banken krever det for å sette renten"],"Kjøper må ha hjemmel før banken kan få pant."],
@@ -447,10 +447,10 @@ const Q = [
 // ---------- Avregninger og eksamensteknikk ----------
 ["ar1","ar","Hvem tilhører overtakelsesdagen i avregninger?",["Kjøper","Selger","De deler","Den som har betalt"],"Overtakelse 10.1 → kjøper har 10.–30. januar = 21 dager."],
 ["ar2","ar","Hvor mange dager regner faget med?",["30 per måned, 360 per år","Faktiske dager, 365 per år","Faktiske dager, 360 per år","31 per måned, 365 per år"],"Det gir 90 dager per kvartal og 180 per halvår."],
-["ar3","ar","Når rundes avregningene av?",["Til slutt, på summen","På hver linje","På hver linje, nedover","Aldri"],"Rund av hver linje, og du kan få én krone feil."],
+["ar3","ar","Når rundes avregningene av?",["Til slutt, på summen","På hver linje","På hver linje, nedover","Aldri"],"Regn med desimaler hele veien. Runder du av hver linje først, kan du få én krone feil."],
 ["ar4","ar","Selger har betalt de kommunale avgiftene for halvåret. Hvem betaler hvem?",["Kjøper betaler selger","Selger betaler kjøper","Ingen","Kommunen betaler tilbake"],"Kjøper betaler for dagene fra og med overtakelse."],
 ["ar5","ar","De kommunale avgiftene er ikke betalt, og kjøper får regningen. Hvem betaler hvem?",["Selger betaler kjøper","Kjøper betaler selger","Ingen","Kommunen fordeler"],"Selger betaler for dagene før overtakelse."],
-["ar6","ar","Leien betales til ny eier den 30. Overtakelse er 25.10. Hvem betaler hvem?",["Kjøper betaler selger for 24 dager","Selger betaler kjøper for 6 dager","Kjøper betaler selger for 25 dager","Ingen"],"Kjøper får hele oktoberleien, men selger eide boligen 1.–24. oktober."],
+["ar6","ar","Leien betales etterskuddsvis den 30. til den som eier boligen da. Overtakelse er 25.10. Hvem betaler hvem?",["Kjøper betaler selger for 24 dager","Selger betaler kjøper for 6 dager","Kjøper betaler selger for 25 dager","Ingen"],"Kjøper får hele oktoberleien, men selger eide boligen 1.–24. oktober."],
 ["ar7","ar","Borettslag. Felleskostnadene er betalt til og med november. Overtakelse er 10.1. Hva betaler selger?",["Desember, 9 dager i januar og eierskiftegebyret", "9 dager i januar og eierskiftegebyret", "Desember, hele januar og eierskiftegebyret", "Desember og eierskiftegebyret"],"Alle ubetalte måneder før overtakelse er selgers."],
 ["ar8","ar","Overtakelse er 1.3, og mars er ikke betalt. Hvem betaler mars?",["Kjøper","Selger","De deler","Ingen ennå"],"Kjøper eier boligen hele mars."],
 ["ar9","ar","Hvilken kostnad betaler selger?",["Eierskiftegebyret","Tinglysing av eierskiftet","Kjøpers grunnboksutskrift","Tinglysing av kjøpers lån"],"Borettslaget kan bare kreve eierskiftegebyr av selger."],
@@ -468,11 +468,11 @@ const Q = [
 ["ff2","ff","Kjøpers tinglysingsfaktura er tatt med i selgers utlegg. Hva er feil?",["Det er kjøpers kostnad","Den skal deles","Den skal betales fra driftskonto","Ingenting"],"Kjøpers kostnader betales med kjøpers penger."],
 ["ff3","ff","Betaling av en faktura fra driftskontoen er ført på kundespesifikasjonen. Hva er feil?",["Betalingen skal ikke føres på kunden", "Den skal føres på kjøper i stedet", "Den skal føres to ganger", "Ingenting, det er riktig ført"],"Bare mottak av fakturaen føres på kunden."],
 ["ff4","ff","Kjøpesummen er ført debet selger og kredit kjøper. Hva er feil?",["Det er motsatt","Den skal føres som utlegg","Den skal føres ved overtakelse","Ingenting"],"Riktig: kredit selger, debet kjøper."],
-["ff5","ff","Løsøre kjøper betaler selger, er ført på klientkontoen. Hvordan skal det føres?",["Kredit selger, debet kjøper","Debet klientkonto, kredit selger","Debet utlegg, kredit selger","Kredit kjøper, debet selger"],"Pengene er allerede med i kjøpers innbetaling."],
+["ff5","ff","Kjøper skal betale selger for løsøre. Beløpet er ført på klientkontoen. Hvordan skal det føres?",["Kredit selger, debet kjøper","Debet klientkonto, kredit selger","Debet utlegg, kredit selger","Kredit kjøper, debet selger"],"Pengene er allerede med i kjøpers innbetaling."],
 ["ff6","ff","Innbetaling fra kjøpers bank er ført debet selger. Hvordan skal den føres?",["Kredit kjøper og debet klientkonto","Kredit selger og debet klientkonto","Debet kjøper og kredit klientkonto","Debet utlegg"],"Innbetalingen gjør kjøpers gjeld mindre."],
 ["ff7","ff","Provisjonen for en leilighet med fellesgjeld er regnet av prisen alene. Hva er feil?",["Fellesgjelden skal med","Den skal regnes av takst","Fellesgjelden skal trekkes fra","Ingenting"],"Makrellveien: 2,5 % av 6 850 000 + 78 544 = 173 214."],
-["ff8","ff","Utstyr kjøper betaler selger, er ført debet selger og kredit kjøper. Hva er feil?",["Det er motsatt","Det skal føres som utlegg","Det skal føres på driftskonto","Ingenting"],"Riktig: kredit selger, debet kjøper."],
-["ff9","ff","Hele regningen på 12 900 for ubetalte kommunale avgifter er ført som kredit for selger. Hva er feil?",["Selger skal bare betale sin del til kjøper","Kjøper skal belastes hele regningen","Regningen skal deles likt mellom dem","Ingenting, det er riktig ført"],"Selger skylder kjøper for sine dager: 12 900 / 90 × 28 = 4 013."],
+["ff8","ff","Kjøper skal betale selger for utstyr. Beløpet er ført debet selger og kredit kjøper. Hva er feil?",["Det er motsatt","Det skal føres som utlegg","Det skal føres på driftskonto","Ingenting"],"Riktig: kredit selger, debet kjøper."],
+["ff9","ff","Overtakelse er 29.1. Kommunale avgifter for 1. kvartal (12 900 kr) er ikke betalt, og kjøper betaler regningen. Hele regningen er ført som kredit for selger. Hva er feil?",["Selger skal bare betale sin del til kjøper","Kjøper skal belastes hele regningen","Regningen skal deles likt mellom dem","Ingenting, det er riktig ført"],"Et kvartal er 3 måneder à 30 dager = 90 dager. Selger eide boligen 1.–28. januar = 28 dager (overtakelsesdagen 29.1 er kjøpers). Selger skylder kjøper 12 900 / 90 × 28 = 4 013 kr, ført som debet selger og kredit kjøper. Eksempelet er fra Olav Kyrres vei (eksamen vår 2022)."],
 ["ff10","ff","Borettslag: tinglysingsfakturaen har dokumentavgift. Hva er feil?",["Borettslag har ikke dokumentavgift","Avgiften skal regnes av fellesgjelden","Selger skal betale den","Ingenting"],"Riktig faktura er 545 + 545 = 1 090 kr."]
 ];
 
@@ -924,8 +924,12 @@ function caseSteps(c){
   const steps=[], tot=7+(c.fk?1:0)+(c.kom?1:0);
   let n=0; const lab=()=>`Del ${++n}`;
   const step=(q,correct,cands,rows,e,unit)=>{ const o=opts(correct,shuffle(cands),unit); steps.push({gen:true,gk:"case",caseHtml:c.html,step:lab(),q,o:o.map(x=>x.t),a:0,rows,total:correct,e}); };
-  // 1 provisjon
+  // 1 provisjon (eller mva-delen)
   const base=c.price+c.fg;
+  if(Math.random()<0.4){ const mva=Math.round(c.prov/5);
+    step("Hvor mye av meglers provisjon er merverdiavgift (mva)?", mva, [Math.round(c.prov*0.25), Math.round(Math.max(Math.round(c.price*0.025),35000)/5), Math.round(c.prov*0.2*0.8), Math.round(c.prov/4)],
+      [["Provisjon inkl. mva (2,5 % av "+kr(base)+")",c.prov],["Mva = 1/5",mva],["Vederlag = 4/5",c.prov-mva]], "Mva-delen av et beløp med 25 % mva er 1/5 av beløpet.");
+  } else
   step("Hva blir meglers provisjon inkl. mva?", c.prov,
     [Math.max(Math.round(c.price*0.025),35000), Math.round(base*0.02), Math.round(base*0.025*1.25), 35000],
     [["Grunnlag: salgssum"+(c.fg?" + fellesgjeld":""),base],[`2,5 % = ${dkr(base*0.025)}${base*0.025<35000?" → minimum gjelder":""}`,c.prov],["Herav mva (1/5)",Math.round(c.prov/5)],["Vederlagsinntekt (4/5)",c.prov-Math.round(c.prov/5)]],
@@ -941,7 +945,12 @@ function caseSteps(c){
       "Grunnlaget rundes ned til hele tusen, avgiften ned til hele ti."+(c.los?" Løsøre kjøpt i tillegg påvirker ikke avgiften.":""));
   }
   // 3 forretningsfører
-  if(c.fk){
+  if(c.fk && Math.random()<0.4){
+    step("Hvor mye av felleskostnadene til forretningsfører skal belastes kjøper?", c.ffK,
+      [Math.round(c.fk/30*(30-c.d)), Math.round(c.ffK+c.eier), c.fk, Math.round(c.fk/30*(c.d-1))],
+      [[`Kjøpers dager i ${MND[c.m]}: 30 − ${c.d} + 1`,30-c.d+1,"d"],[`${kr(c.fk)} / 30 × ${30-c.d+1}`,c.ffK]],
+      "Kjøper betaler fra og med overtakelsesdagen. Eierskiftegebyret er selgers.");
+  } else if(c.fk){
     step("Hvor mye av utestående til forretningsfører skal belastes selger?", c.ffS,
       [Math.round(c.fk/30*(c.d-1)+c.eier), Math.round(c.ffS-c.eier), Math.round(c.fk*(c.back+1)+c.eier), Math.round(c.fk*c.back+c.fk/30*c.d+c.eier)],
       [[`Hele måneder før ${MND[c.m]} (${c.back})`,c.fk*c.back],[`${c.d-1} dager i ${MND[c.m]}`,Math.round(c.fk/30*(c.d-1))],["Eierskiftegebyr",c.eier],["Selgers andel",c.ffS],[`Kjøpers andel: ${30-c.d+1} dager`,c.ffK]],
@@ -972,12 +981,17 @@ function caseSteps(c){
   step("Hvor mye utbetales til selger i sluttoppgjøret?", c.utb,
     [c.utb-2*c.rs, c.utb+c.ffS, c.utb-2*c.av, c.utb+c.prov, c.utb-c.tingl].filter(x=>x!==c.utb&&x>0),
     rowsS, "Salgssum + renter ± avregninger − utlegg − lån − selgers andel til forretningsfører.");
-  // 8 klientkonto
-  step("Kartverket-fakturaen for tinglysing er betalt. Hva står igjen på klientkonto for kjøper?", S.gb,
+  // 8 klientkonto (bare av og til)
+  if(Math.random()<0.25) step("Kartverket-fakturaen for tinglysing er betalt. Hva står igjen på klientkonto for kjøper?", S.gb,
     [0, S.tl, c.tingl, S.gb+S.tl], [["Kjøpers grunnboksutskrift, fakturert senere",S.gb]],
     "Grunnboksutskriften (attestgebyret) bestilles når selgers pant er slettet.");
-  // 9 hva endres hvis
-  if(c.type==="borettslag"){
+  // 9 hva endres hvis – varierer
+  const variant = (c.lan && Math.random()<0.35) ? "kontant" : "eierform";
+  if(variant==="kontant"){
+    step(`Tenk deg at kjøper i stedet betaler med oppsparte midler (alt annet likt). Hvor mye endres kjøpers innbetaling?`, S.tl,
+      [S.gb, S.tl*2, S.tl+S.gb], [["Ingen pantedokument å tinglyse",S.tl]],
+      "Uten lån er det ikke noe pantedokument, så tinglysingsgebyret for pant faller bort.", v=>"Reduseres med "+fmt(v));
+  } else if(c.type==="borettslag"){
     const nd=dokavg(c.price);
     step(`Tenk deg at ${c.G} i stedet var en selveierleilighet med samme kjøpesum, uten fellesgjeld. Hvor mye endres kjøpers innbetaling?`, nd,
       [dokavg(c.price+c.fg), Math.round(c.price*0.025), nd+S.tl],[["Ny dokumentavgift av "+kr(Math.floor(c.price/1000)*1000),nd]],
@@ -993,6 +1007,9 @@ function caseSteps(c){
   return steps;
 }
 
+// unngå gjentakelser innen en runde
+let usedErr=new Set(), usedPost=new Set();
+function resetExamRound(){ usedErr=new Set(); usedPost=new Set(); }
 // ---------- kundespesifikasjon ----------
 function ksRows(c){
   const R=[]; let b=1; const add=(tekst,cols)=>R.push({b:b++,tekst,...cols});
@@ -1021,7 +1038,8 @@ function makeFinn(){
     c=makeCase(); R=ksRows(c);
     const types=["gebyr","kontrakt","utlegg","innbet","renter","betaling"];
     if(c.fg) types.push("prov"); if(c.av) types.push("avregning"); if(c.type==="borettslag") types.push("dokbrl"); if(c.fk) types.push("eier");
-    err=pick(types);
+    let fresh=types.filter(t=>!usedErr.has(t)); if(!fresh.length){ usedErr=new Set(); fresh=types; }
+    err=pick(fresh);
     const f=t=>R.find(r=>r.tekst===t);
     if(err==="gebyr"){ row=f("Pant m/urådighet"); const old=pick([480,585,1060]); row.uD=old; txt=`Pant med urådighet er ført med ${old} kr. Gebyret i 2026 er 545 kr.`; }
     else if(err==="kontrakt"){ row=f("Kjøpekontrakt"); row.sK=0;row.kD=0;row.sD=c.price;row.kK=c.price; txt="Kjøpekontrakten er ført med snudd retning. Riktig er kredit selger (tilgodehavende) og debet kjøper (skyld)."; }
@@ -1033,7 +1051,7 @@ function makeFinn(){
     else if(err==="avregning"){ row=f("Avregning"); [row.sD,row.sK]=[row.sK,row.sD]; [row.kD,row.kK]=[row.kK,row.kD]; txt=`Avregningen er ført med feil retning. ${c.av>0?"Kjøper betaler selger, så det skal være kredit selger og debet kjøper.":"Selger betaler kjøper, så det skal være debet selger og kredit kjøper."}`; }
     else if(err==="dokbrl"){ row=f("Faktura tinglysing"); const v=dokavg(c.price)+c.tingl; row.uD=v; txt=`Tinglysingsfakturaen inneholder dokumentavgift, men borettslag har ikke dokumentavgift. Riktig er ${kr(c.tingl)}.`; }
     else if(err==="eier"){ row=f("Til forretningsfører"); row.sD=c.ffS-c.eier; row.kD=c.ffK+c.eier; txt=`Eierskiftegebyret (${kr(c.eier)}) er ført på kjøper. Det er selgers kostnad: selger ${kr(c.ffS)}, kjøper ${kr(c.ffK)}.`; }
-    if(row) break;
+    if(row){ usedErr.add(err); break; }
   }
   const others=shuffle(R.filter(r=>r!==row)).slice(0,3);
   const o=shuffle([row,...others]);
@@ -1061,7 +1079,9 @@ const POST_EV = [
   ["kontrakt",()=>"Kjøper betaler selger 35 000 kr for løsøre (avregning i oppgjøret)."]
 ];
 function makePost(){
-  const [k,fn]=pick(POST_EV), a=ri(20,90)*100;
+  let idx=POST_EV.map((_,i)=>i).filter(i=>!usedPost.has(i)); if(!idx.length){ usedPost=new Set(); idx=POST_EV.map((_,i)=>i); }
+  const ix=pick(idx); usedPost.add(ix);
+  const [k,fn]=POST_EV[ix], a=ri(20,90)*100;
   const correct=POST_SVAR[k];
   const others=shuffle(Object.values(POST_SVAR).filter(v=>v!==correct)).slice(0,3);
   const o=shuffle([correct,...others]);
@@ -1270,6 +1290,18 @@ const $ = s => document.querySelector(s);
 const LS = "oppgjor2-feil";
 let mode="teori", count=20, topicsOn=new Set(Object.keys(TEMA)), gensOn=new Set(Object.keys(GENS));
 let deck=[], idx=0, score=0, answered=false, roundWrong=[];
+const LSS="oppgjor2-sett";
+const loadSeen=()=>{try{return new Set(JSON.parse(localStorage.getItem(LSS)||"[]"))}catch(e){return new Set()}};
+const saveSeen=s=>{try{localStorage.setItem(LSS,JSON.stringify([...s]))}catch(e){}};
+// trekk spørsmål du ikke har sett ennå; når alle er sett, starter rotasjonen på nytt
+function drawFresh(pool,n){
+  let seen=loadSeen(); let fresh=pool.filter(q=>!seen.has(q[0]));
+  let pickd=shuffle(fresh).slice(0,n);
+  if(pickd.length<n){ pool.forEach(q=>seen.delete(q[0])); saveSeen(seen);
+    const rest=shuffle(pool.filter(q=>!pickd.includes(q))).slice(0,n-pickd.length); pickd=pickd.concat(rest); }
+  return pickd;
+}
+const markSeen=id=>{ if(!id)return; const s=loadSeen(); s.add(id); saveSeen(s); };
 const loadWrong=()=>{try{return JSON.parse(localStorage.getItem(LS)||"[]")}catch(e){return[]}};
 const saveWrong=a=>{try{localStorage.setItem(LS,JSON.stringify(a))}catch(e){}};
 
@@ -1284,7 +1316,8 @@ function chipGroup(box, items, set){
 }
 function updateCount(){
   const n = Q.filter(q=>topicsOn.has(q[1]) && inLevel(q)).length;
-  $("#topicCount").textContent = mode==="teori" ? `${n} spørsmål i valgte tema.` : "";
+  const seen=loadSeen(), ns=Q.filter(q=>topicsOn.has(q[1]) && inLevel(q) && seen.has(q[0])).length;
+  $("#topicCount").textContent = mode==="teori" ? `${n} spørsmål i valgte tema. Du har sett ${ns} – nye spørsmål kommer først, til du har vært gjennom alle.` : "";
 }
 function refreshFeil(){
   const w=loadWrong().filter(id=>Q.some(q=>q[0]===id));
@@ -1318,6 +1351,7 @@ function show(id){
 }
 
 function startRound(list){
+  resetExamRound();
   if(list) deck=list;
   else if(mode==="eksamen"){
     const nC = examOn.has("case") ? (count>=40?3:count>=20?2:1) : 0;
@@ -1329,8 +1363,8 @@ function startRound(list){
   }
   else if(mode==="regning") deck=Array.from({length:Math.min(count,40)},makeGen);
   else if(mode==="feil"){ const w=loadWrong(); deck=shuffle(Q.filter(q=>w.includes(q[0]))).slice(0,count).map(fromBank); }
-  else if(mode==="blandet"){ const n=Math.min(count,60); const th=shuffle(Q.filter(inLevel)).slice(0,Math.ceil(n*0.6)).map(fromBank); deck=shuffle(th.concat(Array.from({length:n-th.length},makeGen))); }
-  else deck=shuffle(Q.filter(q=>topicsOn.has(q[1]) && inLevel(q))).slice(0,count).map(fromBank);
+  else if(mode==="blandet"){ const n=Math.min(count,60); const th=drawFresh(Q.filter(inLevel),Math.ceil(n*0.6)).map(fromBank); deck=shuffle(th.concat(Array.from({length:n-th.length},makeGen))); }
+  else deck=drawFresh(Q.filter(q=>topicsOn.has(q[1]) && inLevel(q)),count).map(fromBank);
   if(!deck.length) return;
   idx=0; score=0; roundWrong=[]; show("quiz"); renderQ();
 }
@@ -1354,7 +1388,7 @@ function renderQ(){
 
 function answer(i){
   if(answered) return; answered=true;
-  const q=deck[idx], ok=i===q.a;
+  const q=deck[idx], ok=i===q.a; markSeen(q.id);
   document.querySelectorAll("#opts .opt").forEach((b,j)=>{ b.disabled=true; b.classList.add(j===q.a?"correct":j===i?"wrong":"dim"); });
   let w=loadWrong();
   if(ok){ score++; if(q.id && mode==="feil") w=w.filter(x=>x!==q.id); }
@@ -1419,7 +1453,7 @@ $("#lNext").onclick=()=>{ if(curL<LEK.length-1) openLesson(curL+1); else { rende
 $("#lBack").onclick=()=>{ renderLearn(); show("learn"); };
 $("#lPractice").onclick=()=>{
   const ov=LEK[curL].ov; lastTab="learn";
-  let list = shuffle(Q.filter(q=>ov.tema&&ov.tema.includes(q[1])&&BASIS.has(q[0]))).slice(0, ov.gen?6:10).map(fromBank);
+  resetExamRound(); let list = drawFresh(Q.filter(q=>ov.tema&&ov.tema.includes(q[1])&&BASIS.has(q[0])), ov.gen?6:10).map(fromBank);
   if(ov.gen) for(let i=0;i<6;i++){ const k=pick(ov.gen); list.push(fromGen(GENS[k][1](),k)); }
   mode="leksjon"; startRound(shuffle(list));
 };
